@@ -1,0 +1,31 @@
+ <br/>
+<label class="control-group">Effect<em>*</em></label>
+
+<div class="role_effect">
+<input id="effect1" name="radios" class="effect_select" ng-model="authzPolicy.effect" ng-value="false" type="radio" >
+<label for="effect1"><img class="icon" src="{{config.domainPath}}/assets/images/deny_new.png"/> Deny</label>
+</input>
+<input id="effect2" name="radios" ng-model="authzPolicy.effect"  ng-value="true" type="radio">
+<label for="effect2"><img class="icon" src="{{config.domainPath}}/assets/images/permit.png"/> Permit</label>
+</input>
+</div>   
+<div class="view_details_field_spacer"></div>
+       <div  ng-class="{true: 'error'}[submitted && authzPolicyForm.ctrlemail.$invalid]"> 
+            <md-input-container flex>
+                <label class="control-group">Name<em>*</em></label>
+    <div>
+      <h1>{{model.message}}</h1>
+    </div>
+                <input type="text" ng-model="authzPolicy.name" name="authzPolicyName" ng-minlength="2" required>
+                <span class="error" style="color:red" ng-show="authzPolicyForm.authzPolicyName.$dirty && authzPolicyForm.authzPolicyName.$invalid || submitted">
+                <span ng-show="authzPolicyForm.authzPolicyName.$error.required">Name is required.</span>
+                <!--<span ng-show="authzPolicyForm.authzPolicyName.$error.minlength">Name must be more than 5 characters.</span>--> 
+            </span>
+        </md-input-container>
+        <md-input-container flex>
+            <label class="control-group">Description</label>
+            <textarea columns="1" ng-model="authzPolicy.description" name="authzPolicyDescription" class="ng-pristine ng-valid md-input ng-touched" id="input_00C" aria-multiline="true" tabindex="0" aria-invalid="false" style="height: 56px;"></textarea>
+        </md-input-container>                                    
+    </div>
+                                
+					

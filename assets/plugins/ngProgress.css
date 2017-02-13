@@ -1,0 +1,37 @@
+/* Styling for the ngProgress itself */
+#ngProgress {
+    margin: 0;
+    padding: 0;
+    z-index: 99998;
+    /*background-color: #000000;*/
+
+background: rgba(0,0,0,1);
+background: -moz-linear-gradient(left, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 44%, rgba(0,174,237,1) 72%, rgba(0,174,237,1) 100%);
+background: -webkit-gradient(left top, right top, color-stop(0%, rgba(0,0,0,1)), color-stop(44%, rgba(0,0,0,1)), color-stop(72%, rgba(0,174,237,1)), color-stop(100%, rgba(0,174,237,1)));
+background: -webkit-linear-gradient(left, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 44%, rgba(0,174,237,1) 72%, rgba(0,174,237,1) 100%);
+background: -o-linear-gradient(left, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 44%, rgba(0,174,237,1) 72%, rgba(0,174,237,1) 100%);
+background: -ms-linear-gradient(left, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 44%, rgba(0,174,237,1) 72%, rgba(0,174,237,1) 100%);
+background: linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 44%, rgba(0,174,237,1) 72%, rgba(0,174,237,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#00aeed', GradientType=1 );
+
+    color: #2196f3;
+    box-shadow: 0 0 10px 0; /* Inherits the font color */
+    height: 2px;
+    opacity: 0;
+    /* Add CSS3 styles for transition smoothing */
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+/* Styling for the ngProgress-container */
+#ngProgress-container {
+    position: fixed;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99999;
+}

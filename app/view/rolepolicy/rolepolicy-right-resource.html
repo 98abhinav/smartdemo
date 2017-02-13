@@ -1,0 +1,27 @@
+<table class="view_details_generic_table" cellspacing="0" cellpadding="0">
+    <thead>
+        <tr>
+            <th>
+                <span class="search_header" >Name</span>                                                
+                <a class="search_button" ng-click="startSearchRHS()" ng-show="searchIconRHS"><img src="{{config.domainPath}}/assets/images/search_list.png"  alt=""/></a>
+                <div class="search_window animate_sideways" ng-show="searchBoxRHS">                                                    
+                    <input type="text" focus-on="focusInput" ng-model="search" placeholder="Search">
+                    <a class="close_button" ng-click="endSearchRHS()">&times;</a>                                                    
+                </div>
+                <abbr title="Sort"><span class="sort_icon" ng-if="rolePolicy.resourceActions != null"  ></span></abbr>
+            </th>
+    	</tr>
+    </thead>
+    <tbody id="scrolltable" >                                        
+        <tr resources-repeat-directive ng-repeat='resourceAction in rolePolicy.resourceActions'  ng-class="{selectedActive: resourceAction.isSelected}" > 
+            <td ng-if="!resourceAction.resource.group">
+            	<ul>
+            		<li><span ng-click='toggleItemSelect(resourceAction)'>{{resourceAction.resource.fqdn}}</span></li>
+            		<li ng-show="resourceAction.actions!=null && resourceAction.actions.length > 0" style="text-align: right"><span ng-click="toggleItemSelectForAction(resourceAction)" >Select Actions</span></li>
+            		<li ng-show="resourceAction.actions==null || resourceAction.actions.length==0" style="text-align: right; color: red"><span ng-click="toggleItemSelectForAction(resourceAction)" >Warning! Select Actions</span></li>
+            	</ul>
+            	</td>
+        </tr>
+        <tr ng-if="rolePolicy.resourceActions == null || rolePolicy.resourceActions.length==0"><td class="alert">{{error}}</td></tr>
+    </tbody>                                    
+</table>

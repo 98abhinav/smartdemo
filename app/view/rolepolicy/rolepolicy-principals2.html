@@ -1,0 +1,109 @@
+  
+  Stage 2
+<div class="view_details_field_spacer"></div>
+ <div ng-show="policyType=='user' || policyType == 'group'" class="list_container selectbox1"> 
+     <label class="control-group dropdown_label">Source<em>*</em></label>
+     <div class="selectbox1-opener" ng-click="openDropdown = !openDropdown">{{sourceName|| 'Select Source'}} 
+         <span ng-class="getDropdownIconClass()" class="dropdown-icon"></span>
+     </div>
+     <table ng-show="openDropdown" st-pipe="callServerForIdentitySource"  st-table="sources" class="smart-table table table-striped" cellspacing="0" cellpadding="0">
+         <thead>
+             <tr>
+                 <th class="search_box"> <input class="selectbox1_bg" type="text" focus-on="focusInput" st-search="name" ng-model="search" placeholder="Search">
+                 </th>
+             </tr>
+         </thead>
+         <tbody id="scrolltable" style="min-width:334px;" >
+             <tr ng-show="!isLoading" actions-repeat-directive ng-repeat='sourcedetails in sources'  ng-click='selectSource(sourcedetails)' >
+                 <td>{{sourcedetails.name}}</td>
+             </tr>
+             <tr ng-if="sources == null">
+                 <td class="alert">{{error}}</td>
+             </tr>
+             <tr ng-show="isLoading">
+                 <td  class="text-center loader-area"><div ng-show="isLoading" class="loading-indicator"></div></td>
+             </tr>
+         </tbody>
+         <tfoot class="pagination-container" ng-if="sources != null">
+             <tr>
+                 <td class="paginationarea"><div class="left-pagination" st-pagination="" st-items-by-page="itemsByPage" ></div>
+                     <div class="page_change">
+                         <select ng-model="itemsByPage"  name="itemsByPage">
+                             <option ng-repeat="data in paginationPageSizes" value="{{data}}">{{data}}</option>
+                         </select>
+                     </div></td>
+             </tr>
+         </tfoot>
+     </table>
+ </div>
+ <div class="height_40"></div>
+
+
+<div class="view_details_field_spacer"></div>
+<div class="dual_list_container">
+	<div class="list_container grid_box">     
+            <table st-pipe="callServerForRoles" st-table="availableRoles"  class="smart-table table table-striped" cellspacing="0" cellpadding="0">
+              <thead>
+                <tr>
+                  <th class="search_box full"> <span class="search_header" >Name</span> <a class="search_button" ng-click="startSearchLHS()" ng-show="searchIconLHS"><img src="{{config.domainPath}}/assets/images/search_list.png"  alt=""/></a>
+                    <div class="search_window animate_sideways" ng-show="searchBoxLHS">
+                      <input type="text" focus-on="focusInput" st-search="name"  ng-model="search" placeholder="Search">
+                      <a class="close_button" st-refresh='name' ng-click="endSearchLHS()">&times;</a> </div>
+                    <abbr title="Sort"><span class="sort_icon" ng-if="roles != null" st-sort-default="{{sortType}}" st-skip-natural="true" st-sort="name" ></span></abbr> </th>
+                </tr>
+              </thead>
+              <tbody id="scrolltable">
+                <tr ng-show="!isLoading" roles-repeat-directive ng-repeat="principal in availablePrincipals" ng-click='toggleItemSelect(principal)' ng-class="{selectedActive: roledetails.isSelected}"  >
+                  <td ng-if="policyType='role'">{{principal.name}}</td>
+                  <td ng-if="policyType='user'">{{principal.uid}}</td>
+                  <td ng-if="policyType='group'">{{principal.name}}</td>
+                </tr>
+                <tr ng-if="roles == null">
+                  <td class="alert">{{error}}</td>
+                </tr>
+                <tr ng-show="isLoading">
+                  <td  class="text-center loader-area"><div ng-show="isLoading" class="loading-indicator"></div></td>
+                </tr>
+              </tbody>
+              <tfoot class="pagination-container" ng-if="availableRoles != null">
+                <tr>
+                  <td class="paginationarea"><div class="left-pagination" st-pagination="" st-items-by-page="itemsByPage" ></div>
+                    <div class="page_change">
+                      <select ng-model="itemsByPage"  name="itemsByPage">
+                        <option ng-repeat="data in paginationPageSizes" value="{{data}}">{{data}}</option>
+                      </select>
+                    </div></td>
+                </tr>
+              </tfoot>
+            </table>						             
+
+                   </div>
+                   <div class="list_btn_container">
+                       <img src="assets/images/right_add.png" ng-click="addSelectedItems()" title="Add" alt="Add" tabindex="0"><br><br><br><br>
+                       <img src="assets/images/left_remove.png" ng-click="removeSelectedItems()" title="Remove" alt="Remove" tabindex="0"><br><br><br><br>
+                       <img src="assets/images/reset_assign.png" ng-click="resetItem(tabName)" title="Reset" alt="Reset" tabindex="0">
+                   </div>
+<div class="list_container grid_box">     
+	
+	
+	
+            <table class="smart-table table table-striped" cellspacing="0" cellpadding="0">
+              <thead>
+                <tr>
+                  <th class="search_box full"> <span class="search_header" >Name</span> <a class="search_button" ng-click="startSearchRHS()" ng-show="searchIconRHS"><img src="{{config.domainPath}}/assets/images/search_list.png"  alt=""/></a>
+                    <div class="search_window animate_sideways" ng-show="searchBoxRHS">
+                      <input type="text" focus-on="focusInput" ng-model="searchParam" placeholder="Search">
+                      <a class="close_button" ng-click="endSearchRHS(); searchParam = '';">&times;</a> </div>
+                    <abbr title="Sort"><span class="sort_icon" ng-if="roles != null" ></span></abbr> </th>
+                </tr>
+              </thead>
+              <tbody id="scrolltable">
+                <tr ng-if="policyType == 'role'" roles-repeat-directive ng-repeat="roledetails in rolePolicy.roles | filter:searchParam" ng-click='toggleRoleSelect(rolePolicy.roles, roledetails)' ng-class="{selectedActive: roledetails.isSelected}"  >
+                  <td>{{roledetails.name}}</td>
+                </tr>
+              </tbody>
+            </table>						             
+
+	</div>                        
+</div>
+                  <div class="clearfix"></div>

@@ -1,0 +1,110 @@
+{
+    "login": {
+        "LOGIN": "LOGIN"
+    },
+    "header": {
+        "SEARCH": "SEARCH"
+    },
+    "application": {
+        "SAVE": "SAVE",
+        "APPLY": "APPLY",
+        "CANCEL": "CANCEL",
+        "APPLICATIONS": "Applications",
+        "DELETE": "Delete",
+        "DELETE_CONFIRM": "Are you sure you want to delete entire Application and its associated data?"
+    },
+    "deladmin": {
+        "DELEGATEDADMINISTRATOR": "Delegated Administrator",
+        "ASSIGN": "ASSIGN",
+        "SAVE": "SAVE",
+        "CANCEL": "CANCEL",
+        "RESET":"RESET"
+		
+    },
+    "role": {
+        "SAVE": "SAVE",
+        "CANCEL": "CANCEL",
+        "ROLE": "Role",
+        "DELETE_CONFIRM": "Are you sure you want to delete "
+    },
+    "rolemembership": {
+        "ROLEMEMBERSHIP": "Role Membership",
+        "SAVE": "SAVE",
+        "ASSIGN": "ASSIGN",
+        "CANCEL": "CANCEL"
+    },
+    "home": {
+        "APPLICATIONS": "Applications",
+        "CREATENEW": "Create New Application",
+        "DELETE": "Delete",
+        "STARTOVER": "Start Over",
+        "DOMORE": "Do More",
+        "BEGIN": "EDIT"
+    },
+    "resourcetype": {
+        "RESOURCETYPE": "Resource Type",
+        "SAVE": "SAVE",
+        "CANCEL": "CANCEL",
+        "DELETE_CONFIRM": "Are you sure you want to delete "
+    },
+    "resourcegroup": {
+        "RESOURCEGROUP": "Resource Group",
+        "SAVE": "SAVE",
+        "ASSIGN": "ASSIGN",
+        "CANCEL": "CANCEL",
+        "DELETE_CONFIRM": "Are you sure you want to delete "
+    },
+    "source": {
+        "USERS": "Users",
+        "GROUPS": "Groups",
+        "SAVE": "SAVE",
+        "CANCEL": "CANCEL",
+        "DELETE_CONFIRM": "Are you sure you want to delete ",
+        "EDIT": "EDIT"
+    },
+    "function": {
+        "FUNCTIONS": "Functions",
+        "SAVE": "SAVE",
+        "CANCEL": "CANCEL",
+        "DELETE_CONFIRM": "Are you sure you want to delete "
+    },
+    "action": {
+        "ACTIONS": "Actions",
+        "SAVE": "SAVE",
+        "CANCEL": "CANCEL",
+        "DELETE_CONFIRM": "Are you sure you want to delete "
+    },
+    "authorization": {
+        "AUTHORIZATIONPOLICIES": "Authorization Policies",
+        "DELETE_CONFIRM": "Are you sure you want to delete "
+    },
+    "resource": {
+        "RESOURCES": "Resources",
+        "SAVE": "SAVE",
+        "SAVE_ADD_SIBLING": "SAVE & Add Sibling",
+        "SAVE_ADD_CHILD": "SAVE & Add Child",
+        "SAVE_ADD_NEW": "SAVE & Add New",
+        "CANCEL": "CANCEL",
+        "DELETE_CONFIRM": "Are you sure you want to delete "
+    },
+    "toaster": {
+    	"LOADING": "<img src='assets/images/white_loader.gif'>&nbsp; Loading",
+        "DELETING": "<img src='assets/images/white_loader.gif'>&nbsp; Deleting",
+        "SAVING": "<img src='assets/images/white_loader.gif'>&nbsp; Saving",
+        "ACCESS_DENY": "Access Denied to"
+    },
+    "systemadministrator":{
+        "ASSIGN": "ASSIGN",
+        "SAVE": "SAVE",
+        "CANCEL": "CANCEL",
+        "RESET":"RESET"
+    },
+    "policy": {
+        "CANCEL": "CANCEL",
+        "SAVE_AND_CONTINUE": "SAVE AND CONTINUE",
+        "SAVE_AND_COMPLETE": "SAVE AND COMPLETE",
+        "NEXT": "NEXT",
+        "PREVIOUS": "PREVIOUS",
+        "DELETE_CONFIRM": "Are you sure you want to delete: "
+    }
+}

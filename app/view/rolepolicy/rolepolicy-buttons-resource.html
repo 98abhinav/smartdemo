@@ -1,0 +1,40 @@
+<table st-pipe="callServerForResource" st-table="resources"  class="smart-table table table-striped" cellspacing="0" cellpadding="0">
+    <thead>
+        <tr>
+            <th class="search_box full" >
+                <span class="search_header" >Name</span>                                                
+                <a class="search_button" ng-click="startSearchLHS()" ng-show="searchIconLHS"><img src="{{config.domainPath}}/assets/images/search_list.png"  alt=""/></a>
+                <div class="search_window animate_sideways" ng-show="searchBoxLHS">                                                    
+                    <input type="text" focus-on="focusInput" st-search="name"  ng-model="search" placeholder="Search">
+                    <a class="close_button" st-refresh='name' ng-click="endSearchLHS()">&times;</a>                                                    
+                </div>
+                <abbr title="Sort"><span class="sort_icon" ng-if="resources != null" st-sort-default="{{sortType}}" st-skip-natural="true" st-sort="name" ></span></abbr>
+            </th>
+    	</tr>
+    </thead>
+    <tbody id="scrolltable" >                                        
+        <tr ng-show="!isLoading" resources-repeat-directive ng-repeat='resourcedetails in resources'  ng-click='selectresource(resourcedetails)' ng-class="{selectedActive: resourcedetails.id == selectedResource.id}" > 
+            <td>{{resourcedetails.name}}
+            	<img class="child-loader" src="{{config.domainPath}}/assets/images/open.png" ng-if="resourcedetails.id==selectedResource.id && resourcedetails.immediateChildrenCount>0" ng-click="getChilds(resourcedetails)" title="View Child Resources">
+            </td>
+        </tr>
+        <tr ng-if="resources == null"><td class="alert">{{error}}</td></tr>
+        <tr ng-show="isLoading">
+            <td  class="text-center loader-area"><div ng-show="isLoading" class="loading-indicator"></div> </td>
+        </tr>
+    </tbody>                                    
+    <tfoot class="pagination-container" ng-if="resources != null">
+        <tr>
+            <td class="paginationarea">
+                
+                <div class="left-pagination" st-pagination="" st-items-by-page="itemsByPage" ></div>
+                <div class="page_change">                                                
+                    <select ng-model="itemsByPage"  name="itemsByPage">
+                        <option ng-repeat="data in paginationPageSizes" value="{{data}}">{{data}}</option>
+                    </select> 
+                    
+                </div>
+            </td>
+        </tr>
+    </tfoot>
+</table>

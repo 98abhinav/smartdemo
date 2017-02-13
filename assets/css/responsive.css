@@ -1,0 +1,598 @@
+/*----------alphabet spacer start here-----------*/
+@media (max-width:1430px){
+.search_character .btn_alphabet{padding:5px 1.58%}
+
+/*.view_details .search_box input{width: 96%;}
+.view_details .search_box .search_window{width:84%}
+.view_details .search_box .search_button {right: 17%;}*/
+}
+@media (max-width:1418px){
+.search_character .btn_alphabet{padding:5px 1.58%}
+/*.view_details .search_box input{width: 96%;}
+.view_details .search_box .search_button {}*/
+}
+@media (max-width:1390px){
+.search_character .btn_alphabet{padding:5px 1.55%}
+}
+/*----------alphabet spacer end here-----------*/
+
+@media (max-width:1365px){
+/*----------right sidebar pages starts here-----------*/
+.navigationpage_wrapper .sidebarpage_container{width:64%;}
+/*----------right sidebar pages ends here-----------*/
+.serach_type .search_by input { width:68%}
+
+.map_deligated .dual_list_container .list_container {width: 29.9%;}
+.navigationpage_wrapper .navright_container{width:95%;}
+
+}
+@media (max-width:1294px){
+/*---------Header starts here-------------------*/
+.header_content .header_left{width: 22%;}
+/*---------Header ends here-------------------*/
+
+}
+@media (max-width:1293px){
+/*---------Header starts here-------------------*/
+.header_content .header_left{width: 22%;}
+/*---------Header ends here-------------------*/
+.map_deligated .listdeligated .search_box input{width: 89%;}
+}
+@media (max-width:1290px){
+/*---------Header starts here-------------------*/
+.header_content .header_left{width: 22%;}
+
+.map_deligated .listdeligated .search_box input{width: 89%;}
+
+/*---------Header ends here-------------------*/
+}
+
+@media (max-width:1280px){
+
+/*---------Header starts here-------------------*/
+.header_content .header_left{width: 24.31%;}
+.header_content .tools{width:55.84%;}
+.header_content .user_profile{width:10.15%;}
+
+.search_box .searchline .displaybox{width: 52.59%;}
+/*---------Header ends here-------------------*/
+
+/*---------Landing page starts here------------------*/
+.landing_wrapper .landing_container{padding: 32px 10px 18px;}
+/*---------Landing page ends here------------------*/
+
+/*----------right sidebar pages starts here-----------*/
+.navigationpage_wrapper .sidebarpage_container{width:64%;}
+/*----------right sidebar pages ends here-----------*/
+
+/*---------List page container starts here------------------*/
+.navigationpage_wrapper .listpage_container{width:96%;}
+
+/*---------List page container ends here------------------*/
+
+/*---------rolelist page container starts here-------------*/
+
+.navigationpage_wrapper .rolelistpage_container{width:96%;}
+.rolelistpage_container .grid{width:100%;}
+.rolelistpage_container .gridheader{width:100%;}
+
+.rolelistpage_container .ui-grid-column-menu-button-last-col{margin-right: 31px;}
+.rolelistpage_container .ui-grid-column-menu-button{padding-top:10px;}
+
+.rolelist_wrapper .ui_grid_col_Name{width:17.85%!important;}
+.rolelist_wrapper .ui_grid_col_Description{width:82.14%!important;}
+
+.rolelist_wrapper .rolelist_cell-wrapper{width:100%!important;}
+.rolelist_wrapper .ui-grid-cell-contents{padding: 5px 5px 8px;}
+/*---------rolelist page container ends here-------------*/
+
+}
+@media (max-width:1261px){
+	
+/*------------Header page starts here----------*/
+
+.search_box .input_wrapper{  left: 45%; top:46%; width:55%;}
+/*------------Header ends starts here----------*/
+.navigationpage_wrapper .navright_container{width:95%;}
+.advance_search .list_container .pagination-container .left-pagination{padding-left: 36%;}
+
+/*.view_details .search_box input{width: 96%;}
+.view_details .search_box .search_window{width:82%}
+.view_details .search_box .search_button {right: 19%;}*/
+}
+
+@media (max-width: 1200px){
+/*-------Header page starts here---------------*/
+.header_left .logo_content	{font-size: 24px;}
+.tools h2.title				{font-size: 15px;}
+.title img					{margin: -1px 9px 0px 0px;}
+.search input[type="text"]	{width: 76%;  font-size: 17px;}
+/*.tools ul li > a						{padding: 13px 8px 15px;}
+.tools ul li.source						{width:20.02%;}
+.tools ul li.applications				{width:27.03%;}
+.tools ul li.settings					{width:21.42%;}
+.tools ul li.search						{width:31.23%;}*/
+
+.search_box .searchline		{font-size:17px;}
+.search_box .searchline .displaybox{width: 50.59%;height:19px;}
+.search_box .input_wrapper	{left:47%;width:53%;}
+/*-------Header page ends here---------------*/
+
+/*-------Application Subheader page starts here-------------*/
+.app_subheader_left h2		{font-size: 19px;}
+.app_subheader_right h2		{font-size: 15px;}	
+/*-------Application Subheader page ends here-------------*/
+
+/*-------Landing page starts here------------------*/
+.landing_wrapper .application_list{height:634px;}
+/*-------Landing page ends here------------------*/
+
+/*-------resourcetype page starts here------------------*/
+.navigationpage_wrapper .navright_container{width:95%;}
+
+.header_info .page_heading{font-size:34px;}
+.addaction tags-input .tags .tag-item{font-size:13px;}
+.addaction tags-input .tags .input{font-size:13px;}
+ul.page_path li a{font-size:12px;}
+.optbutton_group .optbutton{font-size:13px;width:314px;}
+.resourcetypeform_wrapper button[type="submit"]{font-size:17px!important;}
+.resourcetypeform_wrapper button[type="reset"]{font-size:17px!important;}
+.resourcetypeform_wrapper .form_container label{font-size:17px;}
+.resourcetypeform_wrapper .form_container md-input-container.md-default-theme .md-input{font-size:17px;}
+
+/*-------resourcetype page ends here------------------*/
+
+/*----------right sidebar pages starts here-----------*/
+.navigationpage_wrapper .sidebarpage_container{width:53%;}
+/*----------right sidebar pages ends here-----------*/
+
+/*---------List page conatiner starts here------------------*/
+.navigationpage_wrapper .listpage_container{width:92%; /*padding: 15px 0 0 0;*/}
+.navigationpage_wrapper .page_path{}
+
+.list_view_container .list_container { width:30% }
+.list_view_container .view_container { width:70% }
+/*---------List page container ends here------------------*/
+
+.overlay .overlay-close{top:17px!important; right:24px!important;}
+
+/*---------rolelist page container starts here-------------*/
+
+.navigationpage_wrapper .rolelistpage_container{width:92%;}
+.rolelistpage_container .grid{width:100%;}
+.rolelistpage_container .gridheader{width:100%;}
+
+.rolelistpage_container .ui-grid-column-menu-button-last-col{margin-right: 31px;}
+.rolelistpage_container .ui-grid-column-menu-button{padding-top:10px;}
+
+.rolelist_wrapper .ui_grid_col_Name{width:17.85%!important;}
+.rolelist_wrapper .ui_grid_col_Description{width:82.14%!important;}
+
+.rolelist_wrapper .rolelist_cell-wrapper{width:100%!important;}
+
+.rolelist_wrapper .ui-grid-cell-contents{font-size: 13px;}
+/*---------rolelist page container ends here-------------*/
+.menu-dropdown ul li { min-width:25%;}
+
+/*---------sub menu start -------------*/
+.main_content { padding:7px 0 0 55px;}
+.menu-dropdown ul li { min-width:20%;}
+/*---------sub menu end -------------*/
+.search_character .btn_alphabet{padding:5px 1.50%}
+.serach_type .search_by input { width:65%}
+
+.search_icon_right_space{right:19% !important}
+/*.view_details .search_box input{width: 94%;}
+.view_details .search_box .search_window{width:81%}
+.view_details .search_box .search_button {right: 24%;}*/
+}
+@media (max-width:1180px){
+.search_character .btn_alphabet{padding:5px 1.46%}
+.serach_type .search_by input { width:63%}
+
+/*.view_details .search_box input{width: 94%;}
+.view_details .search_box .search_window{width:81%}
+.view_details .search_box .search_button {right:21%;}*/
+}
+@media (max-width:1160px){ 
+/*---------sub menu start -------------*/
+.main_content { padding:7px 0 7px 54px;}
+.menu-dropdown ul li { min-width:20%;}
+.icon_area { left:13px;}
+/*---------sub menu end -------------*/
+
+.list_view_container .list_container { width:35% }
+.list_view_container .view_container { width:65% }
+
+/*.view_details .search_box input{width: 93%;}
+.view_details .search_box .search_window{width:79%}
+.view_details .search_box .search_button {right:24%;}*/
+}
+@media (max-width:1150px){ 
+/*---------sub menu start -------------*/
+.main_content { padding:7px 0 7px 64px;}
+.menu-dropdown ul li { min-width:50%;}
+.icon_area { left:20px;}
+/*---------sub menu end -------------*/
+.slide_tab .map_deligated .dual_list_container .list_container {width: 29.9%;}
+.dual_map .slide_tab .map_deligated .dual_list_container .list_container {width: 44.9%;}
+
+.map_deligated .listdeligated .search_box input{width: 86%;}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    .view_details .search_box .close_button{padding: 0 30px 0 0;}/* will be red only in google chrome */
+}
+.search_reset_del_admin{width: 81% !important}
+.search_reset{width: 90% !important}
+.search_reset_no_pagination{width: 92% !important}
+.search_icon_right_space{right:21% !important}
+}
+@media (max-width:1120px){
+/*-------Header page starts here-------------*/
+.header_content .header_left { width:25.31%}
+/*-------Header page end here-------------*/
+.serach_type .search_by input { /*width:65%*/}
+.col_30pct{width:28%}.col_10pct{width:12%} 
+
+.map_deligated .dual_list_container .list_container {width: 29.5%;}
+.advance_search .list_container .pagination-container .left-pagination{padding-left: 33%;}
+
+.map_deligated .listdeligated .search_box input{width: 83%;}
+
+/*.view_details .search_box input{width:94%;}
+.view_details .search_box .search_window{width:76%}
+.view_details .search_box .search_button {right: 26%;}*/
+}
+
+@media (max-width:1104px){
+.landingbox2 { width:299px;}
+.page_change{5px 0 0 0}
+
+}
+
+@media (max-width:1077px){
+/*-------Header page starts here-------------*/
+.header_content .header_left { width:26.31%}
+/*-------Header page end here-------------*/
+.landingbox2 { width:299px;}
+.serach_type .search_by input { width:60%}
+}
+@media (max-width:1074px){
+/*-------Header page starts here-------------*/
+.header_content .header_left { width:26.31%}
+/*-------Header page end here-------------*/
+.dual_map .slide_tab .map_deligated .dual_list_container .list_container {width: 44.8%;}
+
+.search_reset{width: 87% !important}
+.search_icon_right_space{right:23% !important}
+/*.view_details .search_box .search_window{width:73%}
+.view_details .search_box input{width: 94%;}
+.view_details .search_box .search_button {right: 27%;}*/
+}
+@media (max-width:1037px){
+/*-------Header page starts here-------------*/
+.header_content .header_left { width:27.31%}
+/*-------Header page end here-------------*/
+}
+
+@media (max-width:1024px){
+/*-------Header page starts here-------------*/
+/*body .header_wrapper{padding:0px 10px;}
+.header_wrapper .header_content{  padding: 0px 0px 1px;}
+.header_content .header_left{padding: 10px 12px 0px 0px;}
+.header_left .logo_content	{font-size:20px;padding-bottom: 0px; }
+.logo_content .logo			{display: block;  text-align: center;}
+.logo img					{display: block;  margin: 0 auto;}
+
+.tools h2.title				{font-size: 15px;}
+.title img					{  margin: -3px 4px 0px 0px;  width: 20px;  height: 20px;}
+.search input[type="text"]	{width: 70%;  font-size: 15px;}
+.tools ul li.search			{padding: 11px 5px 12px;}
+.header_content .user_profile	{padding: 19px 0px 15px 2px;}
+.user_profile span img		{  margin: 7px 0px 0px 2px;}
+.user_profile a .user_name	{font-size: 12px;}
+
+.tools ul li.source			{width:21.65%;}
+.tools ul li.applications	{width:30.53%;}
+.tools ul li.settings		{width: 23.82%;}
+.tools ul li.search			{width:24%;}
+
+.tools .search_box			{}*/
+.search_box .searchline		{font-size:15px;}
+.search_box .searchline .displaybox{width: 44.59%;}
+.search_box .input_wrapper	{left:54%;padding:5px;width:46%;}
+
+/*-------Header page ends here-------------*/
+
+/*-------Navigation starts here---------------------*/
+.navleft_container{padding-top:117px;}
+/*-------Navigation ends here---------------------*/
+
+/*-------Application Subheader page starts here-------------*/
+.app_subheader_right h2		{font-size: 13px;}
+h2.left_title 				{  font-size: 17px;}
+
+/*-------Application Subheader page ends here-------------*/
+
+/*-------Landing page starts here------------------*/
+.landing_wrapper .application_list{height:430px;}
+.application_list ul li a			{font-size: 14px;    padding: 12px 0 11px 15px;}
+.application_view .last			{margin: 0 0 7%;}
+.application_view ul li			{min-height: 185px;}
+.content .icon_box				{min-height: 145px;}
+.icon_box .icon		{left: 0px;right:0px; margin:0 auto;}
+.content .icon_title{ font-size: 14px;padding: 12px 0 11px;}
+
+.icon_box .hover_options{padding: 0 5px;}
+.hover_options .add	{background-size:80% 80%;}
+.hover_options .search	{background-size:80% 80%;}
+
+/*-------Landing page ends here------------------*/
+
+/*-------resourcetype page starts here------------------*/
+/*.navigationpage_wrapper .navright_container{width:93%;}
+.navigationpage_wrapper .navright_container{padding: 23px 0px 0px 1%;}*/
+
+.resourcetypeform_wrapper .form_wrapper .form_container{max-width:100%;}
+
+.optbutton_group .optbutton{width:48%;}
+
+/*-------resourcetype page ends here------------------*/
+
+/*-------Group page starts here-----------------------*/
+
+.view_details p{font-size:14px;}
+
+/*-------Group page ends here-----------------------*/
+
+/*--------Navigation page starts here-----------------*/
+/*.navigationpage_wrapper .header_info{padding: 15px 0 62px;}*/
+/*--------Navigation page ends here-----------------*/
+
+/*----------right sidebar pages starts here-----------*/
+
+.navigationpage_wrapper .sidebarpage_container{width:86%;}
+.sidebarpage_container .form_container {width:76%;}
+/*----------right sidebar pages ends here-----------*/
+
+/*-----------overlay page starts here-----*/
+.overlay .displaybox{width:73%;}
+.overlay .optbutton_group .optbutton{width:49%;}
+/*-----------overlay page ends here-----*/
+/*---------List page conatiner starts here------------------*/
+.navigationpage_wrapper .listpage_container{width:92%; /*padding: 15px 0 0 0;*/}
+
+/*---------List page container ends here------------------*/
+
+/*---------rolelist page container starts here-------------*/
+
+.navigationpage_wrapper .rolelistpage_container{width:92%;padding-left:4%;}
+.rolelistpage_container .grid{width:100%;}
+.rolelistpage_container .gridheader{width:100%;}
+
+.rolelistpage_container .ui-grid-column-menu-button-last-col{margin-right: 31px;}
+.rolelistpage_container .ui-grid-column-menu-button{padding-top:10px;}
+
+.rolelist_wrapper .ui_grid_col_Name{width:40%!important;}
+.rolelist_wrapper .ui_grid_col_Description{width:60%!important;}
+
+.rolelist_wrapper .rolelist_cell-wrapper{width:100%!important;}
+/*---------rolelist page container ends here-------------*/
+
+.search_reset_del_admin{width: 77% !important}
+.search_icon_right_space{right:24% !important}
+}
+
+@media (max-width: 1019px){
+/*-------Header page starts here-------------*/
+.header_content .header_left { width:28.31%}
+/*-------Header page end here-------------*/
+.landingbox2 { width:295px; margin-right:25px;}
+.landingbox2 .explore_content { margin-left:5px;}
+.landingbox2.second { margin-top:27px;}
+
+.serach_type .search_by input { /*width:63%*/}
+.slide_tab .map_deligated .dual_list_container .list_container {width: 29.8%;}
+.advance_search .list_container .pagination-container .left-pagination{padding-left: 30%;}
+
+.map_deligated .listdeligated .search_box input{width: 80%;}
+}
+@media (max-width: 983px){
+/*-------Header page starts here-------------*/
+.header_content .header_left { width:29.31%}
+
+.landingbox2 { width:470px; margin-bottom:25px;}
+.landingbox2.last { margin-right:24px; margin-bottom:-2px;}
+.landingbox2.second { margin-bottom:0;}
+.landingbox2 .explore_content { font-size:17px; margin-left:19px}
+/*-------Header page end here-------------*/
+.list_view_container .list_container { width:40% }
+.list_view_container .view_container { width:60% }
+
+.search_character .btn_alphabet{padding:5px 1.44%}
+.serach_type .search_by input { width:55%}
+
+.list_container .paginationarea { padding-left:0}
+
+.search_character .btn_alphabet { padding: 5px 1.42%;}
+.list_container .pagination > li > a, .pagination > li > span {padding: 6px 7px 0 0;}
+.dual_map .slide_tab .map_deligated .dual_list_container .list_container {width: 44.7%;}
+
+.srch-break{clear:both;display:block;height:10px;}
+.advance_search .serach_type{min-height:79px;text-align:center;}
+.button_group_right{float: none;} 
+/*.form_container .md-button{float: none;}*/
+
+.search_reset_no_pagination{width: 89% !important}
+.search_reset{width: 83% !important}
+.search_icon_right_space{right:27% !important}
+/*.view_details .search_box input{width:90%;}
+.view_details .search_box .search_window{width:72%}
+.view_details .search_box .search_button {right: 30%;}*/
+}
+@media (max-width: 953px){
+/*-------Header page starts here-------------*/
+.header_content .header_left { width:31.31%}
+/*-------Header page end here-------------*/
+.search_character .btn_alphabet{padding:5px 1.35%}
+
+.serach_type .search_by input { /*width:60%*/}
+.col_30pct{width:27%}.col_10pct{width:13%} 
+.slide_tab .map_deligated .dual_list_container .list_container {width: 29.7%;}
+.dual_map .slide_tab .map_deligated .dual_list_container .list_container {width: 44.6%;}
+
+/*.view_details .search_box input{width:90%;}
+.view_details .search_box .search_window{width:72%}
+.view_details .search_box .search_button {right: 32%;}*/
+}
+@media (max-width: 894px){
+/*-------Header page starts here-------------*/
+.header_content .header_left { width:32.31%}
+/*-------Header page end here-------------*/
+.serach_type .search_by input { width:50%}
+
+.search_reset{width: 79% !important}
+.search_icon_right_space{right:30% !important}
+/*.view_details .search_box input{width:86%;}
+.view_details .search_box .search_window{width:72%}
+.view_details .search_box .search_button {right: 34%;}*/
+}
+@media (max-width: 868px){
+/*-------Header page starts here-------------*/
+.header_content .header_left { width:32.31%}
+.header_left .logo_content 	 {font-size: 21px;}
+/*-------Header page end here-------------*/
+.serach_type .search_by input { /*width:54%*/}
+.col_30pct{width:26%}.col_10pct{width:14%}
+.list_container .pagination input {max-width: 45px;}
+.dual_map .slide_tab .map_deligated .dual_list_container .list_container {width: 44.5%;}
+
+.search_reset_del_admin{width: 74% !important}
+/*.view_details .search_box input{width:90%;}
+.view_details .search_box .search_window{width:68%}
+.view_details .search_box .search_button {right: 36%;}*/
+}
+@media (max-width: 815px){
+/*-------Header page starts here-------------*/
+.header_content .header_left { width:33.31%}
+.header_left .logo_content 	 {font-size: 21px;}
+/*-------Header page end here-------------*/
+.list_view_container .list_container { width:50% }
+.list_view_container .view_container { width:50% }
+
+.search_character .btn_alphabet{padding:5px 1.30%}
+
+.serach_type .search_by input { width:45%}
+.col_30pct{width:25%}.col_10pct{width:15%}
+
+.slide_tab .map_deligated .dual_list_container .list_container {width: 29.5%;}
+.list_container .pagination input {max-width: 35px;}
+.dual_map .slide_tab .map_deligated .dual_list_container .list_container {width: 44.3%;}
+.view_details .view_dtl_header h4 {padding-right: 100px;}
+
+.landing_wrapper .landing_container{padding: 10px 10px 18px;}
+.landing_container .text_container{margin: 40px 0;}
+
+.search_reset{width: 66% !important}
+.search_icon_right_space{right:39% !important}
+/*.view_details .search_box input{width:85%;}
+.view_details .search_box .search_window{width:55%}
+.view_details .search_box .search_button {right: 47%;}*/
+}
+
+@media screen and (max-width: 768px) {
+/*-------Header page starts here-------------*/
+.header_content .header_left { width:33.31%}
+.header_left .logo_content 	 {font-size: 19px;}
+
+.tools ul li > a { padding:20px;}
+/*-------Header page end here-------------*/
+/*-------login page starts here---------*/
+
+.form_wrapper .form_container	{padding:0px!important;margin:0 auto;}
+
+.loginbox .form_wrapper		{padding:0px;}
+.loginbox .form_container form{padding-left:0px;}
+.form_container .email		{width:100%;}
+.form_container .password		{width:100%;}
+.form_container .md-button{
+    //margin: 50px auto 5px;
+    margin-left: 10px;
+  }
+  
+/*-------login page ends here---------*/
+
+/*-------resourcetype page starts here------------------*/
+.resourcetypeform_wrapper .form_container button[type="submit"]{width:auto;}
+.pageform_wrapper .form_wrapper .form_container{max-width:100%;}
+
+/*-------resourcetype page ends here------------------*/
+
+/*--------Navigation page starts here-----------------*/
+.navigationpage_wrapper .header_info{padding: 15px 0 57px;}
+/*--------Navigation page ends here-----------------*/
+
+/*-------right sidebar page starts here-----------------*/
+/*.navigationpage_wrapper .button_group{padding: 60px 0px 0px;}*/
+.pageform_wrapper button[type="submit"]{width:auto;}
+//.pageform_wrapper button[type="reset"]{width:auto;}
+
+/*-------right sidebar page ends here-----------------*/
+/*---------List page conatiner starts here------------------*/
+.navigationpage_wrapper .listpage_container{width:88%; /*padding: 15px 0 0 7%;*/}
+.list_view_container .list_container{width:100%;float:none;margin:0px 0px 15px;}
+.list_view_container .view_container{width:100%;float:none;padding:0px;}
+
+/*---------List page conatiner ends here------------------*/
+/*-----------overlay page starts here-----*/
+.overlay .displaybox{width:76%;}
+.overlay .optbutton_group .optbutton{width:100%;}
+.overlayform_container .md-button{ }
+
+md-input-container.md-input-focused label, md-input-container.md-input-has-value label { transform:translate3d(75px, 4px, 0px) scale(0.75);}
+/*-----------overlay page ends here-----*/
+.landingbox1 { width:470px; margin-top:25px;}
+/*.form_container { text-align:center;}*/
+.form_container label{ text-align:left;}
+.form_container .login_button{text-align:right;}
+.cr_app { float:none;} 
+
+.search_character .btn_alphabet{padding:5px 1.20%}
+
+.serach_type .search_by input { width:35%}
+.col_30pct{width:24%}.col_10pct{width:16%}
+
+.map_deligated .dual_list_container .list_container {width: 29.2%;}
+.list_container .pagination input {max-width: 30px;}
+
+.list_container .search_box .search_button{padding: 0 0 0 83%;}
+.list_container .search_box input{{width: 88%}
+.list_container .search_box .sort_icon{float:right; margin-right:12px;}
+
+.search_reset_del_admin{width: 70% !important}
+.search_reset{ width: 90% !important; }
+.search_icon_right_space{ right: 22% !important;}
+/*.view_details .search_box input{width:93%;}
+.view_details .search_box .search_window{width:75%}
+.view_details .search_box .search_button {right:28%;}*/
+}
+
+@media screen and (max-width: 640px) {	
+/* style */
+}
+
+@media screen and (max-width: 600px) { 
+/* style */
+}
+
+@media (max-width:480px){
+/* style */
+}
+
+@media (max-width:320px){
+/* style */
+}
+
+@media (max-width:320px){
+/* style */
+}

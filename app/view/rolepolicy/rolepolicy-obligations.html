@@ -1,0 +1,47 @@
+
+<div class="list_boxshadow ">
+	<div class="pageform_wrapper">
+		<div class="view_container">
+			<div class="listgridheader">
+				<!-- <a href="{{config.urlPath}}/{{applicationId}}/functions/delete/{{selectedFunction.id}}" class="primary" ng-click="confirm()"><img src="{{config.domainPath}}/assets/images/delete_list.png"><span class="action">Delete</span></a> -->
+				<a href="javascript:;" ng-click="deleteObligations()" class="primary ico_delete"><!--<img src="{{config.domainPath}}/assets/images/delete_list.png">--><span class="action">Delete All</span></a> 
+                <a href="javascript:;" ng-click="addObligation(0)" class="primary ico_add"><!--<img src="{{config.domainPath}}/assets/images/add_list.png">--><span class="action">Add</span></a>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+
+
+		<div id="user" style="display: block;">
+			<div class="view_details_field_spacer"></div>
+			<div  ng-if="authzPolicy.obligations==null || authzPolicy.obligations.length==0" >No Records.</div>
+			<table ng-if="authzPolicy.obligations!=null && authzPolicy.obligations.length>0" class="view_details_generic_table">
+				<thead>
+					<tr>
+                         <th class="search_box full" >
+                             <span class="search_header" >Name</span>  
+                             <a class="search_button" ng-click="startObligationSearch()" ng-show="searchIconOnObligation"><img src="{{config.domainPath}}/assets/images/search_list.png"  alt=""/></a>
+                             <div class="search_window animate_sideways" ng-show="searchBoxOnObligation">                                                    
+                                 <input type="text" focus-on="focusInput" ng-model="q" placeholder="Search">
+                                 <a class="close_button" ng-click="endObligationSearch()">&times;</a>                                                    
+                             </div>
+                         </th>
+						<th>Value</th>
+					</tr>
+				
+				</thead>
+
+				<tbody class="hoverTable">
+					<tr  ng-repeat="obligation in authzPolicy.obligations | filter:q">
+						<td><input type="text" ng-model="obligation.name" />
+						<td>
+							<input type="text" ng-model="obligation.value" />
+							<a href="javascript:;" style="float: right" ng-click="deleteObligation($index)"><img
+								src="{{config.domainPath}}/assets/images/delete_list.png"></a>
+						</td>
+					</tr>
+				</tbody>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+</div>

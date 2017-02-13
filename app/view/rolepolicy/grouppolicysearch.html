@@ -1,0 +1,187 @@
+<ng-include src="config.domainPath+'/shared/header.html'"></ng-include>
+<div class="navigationpage_wrapper right_subheader page_wrapper" ng-controller="searchGroupPoliciesController">
+    <div class="site-canvas">
+        <ng-include src="config.domainPath+'/shared/menu.html'"></ng-include>
+        <div class="container-fluid">
+            <div class="navright_container">
+                <ul class="page_path">
+                    <li><a href="{{config.urlPath}}/home">Home </a></li>
+                    <li><a href="{{config.urlPath}}/home/{{applicationId}}">{{applicationName}} </a></li>
+                    <li><a href="{{config.urlPath}}/{{applicationId}}/policies/{{policyType}}">{{policyType| limitTo:policyType.length-1 |capitalize}} Policies</a></li>
+                    <li class="last">Search</li>
+                </ul>
+                <div class="header_info">
+                    <h2 class="page_heading">
+                        <span class="header">Group Policies - Search</span>                        
+                    </h2>             
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="pageform_wrapper">
+                    <div class="form_container advance_search">
+                        <form name="searchForm" novalidate >
+                            <div class="serach_type">
+                                
+	                            <div class="search_by">
+	                            
+	                            	<span>Give Group Policy of Application <b>{{applicationName}}</b> 
+	                            		&nbsp;that starts with&nbsp;</span>
+	                            		
+	                            	<div class="serach_dropdown dropdown" >
+                                        <span class="customSearch" ng-click="opentoolbar('name-dropdown')" >{{searchstr||'Name'}}</span>
+                                        <div id="name-dropdown" class="close_div">
+                                            <span class="dropdown-arrow"></span>
+                                            <div class="list_container selectbox1 searchinput">                                                
+                                                <input type="text" ng-model="txtName" style="height: 30px;" placeholder="Search..">
+                                                <md-button ng-click="setName()">OK</md-button>
+                                            </div>
+                                        </div>
+                                    </div>
+	                                
+	                                <span>&nbsp;and Source&nbsp;</span>
+	                                <div class="serach_dropdown">
+                                        <span class="customSearch" ng-click="opentoolbar('source-dropdown')" ng-class="{'empty-criteria': !sourceName && showRecords}">{{sourceName|| 'Name'}}&nbsp;<img src="{{config.domainPath}}/assets/images/br_down.png"></span>
+                                        <div id="source-dropdown" class="close_div">
+	                                        <span class="dropdown-arrow"></span>
+	                                        <div class="list_container selectbox1" st-pipe="callServerSource" st-table="sources">
+	                                            <div ng-class="{'border_wrapper': sourceLength >= 5}">
+	                                                <div class="searchArea"><input type="text" focus-on="focusInput" st-search="name" ng-model="searchSource" placeholder="Search.." ></div>
+	
+	                                                <div id='sourcescrolltable'>
+	                                                    <ul ng-show="!isLoadingSource">
+	                                                        <li class="disabled_list_row" ng-show="!isLoadingSource" ng-repeat='sourcedetails in sources'  ng-click='selectSource(sourcedetails)'>
+	                                                            <span class='right_list_text'>{{sourcedetails.name}}</span>
+	                                                        </li>
+	                                                    </ul>
+	                                                    <ul ng-show="!isLoadingSource && errorSource" class="loader-area">
+	                                                        <li class="alert no_result_row">{{errorSource}}</li>
+	                                                    </ul>
+	                                                    <ul ng-show="isLoadingSource" class="text-center loader-area">
+	                                                        <li class="disabled_list_row"><div class="loading-indicator"></div></li>
+	                                                    </ul>
+	                                                    <div class="clearfix"></div>
+	                                                </div>
+	                                            </div>
+	                                        </div>
+                                        </div>
+                                    </div>
+                                    
+	                                <span>&nbsp;having Group&nbsp;</span>
+	                                <div class="serach_dropdown">
+		                            	<span class="customSearch" ng-click="opentoolbar('group-dropdown')" ng-class="{'empty-criteria': !groupName && showRecords}">{{groupName||'Name'}}&nbsp;<img src="{{config.domainPath}}/assets/images/br_down.png"></span>
+		                                <div id="group-dropdown" class="close_div">
+			                                <span class="dropdown-arrow"></span>
+			                                <div class="list_container selectbox1" st-pipe="callServerGroup" st-table="groups">                                              
+		                                      <div ng-class="{'border_wrapper': groupLength>=5}">
+		                                        <div class="searchArea"><input type="text" focus-on="focusInput" st-search="name" ng-model="searchGroup" placeholder="Search.." ></div>
+		                                        <div id='groupscrolltable'>
+		                                            <ul ng-show="!isLoadingGroup">
+		                                                <li class="disabled_list_row" ng-show="!isLoadingGroup" ng-repeat='groupdetails in groups' ng-click='selectGroup(groupdetails)'>
+															<span class='right_list_text'>{{groupdetails.name}}</span>
+		                                                </li>
+		                                            </ul>
+		                                            <ul ng-show="!isLoadingGroup && errorGroup" class="loader-area">
+		                                                <li class="alert no_result_row">{{errorGroup}}</li>
+		                                            </ul>
+		                                            <ul ng-show="isLoadingGroup" class="text-center loader-area">
+		                                                <li class="disabled_list_row"><div class="loading-indicator"></div></li>
+		                                            </ul>
+		                                            <div class="clearfix"></div>
+		                                        </div>
+		                                      </div>
+		                                    </div>
+		                            	</div>
+	                                </div>
+	                                
+	                                <span>&nbsp;AND Resource&nbsp;</span>
+	                                <div class="serach_dropdown">
+		                            	<span class="customSearch" ng-click="opentoolbar('resource-dropdown')" ng-class="{'empty-criteria': !resourceName && showRecords}">{{resourceName||'Name'}}&nbsp;<img src="{{config.domainPath}}/assets/images/br_down.png"></span>
+		                                <div id="resource-dropdown" class="close_div">
+			                                <span class="dropdown-arrow"></span>
+			                                <div class="list_container selectbox1" st-pipe="callServerResource" st-table="resources">                                              
+		                                      <div ng-class="{'border_wrapper': resourcesLength>=5}">  
+		                                        <div class="searchArea"><input type="text" focus-on="focusInput" st-search="name" ng-model="searchResource" placeholder="Search.." ></div>
+		                                        <div id='resourcescrolltable'>
+		                                            <ul ng-show="!isLoadingResource">
+		                                                <li class="disabled_list_row" ng-show="!isLoadingResource" ng-repeat='resourcedetails in resources' ng-click='selectResource(resourcedetails)'>
+															<span class='right_list_text'>{{resourcedetails.name}}</span>
+		                                                </li>
+		                                            </ul>
+		                                            <ul ng-show="!isLoadingResource && errorResource" class="loader-area">
+		                                                <li class="alert no_result_row">{{errorResource}}</li>
+		                                            </ul>
+		                                            <ul ng-show="isLoadingResource" class="text-center loader-area">
+		                                                <li class="disabled_list_row"><div class="loading-indicator"></div></li>
+		                                            </ul>
+		                                            <div class="clearfix"></div>
+		                                        </div>
+		                                      </div>  
+		                                    </div>
+		                            	</div>
+	                                </div>
+	                                
+	                            </div>
+	                            <div class="srch-break"></div>
+	                            
+	                            <div class="form_container button_group_right">
+                                    <md-button ng-click="submitSearch()">GO</md-button>
+                                </div>
+                                
+                            </div>
+                        </form>
+                        <div class="height_20"></div>
+                        <div class="listdeligated">
+                            <div class="list_container">
+                                <div ng-show="showRecords">
+                                    <table st-table="searchResult" class="table table-fixed table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="col-30pct"><span>Policy</span></th>
+                                                <th class="col-40pct"><span>Description</span></th>
+                                                <th class="col-20pct"><span>Effect</span></th>
+                                                <th class="col-10pct" style="border-right:0px;"><span>Action</span></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="resultsscrolltable" >
+											<tr ng-show="!isLoading" ng-repeat='policy in searchResult'> 
+                                                <td class="col-30pct" ng-bind-html="policy.name"></td>   
+                                                <td class="col-40pct">{{policy.description || '---'}}</td>
+                                                <td class="col-20pct">{{policy.effect ? 'Permit' : 'Deny'}}</td> 
+                                                <td class="col-10pct result-icons" style="border-right:0px;">
+                                                    <!-- <a href="{{config.urlPath}}/{{applicationId}}/search/policies/{{policyType}}/view/{{policy.id}}"><img src="{{config.domainPath}}/assets/images/search_info.png" title="View"></a> -->
+                                                    <a href="{{config.urlPath}}/{{applicationId}}/policies/{{policyType}}/edit/{{policy.id}}"><img src="{{config.domainPath}}/assets/images/search_edit.png" title="Edit"></a>
+                                                </td>                                           
+                                            </tr>
+                                            <tr ng-show="!isLoading && errorResult"><td style="width:100%;border-right:0px;" class="alert">{{errorResult}}</td></tr>                                            
+                                            <tr ng-show="isLoading">
+                                                <td style="width:100%;border-right:0px;" class="text-center loader-area"><div ng-show="isLoading" class="loading-indicator"></div> </td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot class="pagination-container">
+                                            <tr ng-show="!isLoading" >
+                                                <td class="paginationarea">                                                
+                                                    <div class="left-pagination" st-pagination="" st-items-by-page="itemsByPage" ></div>
+                                                    <div class="page_change">                                                
+                                                        <select ng-model="itemsByPage"  name="itemsByPage">
+                                                            <option ng-repeat="data in paginationPageSizes" value="{{data}}">{{data}}</option>
+                                                        </select> 
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>                        
+                            </div>
+                            <div class="clear"> </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-include src="config.domainPath+'/shared/footer.html'"></ng-include>

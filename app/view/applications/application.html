@@ -1,0 +1,276 @@
+<ng-include src="config.domainPath+'/shared/header.html'"></ng-include>
+<div class="navigationpage_wrapper right_subheader page_wrapper" ng-controller="manageApplicationController">
+    <div class="site-canvas">
+        <ng-include src="config.domainPath+'/shared/menu.html'"></ng-include>
+        <div class="container-fluid">
+            <div class="navright_container">
+                <ul class="page_path">
+                    <li><a href="{{config.urlPath}}/home">Home </a></li>
+                    <li ng-if="applicationName != ''"><a href="{{config.urlPath}}/home/{{application.id}}">{{applicationName}}</a></li>
+                    <li class="last">{{mode|capitalize}}</li>
+                </ul>
+                <div class="header_info">
+                    <h2 class="page_heading"> <span class="header">{{application.name !='' ? application.name : "Untitled"}}</span> 
+                        <!--span style="float:right"><a href="{{config.urlPath}}/application/delete/{{application.id}}"><img src="{{config.domainPath}}/assets/images/app_delete.png"></a></span--> 
+                        <span style="float:right" ng-if="mode == 'edit'"> 
+                            <!-- <a href="javascript:;" onclick="javascript:confirm('Are you sure you want to Delete entire Application and its associated data?');return false;"><img src="{{config.domainPath}}/assets/images/app_delete.png"></a> --> 
+                            
+                            <abbr ng-if="superaccess[module] == accessAdmin" class="form_container">
+						    	<!-- <md-checkbox class="purge" ng-model="purge" aria-label="Purge" ></md-checkbox> -->
+						    	<md-button class="purgebtn" type="file" ngf-select="importPolicy($file, $invalidFiles, true)">Purge & Import Policies</md-button>
+						    </abbr>
+						    
+                            <abbr title="Import Policy File">
+                            	<a ng-if="superaccess[module] == accessAdmin"><image type="file" style="width:20px;" src="{{config.domainPath}}/assets/images/file_upload.png" ngf-select="importPolicy($file, $invalidFiles, false)"
+							          ngf-max-height="1000" ngf-max-size="10MB" /></a>
+						      	
+						      	<div class="upload-progress">
+									<!-- <div class="bar" ng-show="f.progress >= 0 && !hideprogress" style="width:{{f.progress}}%" ng-bind="f.progress + '%'"></div> -->
+									<div class="loader" ng-show="f.progress >= 0 && !hideprogress" >&nbsp;</div>
+									<div class="bar-err" ng-if="errFile">{{errFile.$error}} {{errFile.$errorParam}}</div>
+								</div>
+								<!-- <span style="font:smaller">{{f.name}} {{errFile.name}} {{errFile.$error}} {{errFile.$errorParam}}
+									<span class="upload-progress" ng-show="f.progress >= 0">
+										<div style="width:{{f.progress}}%"  ng-bind="f.progress + '%'"></div>
+									</span>
+								</span>     
+								{{errorMsg}} -->
+						    </abbr>
+						    
+						    <abbr title="Export Policy File">
+                            	<a ng-if="superaccess[module] == accessAdmin" ng-click="exportPolicy();"><img style="width:20px;" src="{{config.domainPath}}/assets/images/file_download.png"></a>
+						    </abbr>
+						    
+                            <abbr title="Delete Application">
+                                <a ng-if="superaccess[module] == accessAdmin" href="javascript:;" ng-click="confirmDelete(application.id)"><img src="{{config.domainPath}}/assets/images/app_delete.png"></a>
+                            </abbr>
+						    
+                         </span> </h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="pageform_wrapper">
+                    <div class="form_container">
+                        <md-content class="md-padding">
+                            <md-tabs md-dynamic-height class="md-accent" md-selected="selectedIndex" md-align-tabs="top">
+                                <md-tab id="tab1">
+                                    <md-tab-label>General</md-tab-label>
+                                    <md-tab-body> 
+                                        <!-- <div ng-show="error" class="alert alert-danger">{{error}}</div> -->
+                                        <form name="applicationForm"  ng-submit="submitData(application, mode, applicationForm.$valid)" novalidate>
+                                            <div class="name" ng-class="{true: 'error'}[submitted && applicationForm.functionname.$invalid]">
+                                                <div class="view_details_field_spacer"></div>
+                                                <md-input-container flex>
+
+                                                    <label class="control-group">Name<em>*</em></label>
+                                                    <input type="text" ng-model="application.name" ng-minlength="1" maxlength="50" name="applicationName" required >
+                                                    <span class="error" style="color:red" ng-show="applicationForm.applicationName.$dirty && applicationForm.applicationName.$invalid || submitted">
+                                                        <span ng-show="applicationForm.applicationName.$error.required">Name is required.</span>
+                                                        <!--<span ng-show="applicationForm.applicationName.$error.minlength">Name must be more than 5 characters.</span>--> 
+                                                    </span>
+                                                </md-input-container>
+
+                                            </div>
+
+                                            <div ng-class="{true: 'error'}[submitted && applicationForm.ctrlpassword.$invalid]">
+                                                <md-input-container flex>
+                                                    <label>Description</label>
+                                                    <textarea ng-model="application.description" columns="1" ></textarea>
+                                                </md-input-container>
+                                            </div>
+                                            <div class="button_group">
+                                                <div  ng-click="submitted = true"> <span class="ng-scope">
+                                                        <md-button>{{translation.application.SAVE}}</md-button>
+                                                    </span> </div>
+                                                <div> <span class="ng-scope">
+                                                        <md-button type='reset' ng-click="redirectList();">{{translation.application.CANCEL}}</md-button>
+                                                    </span> </div>
+                                            </div>
+                                        </form>
+                                    </md-tab-body>
+                                </md-tab>
+
+                                <md-tab id="tab2" style='{{blockevent}}' ng-if="delegated">
+                                    <md-tab-label  >Delegated Administartors</md-tab-label>
+                                    <md-tab-body >
+                                        <div class="listdeligated">
+                                            <div  class="map_application"> <a ng-if="superaccess[module] == accessAdmin" href="{{config.urlPath}}/delegatedadmin/{{application.id}}"> <span><img src="{{config.domainPath}}/assets/images/map_user_group.png"  alt=""/>&nbsp;&nbsp; Map Users/Groups to Application</span> </a>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <ul data-persist="true" class="tabs tabsInnr">
+                                                <li class="selected" id="usertab"><a ng-click="markSelected('user')">Users</a></li>
+                                                <li class="" id="grouptab"><a ng-click="markSelected('group')">Groups</a></li>
+                                            </ul>
+                                            <div class="tblColWrpr list_container">
+                                                <div flex="100" flex-gt-sm="50" layout="column">
+
+                                                    <div id="user" style="display: block;">
+                                                        <table  st-table="userdeligatedDetails" st-safe-src="deligatedDetails.users" class="table table-fixed tr_hover">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="col_40pct"> <div class="search_box full"> <span>Name</span> <a class="search_button" ng-click="startSearch()" ng-if="searchIcon"><img src="{{config.domainPath}}/assets/images/search_list.png" alt=""/></a>
+                                                                <div class="search_window animate_sideways" ng-show="searchBox">
+                                                                    <input class="search_reset_del_admin" type="text" focus-on="focusInput" st-search="" placeholder="Search">
+                                                                    <a class="close_button" st-refresh='' ng-click="endSearch()">&times;</a> </div>
+                                                                <div class="search_sort_right"> 
+                                                                    <abbr title="Sort"><span id="stsort_user" class="sort_icon2" st-sort-default="{{sortTypeUser}}" st-skip-natural="true" st-sort="uid" ng-click="setSortOrder('user')"></span></abbr>
+                                                                </div>
+                                                                </th>
+                                                                <th class="col_32pct"><span>Source</span></th>
+                                                                <th class="col_7pct"><span>View</span></th>
+                                                                <th class="col_7pct"><span>Manage</span></th>
+                                                                <th class="col_7pct"><span>Report</span></th>
+                                                                <!--th class="col_20pct"><span>Assigned</span></th-->
+                                                                <th class="col_7pct"><span>Remove</span></th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody id="userscrolltable" >
+                                                                    <tr ng-if="userDetailsLength != 0" ng-repeat="users in userdeligatedDetails">
+                                                                        <td class="col_40pct row_pointer left_border"><span> {{users.uid}}</span></td>
+                                                                        <td class="col_32pct row_pointer"><span> {{getSource(users.sid)}} </span></td>
+                                                                        <!--td class="col_10pct row_pointer"><span> 
+                                                                                <abbr title="View Permission">
+                                                                                    <a ng-click="manageEye(users.uid + '_' + users.sid, tabName)" > <span  ng-class="isInArray('VIEWER',users.permissions)? 'enable_eye': 'disabled_eye'" id="manage_eye{{users.uid}}_{{users.sid}}"></span> </a> </abbr>
+                                                                                <abbr title="Manager Permission">
+                                                                                    <a ng-click="manageSetting(users.uid + '_' + users.sid, tabName)" > <span ng-class="isInArray('MANAGER',users.permissions)? 'enable_setting': 'disabled_setting'" id="manage_setting{{users.uid}}_{{users.sid}}"></span> </a> </abbr>
+
+                                                                            </span>
+                                                                        </td-->
+                                                                        <td class="col_7pct row_pointer">
+                                                                            <md-checkbox ng-class="{'md-checked': isInArray('VIEWER',users.permissions)}" id="view{{users.uid}}_{{users.sid}}"  ng-model="view[users.uid + '_' + users.sid]" ng-click="manageView(tabName, users.uid + '_' + users.sid)" aria-label="Allow View" ></md-checkbox>
+                                                                        <!--input type='text' id='txtreport{{users.uid}}_{{users.sid}}' value="{{report[users.uid + '_' + users.sid]}}"-->
+                                                                        </td>
+                                                                        <td class="col_7pct row_pointer">
+                                                                            <md-checkbox ng-class="{'md-checked': isInArray('MANAGER',users.permissions)}" id="manage{{users.uid}}_{{users.sid}}"  ng-model="manage[users.uid + '_' + users.sid]" ng-click="manageSetting(tabName, users.uid + '_' + users.sid)" aria-label="Allow Manage" ></md-checkbox>
+                                                                        <!--input type='text' id='txtreport{{users.uid}}_{{users.sid}}' value="{{report[users.uid + '_' + users.sid]}}"-->
+                                                                        </td>
+                                                                        <td class="col_7pct row_pointer">
+                                                                            <md-checkbox ng-class="{'md-checked': isInArray('REPORTER',users.permissions)}" id="report{{users.uid}}_{{users.sid}}"  ng-model="report[users.uid + '_' + users.sid]" ng-click="manageReport(tabName, users.uid + '_' + users.sid)" aria-label="Allow Reports" ></md-checkbox>
+                                                                        <!--input type='text' id='txtreport{{users.uid}}_{{users.sid}}' value="{{report[users.uid + '_' + users.sid]}}"-->
+                                                                        </td>
+                                                                        <!--td class="col_20pct row_pointer"><span   id="{{users.uid + '_' + users.sid}}" ng-bind-html="getPermissions(users.permissions) || '----'"> </span></td-->
+                                                                        <td class="col_7pct row_pointer">
+                                                                            <div class="md-input-record-remove" title="Remove" ng-click="removeuser(tabName, $index);" tabindex="0"> × </div>
+                                                                        </td>
+                                                                </tr>
+                                                                <tr  ng-show="isLoading" class="text-center loader-area" colspan="4">
+                                                                    <td  class="loading-indicator" style="border-right: none;border-bottom:none;"></td>
+                                                                </tr>
+                                                                <tr ng-if="userdeligatedDetails.length == 0 && !isLoading"  colspan="4">
+                                                                    <td class="alert" style="border-right: none;border-bottom: none;">No Record Found</td>
+                                                                </tr>
+
+                                                                </tbody>
+
+                                                                <tfoot class="pagination-container" ng-show="users.length">
+                                                                    <!--tr ng-show="!isLoading" >
+                                                                                                      <td class="paginationarea">                                                
+                                                                                                          <div class="left-pagination" st-pagination="" st-items-by-page="itemsByPage" ></div>
+                                                                                                          <div class="page_change">                                                
+                                                                                                              <select ng-model="itemsByPage"  name="itemsByPage">
+                                                                                                                  <option ng-repeat="data in paginationPageSizes" value="{{data}}">{{data}}</option>
+                                                                                                              </select> 
+                                          
+                                                                                                          </div>
+                                                                                                      </td>
+                                                                                                  </tr-->
+                                                                </tfoot>
+                                                        </table>
+                                                    </div>
+                                                    <div id="group" style="display: none;">
+                                                        <table  st-table="groupdeligatedDetails" st-safe-src="deligatedDetails.groups" class="table table-fixed tr_hover">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="col_40pct"> <div class="search_box full"> <span>Name</span> <a class="search_button" ng-click="startSearch()" ng-if="searchIcon"><img src="{{config.domainPath}}/assets/images/search_list.png" alt=""/></a>
+                                                                <div class="search_window animate_sideways" ng-show="searchBox">
+                                                                    <input type="text" focus-on="focusInput"  st-search=""  placeholder="Search">
+                                                                    <a class="close_button" st-refresh='' ng-click="endSearch()">&times;</a> </div>
+                                                                <div class="search_sort_right"> 
+                                                                    <abbr title="Sort"><span  id="stsort_group" class="sort_icon2"  st-sort-default="{{sortTypeGroup}}" st-skip-natural="true" st-sort="name" ng-click="setSortOrder('group')"></span></abbr>
+                                                                </div>
+                                                                </th>
+                                                                <th class="col_32pct"><span>Source</span></th>
+                                                                <th class="col_7pct"><span>View</span></th>
+                                                                <th class="col_7pct"><span>Manage</span></th>
+                                                                <th class="col_7pct"><span>Report</span></th>
+                                                                <!--th class="col_20pct"><span>Assigned</span></th-->
+                                                                <th class="col_7pct"><span>Remove</span></th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody  id="groupscrolltable">
+                                                                    <tr ng-if="groupDetailsLength != 0"  ng-repeat='groups in groupdeligatedDetails' >
+                                                                        <td class="col_40pct row_pointer left_border"><span> {{groups.name}} </span></td>
+                                                                        <td class="col_32pct row_pointer"><span> {{getSource(groups.sid)}} </span></td>
+                                                                        <!--td class="col_10pct row_pointer"><span> 
+                                                                                <abbr title="View Permission">
+                                                                                    <a ng-click="manageEye(groups.name + '_' + groups.sid, tabName)" > <span  ng-class="isInArray('VIEWER',groups.permissions)?'enable_eye': 'disabled_eye'" id="manage_eye{{groups.name}}_{{groups.sid}}"></span> </a> </abbr>
+                                                                                <abbr title="Manager Permission">
+                                                                                    <a ng-click="manageSetting(groups.name + '_' + groups.sid, tabName)" > <span ng-class="isInArray('MANAGER',groups.permissions)?'enable_setting': 'disabled_setting'"  id="manage_setting{{groups.name}}_{{groups.sid}}"></span> </a> </abbr></span>
+                                                                        </td-->
+
+
+
+                                                                        <td class="col_7pct row_pointer">
+                                                                            <md-checkbox ng-class="{'md-checked': isInArray('VIEWER',groups.permissions)}" id="view{{groups.name}}_{{groups.sid}}"  ng-model="view[groups.name + '_' + groups.sid]" ng-click="manageView(tabName, groups.name + '_' + groups.sid)" aria-label="Allow View" ></md-checkbox>
+                                                                <!--input type='text' id='txtreport{{users.uid}}_{{users.sid}}' value="{{report[users.uid + '_' + users.sid]}}"-->
+                                                                        </td>
+                                                                        <td class="col_7pct row_pointer">
+                                                                            <md-checkbox ng-class="{'md-checked': isInArray('MANAGER',groups.permissions)}" id="manage{{groups.name}}_{{groups.sid}}"  ng-model="manage[groups.name + '_' + groups.sid]" ng-click="manageSetting(tabName, groups.name + '_' + groups.sid)" aria-label="Allow Manage" ></md-checkbox>
+                                                                <!--input type='text' id='txtreport{{users.uid}}_{{users.sid}}' value="{{report[users.uid + '_' + users.sid]}}"-->
+                                                                        </td>
+                                                                        <td class="col_7pct row_pointer">
+                                                                            <md-checkbox ng-class="{'md-checked': isInArray('REPORTER',groups.permissions)}" id="report{{groups.name}}_{{groups.sid}}"  ng-click="manageReport(tabName, groups.name + '_' + groups.sid)" aria-label="Allow Reports" ></md-checkbox>
+                                                                <!--input type='text' id='txtreport{{users.uid}}_{{users.sid}}' value="{{report[users.uid + '_' + users.sid]}}"-->
+                                                                        </td>
+                                                                        <!--td class="col_20pct row_pointer"><span   id="{{groups.name + '_' + groups.sid}}" ng-bind-html="getPermissions(groups.permissions) || '----'"> </span></td-->
+                                                                        <td class="col_7pct row_pointer">
+                                                                            <div class="md-input-record-remove" title="Remove" ng-click="removeuser(tabName, $index);" tabindex="0"> × </div>
+                                                                        </td>
+                                                                </tr>
+                                                                <tr  ng-show="isLoading" class="text-center loader-area" colspan="4">
+                                                                    <td  class="loading-indicator" style="border-right: none;border-bottom:none;"></td>
+                                                                </tr>
+                                                                <tr ng-if="groupdeligatedDetails.length == 0 && !isLoading"  colspan="4">
+                                                                    <td class="alert" style="border-right: none;border-bottom: none;">No Record Found</td>
+                                                                </tr>
+
+                                                                </tbody>
+                                                                <tfoot class="pagination-container" ng-show="groups.length">
+                                                                    <!--tr ng-show="!isLoading" >
+                                                                                                      <td class="paginationarea">                                                
+                                                                                                          <div class="left-pagination" st-pagination="" st-items-by-page="itemsByPage" ></div>
+                                                                                                          <div class="page_change">                                                
+                                                                                                              <select ng-model="itemsByPage"  name="itemsByPage">
+                                                                                                                  <option ng-repeat="data in paginationPageSizes" value="{{data}}">{{data}}</option>
+                                                                                                              </select> 
+                                          
+                                                                                                          </div>
+                                                                                                      </td>
+                                                                                                  </tr-->
+                                                                </tfoot>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div class="clear"> </div>
+                                            </div>
+                                            <div class="button_group">
+                                                <div  ng-click="submitted = true"> <span class="ng-scope">
+                                                        <md-button ng-click="savePermission();">{{translation.deladmin.SAVE}}</md-button>
+                                                    </span> </div>
+                                                <!--div>
+                                                                          <span class="ng-scope"> <md-button type='reset' ng-click="resetPermission();">{{translation.deladmin.RESET}}</md-button></span>
+                                                                      </div--> 
+                                            </div>
+                                    </md-tab-body>
+                                </md-tab>
+                            </md-tabs>
+                        </md-content>
+                        <div class="clearfix"></div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-include src="config.domainPath+'/shared/footer.html'"></ng-include>

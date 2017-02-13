@@ -1,0 +1,116 @@
+<ng-include src="config.domainPath+'/shared/header.html'"></ng-include>
+
+<div class="navigationpage_wrapper" ng-controller="rolemembershipController">
+  <div class="site-canvas">
+	<ng-include src="config.domainPath+'/shared/menu.html'"></ng-include>
+    <div class="container-fluid slide_up" >
+		<!--<div class="header_info">
+                <h2 class="page_heading">Membership</h2>
+
+                <div class="clearfix"></div>				
+            </div> -->
+        <ul class="page_path">
+            <li><a href="{{config.urlPath}}/home">Home </a></li>
+            <li><a href="{{config.urlPath}}/home">Barclays banking </a></li>
+            <li class="last">Role Membership</li>
+        </ul>
+
+
+        <div class="navright_container listpage_container" >
+            <div class="header_info">
+                <h2 class="page_heading">Membership</h2>
+
+                <div class="clearfix"></div>				
+            </div> 
+            <!--button ng-click="confirm()" type="button" class="am-btn am-btn-warning am-btn-block" >Try it!</button-->
+            <div class="pageform_wrapper">
+                <div class="list_view_container">
+                    <div class="list_container grid_box">
+                        <div class="gridheader">
+                            <a href="#{{module}}" class="primary" ng-click="addRole($event)">
+                                <img src="{{config.domainPath}}/assets/images/new.png">
+                                <span class="action">New</span>
+                            </a>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="search_box full">
+                            <span class="search_header">Name</span>
+                            <a class="search_button" ng-click="startSearch()" ng-show="searchIcon"><img src="{{config.domainPath}}/assets/images/landing_search_icon.png" width="15" height="15" alt=""/></a>
+                            <div class="search_window animate_sideways" ng-show="searchBox">
+                                <a class="close_button" st-refresh='name' ng-click="endSearch()">&times;</a>
+                                <input type="text" focus-on="focusInput" ng-model="search" placeholder="Search">
+                            </div>
+                        </div>
+                        <div class="scrollme" ng-scrollbar scrollbar-x="false" scrollbar-y="true" scrollbar-config="{show: false}">
+                            <ul>
+                                <li ng-repeat='rolememberdetails in filtered = (rolemembership| filter:search)' ng-click='selectRolemember(rolememberdetails)' ng-class="{selectedActive: rolememberdetails == selectedRolemember}">{{rolememberdetails.name}}</li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="view_container">
+                        <div class="view_details" ng-show="showInfo">
+                            <div class="view_details_links">                       
+		                        <a href="#{{module}}"  class="primary" ng-click='editRole(selectedRolemember,$event)'><img src="{{config.domainPath}}/assets/images/f_edit.png">Edit</a>
+		                        <a href="#{{module}}" class="primary" ng-click="confirm()"><img src="{{config.domainPath}}/assets/images/f_delete.png">Delete</a>
+		                    </div>
+
+                            <label>Name</label>
+                            <p>{{ selectedRolemember.name}}</p><div class="view_details_field_spacer"></div>
+
+                            <label>Description</label>
+                            <p>{{ selectedRolemember.description !=null ? selectedRolemember.description : "---"}}</p><div class="view_details_field_spacer"></div>
+
+                            <md-content class="tab-list">
+                                <md-tabs md-dynamic-height class="md-accent" md-selected="data.selectedIndex" md-align-tabs="top">
+                                    <md-tab id="tab1">
+                                        <md-tab-label>User</md-tab-label>
+                                        <md-tab-body>
+                                            <div class="right_list_container">
+                                                <div class="right_scrollme" ng-scrollbar scrollbar-x="false" scrollbar-y="true" scrollbar-config="{show: false}">
+                                                    <ul>
+                                                        <li ng-repeat="users in selectedRolemember.users"><img src="{{config.domainPath}}/assets/images/list_user.png"  alt=""/><span class='right_list_text'>{{users.name}}</span></li>
+                                                    </ul>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </md-tab-body>
+                                    </md-tab>
+                                    <md-tab id="tab2">
+                                        <md-tab-label>Group</md-tab-label>
+                                        <md-tab-body>
+                                            <div class="right_list_container">
+                                                <div class="right_scrollme" ng-scrollbar scrollbar-x="false" scrollbar-y="true" scrollbar-config="{show: false}">
+                                                    <ul>
+                                                        <li ng-repeat="groups in selectedRolemember.groups"><img src="{{config.domainPath}}/assets/images/list_group.png"  alt=""/><span class='right_list_text'>{{groups.name}}</span></li>
+                                                    </ul>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </md-tab-body>
+                                    </md-tab>
+                                </md-tabs>
+                            </md-content>
+                           
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+        
+    </div>
+  </div>
+</div>
+
+<ng-include src="config.domainPath+'/shared/footer.html'"></ng-include>

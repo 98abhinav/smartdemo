@@ -1,0 +1,338 @@
+<ng-include src="config.domainPath+'/shared/header.html'"></ng-include>
+<div class="navigationpage_wrapper" ng-controller="resourcesController" >
+    <div class="site-canvas">
+        <ng-include src="config.domainPath+'/shared/menu.html'"></ng-include>
+        <div class="container-fluid slide_up" arrow-selector>
+            <div class="navright_container listpage_container" >
+                <ul class="page_path">
+                    <li><a href="{{config.urlPath}}/home">Home </a></li>
+                    <li><a href="{{config.urlPath}}/home/{{applicationId}}">{{applicationName}} </a></li>
+                    <li class="last">Resources</li>
+
+                </ul>
+                <div class="header_info">                
+                    <h2 class="page_heading">
+                        <span class="header">Resources</span>
+                        <span style="float:right"> 
+                            <a  href="{{config.urlPath}}/{{applicationId}}/resources/search"><img src="{{config.domainPath}}/assets/images/search_icon_blue.png"></a> 
+                        </span>  
+                    </h2>             
+                    <div class="clearfix"></div>				
+                </div> 
+
+                <div class="form_container">
+                    <form name="resourceForm" novalidate>
+                        <div class="list_container selectbox1"> 
+                            <label class="control-group dropdown_label">Resource Type <em>*</em></label>
+                            <div class="selectbox1-opener" ng-click="openDropdown = !openDropdown">{{resourcetypename|| 'Select Resource Type'}} <span ng-class="getDropdownIconClass()" class="dropdown-icon"></span></div>
+                            <table ng-show="openDropdown" st-pipe="callServerDropdown" st-table="resourcetypes" class="smart-table table table-striped" cellspacing="0" cellpadding="0">
+                                <thead>
+                                    <tr>
+                                        <th class="search_box"> <input class="selectbox1_bg" type="text" focus-on="focusInput" st-search="name" ng-model="search_dd" placeholder="Search">
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="scrolldropdown" style="min-width:334px;" >
+                                    <tr ng-show="!isLoading_dd" ng-repeat='resourcetypedetails in resourcetypes'  ng-click='selectResourcetype(resourcetypedetails)' >
+                                        <td>{{resourcetypedetails.name}}</td>
+                                    </tr>
+                                    <tr ng-if="resourcetypes == null">
+                                        <td class="alert">{{error_dd}}</td>
+                                    </tr>
+                                    <tr ng-show="isLoading_dd">
+                                        <td  class="text-center loader-area"><div ng-show="isLoading_dd" class="loading-indicator"></div></td>
+                                    </tr>
+                                </tbody>
+                                <tfoot class="pagination-container" ng-if="resourcetypes != null">
+                                    <tr>
+                                        <td class="paginationarea">
+                                            <div class="left-pagination" st-pagination="" st-items-by-page="itemsByPage_resourceType" ></div>
+                                            <div class="page_change">
+                                                <select ng-model="itemsByPage_resourceType"  name="itemsByPage_resourceType">
+                                                    <option ng-repeat="data in paginationPageSizes" value="{{data}}" ng-selected="itemsByPage_resourceType == data">{{data}}</option>
+                                                </select>
+                                            </div></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <div class="error" style="color:red" ng-show="error_dd">Please select a Resource Type.</div>
+                        </div>    
+                    </form>
+                </div>
+
+                <div class="view_details_field_spacer"></div>
+
+                <div class="list_boxshadow" id="content_area">
+                    <div class="pageform_wrapper">
+
+                        <div class="list_view_container">
+                            <div ng-if="resourcetypename" class="action_bar">
+                                <span ng-if="!treeNav.length">{{resourcehierarchy}}</span>
+                                <ul ng-if="treeNav.length">
+                                    <li ng-repeat="nav in treeNav" ng-click="!$last ? getChilds(nav) : ''" ng-class="{'last':$last}">{{nav.name}}</li>
+                                </ul>
+                            </div>
+                            <div class="list_container grid_box" >
+                                <table st-pipe="callServer" st-table="resources"  class="smart-table table table-striped" cellspacing="0" cellpadding="0">
+                                    <thead>
+                                        <tr>
+                                            <th class="search_box full" >
+                                                <span class="search_header" >Name</span>                                                
+                                                <a class="search_button" ng-click="startSearch()" ng-show="searchIcon"><img src="{{config.domainPath}}/assets/images/search_list.png"  alt=""/></a>
+                                    <div class="search_window animate_sideways" ng-show="searchBox">                                                    
+                                        <input type="text" focus-on="focusInput" st-search="name"  ng-model="search" placeholder="Search">
+                                        <a class="close_button" st-refresh='name' ng-click="endSearch()">&times;</a>                                                    
+                                    </div>
+                                    <abbr title="Sort"><span class="sort_icon" ng-if="resources != null" st-sort-default="{{sortType}}" st-skip-natural="true" st-sort="name" ></span></abbr>
+                                    </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="scrolltable" >                                        
+                                        <tr ng-show="!isLoading"  ng-repeat='resourcedetails in resources' ng-click='selectresource(resourcedetails, $index)' ng-class="{'selectedActive':$index == selectedRow}"> 
+                                            <td>{{resourcedetails.name}}
+                                                <img class="child-loader child-indicator" src="{{config.domainPath}}/assets/images/child_indicator.png" ng-if="resourcetypehierarchical && resourcedetails.id != selectedResource.id && resourcedetails.immediateChildrenCount > 0">
+                                                <img class="child-loader" src="{{config.domainPath}}/assets/images/add_child.png" ng-if="resourcetypehierarchical && resourcedetails.id == selectedResource.id && access[module] == accessAdmin" ng-click="addChilds(resourcedetails)" title="Add New Child Resource">
+                                                <img class="child-loader" src="{{config.domainPath}}/assets/images/open.png" ng-if="resourcetypehierarchical && resourcedetails.id == selectedResource.id && resourcedetails.immediateChildrenCount > 0" ng-click="getChilds(resourcedetails)" title="View Child Resources">
+                                            </td>
+                                        </tr>                                        
+                                        <tr ng-show="isLoading">
+                                            <td  class="text-center loader-area"><div ng-show="isLoading" class="loading-indicator"></div> </td>
+                                        </tr>
+                                        <tr ng-if="resources == null"><td class="alert">{{error}}</td></tr>
+                                    </tbody>                                    
+                                    <tfoot class="pagination-container" ng-if="resources != null">
+                                        <tr>
+                                            <td class="paginationarea">
+
+                                                <div class="left-pagination" st-pagination="" st-items-by-page="itemsByPage" ></div>
+                                                <div class="page_change">                                                
+                                                    <select ng-model="itemsByPage"  name="itemsByPage">
+                                                        <option ng-repeat="data in paginationPageSizes" value="{{data}}" ng-selected="itemsByPage == data">{{data}}</option>
+                                                    </select> 
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+
+                            <div class="view_container">
+                                <div class="listgridheader" >
+                                    <!-- <a href="{{config.urlPath}}/{{applicationId}}/resources/delete/{{selectedResource.id}}" class="primary" ng-click="confirm()"><img src="{{config.domainPath}}/assets/images/delete_list.png"><span class="action">Delete</span></a> -->
+                                    <a ng-if="resources != null && access[module] == accessAdmin" href="javascript:;" ng-click="confirmDelete(selectedResource.id)" class="primary ico_delete"><!--<img src="{{config.domainPath}}/assets/images/delete_list.png">--><span class="action">Delete</span></a>
+                                    <a ng-if="resources != null && access[module] == accessAdmin" href="{{config.urlPath}}/{{applicationId}}/resources/edit/{{selectedResource.id}}" class="primary w68 ico_edit"><!--<img src="{{config.domainPath}}/assets/images/edit_list.png">--><span class="action">Edit</span></a>
+                                    <a ng-if="resourcetypename && access[module] == accessAdmin" href="{{config.urlPath}}/{{applicationId}}/resources/add"  class="primary w68 ico_add" ><!--<img src="{{config.domainPath}}/assets/images/add_list.png">--><span class="action">Add</span></a>
+
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div  class="view_details" >
+                                    <div ng-if="resources == null" class="scrollrightdiv alert_container">{{error}}</div>
+
+                                    <div id="scrollrightdiv" class="scrollrightdiv" ng-if="resources != null">                                       
+                                        <label>Name</label>
+                                        <p>{{ selectedResource.name}}<div class="view_details_field_spacer"></div>
+
+                                        <label>Description</label>
+                                        <p>{{ selectedResource.description !=null ? selectedResource.description : "---"}}
+                                        <div class="view_details_field_spacer"></div>                                        
+                                       
+                                        <div class="users_grout_header">
+                                            <label>Policy</label> 
+                                            <div class="users_grout_header_buttons"> 
+                                                <a class="primary" ng-click="showPolicies()">
+                                                    <span class="action">View Policies</span>
+                                                </a> 
+                                            </div>
+                                        </div>
+                                        <div class="padding_10" ng-show="showpolicy">
+                                            <md-content class="tab-list">
+                                                <md-tabs md-dynamic-height class="md-accent" md-selected="selectedIndex" md-align-tabs="top">
+                                                    <md-tab id="tab1">
+                                                        <md-tab-label><span ng-click="selectedPolicy('Role')">Role Policy</span></md-tab-label>
+                                                        <md-tab-body>                                                            
+                                                            <div st-table="selectedResourceRolePolicyList" st-safe-src="selectedResourceRolePolicy" ng-class="(selectedResourceRolePolicyCount > 8) ? 'view-sub-list-wrapper' : 'view-sub-list-wrapper-less'">
+                                                                <div class="view-sub-list view-sub-list-header-right"> 
+                                                                    <div ng-if="selectedResourceRolePolicyCount > rightPageinationPerPage" class="search_box">
+                                                                        <span class="search_header">Name&nbsp;&nbsp;&nbsp;(Effect)</span>
+                                                                        <a class="search_icon_right_space search_button" ng-click="startViewSearch('rolesource')" ng-if="rolesourcesearchIcon"><img src="{{config.domainPath}}/assets/images/assign_search.png" width="15" height="15" alt=""/></a>
+                                                                        <div class="search_window animate_sideways" ng-show="rolesourcesearchBox">                                        
+                                                                            <input class="search_reset" type="text" focus-on="rolesourcefocusInput" ng-model="search_user"  st-search=""  placeholder="Search">
+                                                                            <a class="close_button" st-refresh='name' ng-click="endViewSearch('rolesource')">&times;</a>
+                                                                        </div>                                                                        
+                                                                        <div  class="right-pagination" st-pagination="" st-items-by-page="rightPageinationPerPage" st-template="shared/right-pagination.html" ></div>
+                                                                        <div class="search_sort_right">
+                                                                            <abbr title="Sort"><span class="sort_icon"  st-sort-default="{{sortType}}" st-skip-natural="true" st-sort="name" ></span></abbr>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div ng-if="selectedResourceRolePolicyCount <= rightPageinationPerPage" class="full search_box">
+                                                                        <span class="search_header">Name&nbsp;&nbsp;&nbsp;(Effect)</span>
+                                                                        <a class="search_button" ng-click="startViewSearch('rolesource')" ng-if="rolesourcesearchIcon"><img src="{{config.domainPath}}/assets/images/assign_search.png" width="15" height="15" alt=""/></a>
+                                                                        <div class="search_window animate_sideways" ng-show="rolesourcesearchBox">                                        
+                                                                            <input class="search_reset_no_pagination" type="text" focus-on="rolesourcefocusInput"  ng-model="search_user" st-search=""  placeholder="Search">
+                                                                            <a class="close_button" st-refresh='name' ng-click="endViewSearch('rolesource')">&times;</a>
+                                                                        </div>                                                                        
+                                                                        <div class="search_sort_right">
+                                                                            <abbr title="Sort"><span class="sort_icon"  st-sort-default="{{sortType}}" st-skip-natural="true" st-sort="name" ></span></abbr>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>                                                                 
+                                                                <div id="scrolluser">
+                                                                    <ul ng-show="!policyLoading">
+                                                                        <li ng-repeat="rolePolicy in selectedResourceRolePolicyList">                                                                           
+                                                                            <span class='right_list_text'>{{rolePolicy.name}}</span> &nbsp;&nbsp;&nbsp;                                                                                
+                                                                            <span ng-if="rolePolicy.effect"><img src="{{config.domainPath}}/assets/images/permit.png"  alt="Permit" title="Permit"/></span>
+                                                                            <span ng-if="!rolePolicy.effect"><img src="{{config.domainPath}}/assets/images/deny_new.png"  alt="Deny" title="Deny"/></span>
+                                                                        </li>
+                                                                    </ul>
+
+                                                                    <ul ng-show="policyLoading">
+                                                                        <li class="text-center loader-area">                                                                           
+                                                                            <div class="loading-indicator"></div>
+                                                                        </li>
+                                                                    </ul>
+
+                                                                    <ul ng-if="selectedResourceRolePolicyList.length == 0 && !policyLoading">
+                                                                        <li><i>No Records</i></li>
+                                                                    </ul>
+                                                                    <div class="clearfix"></div>
+                                                                </div>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        </md-tab-body>
+                                                    </md-tab>
+                                                    <md-tab id="tab2">
+                                                        <md-tab-label><span ng-click="selectedPolicy('Group')">Group Policy</span></md-tab-label>
+                                                        <md-tab-body>
+                                                            <div st-table="selectedResourceGroupPolicyList" st-safe-src="selectedResourceGroupPolicy" ng-class="(selectedResourceGroupPolicyCount > 8) ? 'view-sub-list-wrapper' : 'view-sub-list-wrapper-less'" >
+                                                                <div class="view-sub-list view-sub-list-header-right"> 
+
+                                                                    <div ng-if="selectedResourceGroupPolicyCount > rightPageinationPerPage" class="search_box">
+                                                                        <span class="search_header">Name&nbsp;&nbsp;&nbsp;(Effect)</span>
+                                                                        <a class="search_icon_right_space search_button" ng-click="startViewSearch('groupsource')" ng-if="groupsourcesearchIcon"><img src="{{config.domainPath}}/assets/images/assign_search.png" width="15" height="15" alt=""/></a>
+                                                                        <div class="search_window animate_sideways" ng-show="groupsourcesearchBox">                                        
+                                                                            <input class="search_reset" type="text" focus-on="groupsourcefocusInput" ng-model="search_group" st-search=""  placeholder="Search">
+                                                                            <a class="close_button" st-refresh='name' ng-click="endViewSearch('groupsource')">&times;</a>
+                                                                        </div>                                                                        
+                                                                        <div  class="right-pagination" st-pagination="" st-items-by-page="rightPageinationPerPage" st-template="shared/right-pagination.html" ></div>
+                                                                        <div class="search_sort_right">
+                                                                            <abbr title="Sort"><span class="sort_icon"  st-sort-default="{{sortType}}" st-skip-natural="true" st-sort="name" ></span></abbr>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div ng-if="selectedResourceGroupPolicyCount <= rightPageinationPerPage" class="full search_box">
+                                                                        <span class="search_header">Name&nbsp;&nbsp;&nbsp;(Effect)</span>
+                                                                        <a class="search_button" ng-click="startViewSearch('groupsource')" ng-if="groupsourcesearchIcon"><img src="{{config.domainPath}}/assets/images/assign_search.png" width="15" height="15" alt=""/></a>
+                                                                        <div class="search_window animate_sideways" ng-show="groupsourcesearchBox">                                        
+                                                                            <input class="search_reset_no_pagination" type="text" focus-on="groupsourcefocusInput"  ng-model="search_group" st-search=""  placeholder="Search">
+                                                                            <a class="close_button" st-refresh='name' ng-click="endViewSearch('groupsource')">&times;</a>
+                                                                        </div>                                                                        
+                                                                        <div class="search_sort_right">
+                                                                            <abbr title="Sort"><span class="sort_icon"  st-sort-default="{{sortType}}" st-skip-natural="true" st-sort="name" ></span></abbr>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div id="scrollgroup">
+                                                                    <ul ng-show="!policyLoading">
+                                                                        <li ng-repeat="groupPolicy in selectedResourceGroupPolicyList">
+                                                                            <span class='right_list_text'>{{groupPolicy.name}}</span>&nbsp;&nbsp;&nbsp;     
+                                                                            <span ng-if="groupPolicy.effect"><img src="{{config.domainPath}}/assets/images/permit.png"  alt="Permit" title="Permit"/></span>
+                                                                            <span ng-if="!groupPolicy.effect"><img src="{{config.domainPath}}/assets/images/deny_new.png"  alt="Deny" title="Deny"/></span>
+
+                                                                        </li>
+                                                                    </ul>
+                                                                    <ul ng-show="policyLoading">
+                                                                        <li class="text-center loader-area">                                                                           
+                                                                            <div class="loading-indicator"></div>
+                                                                        </li>
+                                                                    </ul>
+                                                                    <ul ng-if="selectedResourceGroupPolicyList.length == 0 && !policyLoading">
+                                                                        <li><i>No Records</i></li>
+                                                                    </ul>
+                                                                    <div class="clearfix"></div>
+                                                                </div>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        </md-tab-body>
+                                                    </md-tab>
+                                                    <md-tab id="tab3" >
+                                                        <md-tab-label><span ng-click="selectedPolicy('User')">User Policy</span></md-tab-label>
+                                                        <md-tab-body>                                                           
+                                                            <div st-table="selectedResourceUserPolicyList" st-safe-src="selectedResourceUserPolicy" ng-class="(selectedResourceUserPolicyCount > 8) ? 'view-sub-list-wrapper' : 'view-sub-list-wrapper-less'" >
+                                                                <div class="view-sub-list view-sub-list-header-right">                                                                    
+
+                                                                    <div ng-if="selectedResourceUserPolicyCount > rightPageinationPerPage" class="search_box">
+                                                                        <span class="search_header">Name&nbsp;&nbsp;&nbsp;(Effect)</span>
+                                                                        <a class="search_icon_right_space search_button" ng-click="startViewSearch('usersource')" ng-if="usersourcesearchIcon"><img src="{{config.domainPath}}/assets/images/assign_search.png" width="15" height="15" alt=""/></a>
+                                                                        <div class="search_window animate_sideways" ng-show="usersourcesearchBox">                                        
+                                                                            <input class="search_reset" type="text" focus-on="usersourcefocusInput" ng-model="search_user"  st-search=""  placeholder="Search">
+                                                                            <a class="close_button" st-refresh='name' ng-click="endViewSearch('usersource')">&times;</a>
+                                                                        </div>                                                                        
+                                                                        <div  class="right-pagination" st-pagination="" st-items-by-page="rightPageinationPerPage" st-template="shared/right-pagination.html" ></div>
+                                                                        <div class="search_sort_right">
+                                                                            <abbr title="Sort"><span class="sort_icon"  st-sort-default="{{sortType}}" st-skip-natural="true" st-sort="name" ></span></abbr>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div ng-if="selectedResourceUserPolicyCount <= rightPageinationPerPage" class="full search_box">
+                                                                        <span class="search_header">Name&nbsp;&nbsp;&nbsp;(Effect)</span>
+                                                                        <a class="search_button" ng-click="startViewSearch('usersource')" ng-if="usersourcesearchIcon"><img src="{{config.domainPath}}/assets/images/assign_search.png" width="15" height="15" alt=""/></a>
+                                                                        <div class="search_window animate_sideways" ng-show="usersourcesearchBox">                                        
+                                                                            <input class="search_reset_no_pagination" type="text" focus-on="usersourcefocusInput"  ng-model="search_user" st-search=""  placeholder="Search">
+                                                                            <a class="close_button" st-refresh='name' ng-click="endViewSearch('usersource')">&times;</a>
+                                                                        </div>                                                                        
+                                                                        <div class="search_sort_right">
+                                                                            <abbr title="Sort"><span class="sort_icon"  st-sort-default="{{sortType}}" st-skip-natural="true" st-sort="name" ></span></abbr>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                </div>
+                                                                <div id="scrollgroup">
+                                                                    <ul ng-show="!policyLoading">
+                                                                        <li ng-repeat="userPolicy in selectedResourceUserPolicyList">
+                                                                            <span class='right_list_text'>{{userPolicy.name}}</span>&nbsp;&nbsp;&nbsp;     
+                                                                            <span ng-if="userPolicy.effect"><img src="{{config.domainPath}}/assets/images/permit.png"  alt="Permit" title="Permit"/></span>
+                                                                            <span ng-if="!userPolicy.effect"><img src="{{config.domainPath}}/assets/images/deny_new.png"  alt="Deny" title="Deny"/></span>
+
+                                                                        </li>
+                                                                    </ul>
+                                                                     <ul ng-show="policyLoading">
+                                                                        <li class="text-center loader-area">                                                                           
+                                                                            <div class="loading-indicator"></div>
+                                                                        </li>
+                                                                    </ul>
+                                                                    <ul ng-if="selectedResourceUserPolicyList.length == 0 && !policyLoading">
+                                                                        <li><i>No Records</i></li>
+                                                                    </ul>
+                                                                    <div class="clearfix"></div>
+                                                                </div>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        </md-tab-body>
+                                                    </md-tab>
+                                                </md-tabs>
+                                            </md-content>
+                                        </div>
+
+                                    </div>                                  
+
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="clearfix"></div>
+            </div>    
+        </div>
+    </div>
+</div>
+<ng-include src="config.domainPath+'/shared/footer.html'"></ng-include>

@@ -1,0 +1,116 @@
+<div class="view_details_field_spacer"></div>
+<div ng-controller="policiesRoleController" class="dual_map" >
+    <div class="list_serach  slide_tab">
+        <div id="usermainContent" class="slide_tab_content map_deligated" >
+            <div class="dual_list_container listdeligated">
+                <div class="list_container" st-pipe="callServerForRoles" st-table="availableRoles">
+
+                    <div class="search_box full">
+                        <span class="search_header">Roles</span>
+                        <a class="search_button" ng-click="startSearch('principalsource')" ng-if="principalsourcesearchIcon"><img src="{{config.domainPath}}/assets/images/search_list.png" alt=""/></a>
+
+                        <div class="search_window animate_sideways" ng-show="principalsourcesearchBox">                                        
+                            <input class="text_white" type="text" focus-on="principalsourcefocusInput"  st-search="name"  placeholder="Search">
+                            <a class="close_button"  st-refresh='name' ng-click="endSearch('principalsource')">&times;</a>
+                        </div>
+
+                        <div class="search_sort_right">
+                            <abbr title="Sort"><span  class="sort_icon"  st-sort-default="{{sortType_role}}" st-skip-natural="true" st-sort="name" ></span></abbr>
+                        </div>
+                    </div>
+                    <div id='unassignscroll'>
+                        <ul ng-show="!isLoading">
+                            <li id='{{principal.id}}'  ng-repeat='principal in availablePrincipals' 
+                                ng-click='toggleItemSelect(principal)'  
+                                ng-class="{selectedActive:principal.isSelected,mapped:principal.mark}"
+                                title="{{principal.name}}">
+                                <span class='right_list_text'>{{principal.name}} </span>
+                            </li>
+                        </ul>
+                        <ul  ng-show="isLoading" class="text-center loader-area">
+                            <li><div  class="loading-indicator"></div></li>
+                        </ul>
+                        <ul ng-if="availablePrincipals == null || availablePrincipals.length == 0" class="loader-area">
+                            <li><div class='right_list_text'>{{error}}</div></li>
+                        </ul>
+
+
+
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="paginationarea" ng-if="availablePrincipals != null">
+                        <div class="left-pagination" st-pagination="" st-items-by-page="itemsByPage_role" ></div>
+                        <div class="page_change">                                                
+                            <select ng-model="itemsByPage_role"  name="itemsByPage_role">
+                                <option ng-repeat="data in paginationPageSizes" value="{{data}}" ng-selected="itemsByPage_role == data">{{data}}</option>
+                            </select>               
+                        </div>
+                    </div>
+                    <div class="paginationarea" ng-if="availablePrincipals == null">
+                        <div class="left-pagination"></div>
+                        <div class="page_change">                                                
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="list_btn_container">
+                    <img  src="{{config.domainPath}}/assets/images/right_add.png"  ng-click='addSelectedPrincipals()' title="Add" alt="Add" /><br/><br/><br/><br/>
+                    <img  src="{{config.domainPath}}/assets/images/left_remove.png"  ng-click='removeSelectedPrincipals()' title="Remove" alt="Remove" /><br/><br/><br/><br/>
+                    <img  src="{{config.domainPath}}/assets/images/reset_assign.png"  ng-click='resetPrincipalItems()' title="Reset" alt="Reset" />
+
+                </div>
+                <div class="right list_container" st-table="selectedPrincipalList" st-safe-src="selectedPolicyRoles">
+                    <div class="search_box full">
+                        <span class="search_header">Selected {{policyType| capitalize}}</span>
+                        <a class="search_button" ng-click="startSearch('principaltarget')" ng-show="principaltargetsearchIcon"><img src="{{config.domainPath}}/assets/images/assign_search.png" width="15" height="15" alt=""/></a>
+
+                        <div class="search_window animate_sideways" ng-show="principaltargetsearchBox">
+
+                            <input type="text" focus-on="principaltargetfocusInput" st-search="name"  placeholder="Search">
+                            <a class="close_button" st-refresh='name' ng-click="endSearch('principaltarget')">&times;</a>
+                        </div>
+
+                        <div class="search_sort_right">
+                            <abbr title="Sort"> <span  class="sort_icon"  st-sort-default="{{sortType}}" st-skip-natural="true" st-sort="name" ></span></abbr>
+                        </div>
+                    </div>
+
+                    <div id='assignscroll'>
+                        <ul>
+                            <li  ng-repeat='principal in selectedPrincipalList' 
+                                 ng-click='toggleItemSelectTarget(principal)' 
+                                 ng-class="{selectedActive: principal.isSelected}"
+                                 title="{{principal.name}}">
+                                <span class='right_list_text'>{{principal.name}}</span>
+                            </li>
+                        </ul>
+                        <ul ng-if="selectedPolicyRoles == null || selectedPrincipalList.length == 0" class="loader-area">
+                            <li><div class="right_list_text">Add Roles</div></li>
+                        </ul>
+                    </div>
+                    <div class="paginationarea" ng-if="selectedPolicyRoles != null && selectedPrincipalList.length > 0">
+                        <div class="left-pagination" st-pagination="" st-items-by-page="itemsByPage" ></div>
+                        <div class="page_change">                                                
+                            <select ng-model="itemsByPage"  name="itemsByPage">
+                                <option ng-repeat="data in paginationPageSizes" value="{{data}}">{{data}}</option>
+                            </select>               
+                        </div>
+                    </div>                        
+                    <div class="paginationarea" ng-if="selectedPolicyRoles == null || selectedPrincipalList.length == 0">
+                        <div class="left-pagination"></div>
+                        <div class="page_change">                                                
+
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="clearfix"></div>
+</div>

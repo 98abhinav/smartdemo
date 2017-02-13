@@ -1,0 +1,161 @@
+<ng-include src="config.domainPath+'/shared/header.html'"></ng-include>
+<div class="navigationpage_wrapper right_subheader page_wrapper" ng-controller="searchUserController">
+    <div class="site-canvas">
+        <ng-include src="config.domainPath+'/shared/menu.html'"></ng-include>
+        <div class="container-fluid">
+            <div class="navright_container" >
+                <ul class="page_path">
+                    <li><a href="{{config.urlPath}}/home">Home </a></li>
+                    <li><a href="{{config.urlPath}}/sources">Sources</a></li>
+                    <li><a href="{{config.urlPath}}/{{sourceId}}/users">Users</a></li>
+                    <li class="last">Users Search</li>
+                </ul>
+                <div class="header_info">
+                    <h2 class="page_heading">
+                        <span class="header">Users - Search</span>
+
+                    </h2>                    
+                </div>
+                <div class="pageform_wrapper" >
+                    <div class="form_container advance_search">
+                        <form name="searchForm" novalidate >
+                            <div class="serach_type">
+                                <div class="search_by">Give users from source
+                                    <div class="serach_dropdown">
+                                        <span  class="customSearch" ng-click="opentoolbar('source-dropdown')" ng-class="{'empty-criteria': !sourceName && showRecords}">{{sourceName|| 'Name'}}&nbsp;<img src="{{config.domainPath}}/assets/images/br_down.png"></span>
+                                        <div  id="source-dropdown" class="close_div">
+                                            <span  class="dropdown-arrow"></span>
+                                            <div  class="list_container selectbox1"  st-pipe="callServer"  st-table="sources">
+                                                <div ng-class="{'border_wrapper': sourceLength >= 5}">
+                                                    <div class="searchArea"><input type="text" focus-on="focusInput" st-search="name" ng-model="search" placeholder="Search.." ></div>
+
+                                                    <div id='scrolltable'>
+                                                        <ul ng-show="!isLoading">
+                                                            <li class="disabled_list_row" ng-show="!isLoading" actions-repeat-directive ng-repeat='sourcedetails in sources'  ng-click='selectSource(sourcedetails)'>
+                                                                <span class='right_list_text'>{{sourcedetails.name}}</span>
+                                                            </li>
+                                                        </ul>
+                                                        <ul ng-show="!isLoading && error" class="loader-area disabled_list_row">
+                                                            <li class="alert">{{error}}</li>
+                                                        </ul>
+                                                        <ul  ng-show="isLoading" class="text-center loader-area disabled_list_row">
+                                                            <li><div  class="loading-indicator"></div></li>
+                                                        </ul>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    having                                     
+                                    <div class="serach_dropdown">
+                                        <span  class="customSearch" ng-click="opentoolbar('field-dropdown')" ng-class="{'empty-criteria': !searchField && showRecords}">{{searchField|| 'Name'}}&nbsp;<img src="{{config.domainPath}}/assets/images/br_down.png"></span>
+                                        <div  id="field-dropdown" class="close_div">
+                                            <span  class="dropdown-arrow" ng-show="searchField"></span>
+                                            <div  class="list_container selectbox1 selectbox2" ng-show="searchField">
+                                                <ul>
+                                                    <li class="disabled_list_row" ng-repeat="displayKey in notSorted(displayAttributes)"  value ="{{displayKey}}*{{displayValue}}" ng-init="displayValue = displayAttributes[displayKey]" ng-click="setSearchField(displayKey + '*' + displayValue)">
+                                                        <span class='right_list_text'>{{displayValue}}</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    that 
+
+
+                                    <div class="serach_dropdown">
+                                        <span  class="customSearch" ng-click="opentoolbar('criteria-dropdown')">{{searchHow|| 'Name'}}&nbsp;<img src="{{config.domainPath}}/assets/images/br_down.png"></span>
+                                        <div  id="criteria-dropdown" class="close_div">
+                                            <span class="dropdown-arrow"></span>
+                                            <div  class="list_container selectbox1 selectbox2">
+                                                <ul>
+                                                    <li class="disabled_list_row">
+                                                        <span class='right_list_text' ng-click="setSearchHow('Starts With')">Starts With</span>                                                    
+                                                    </li>
+                                                    <li class="disabled_list_row">
+                                                        <span class='right_list_text' ng-click="setSearchHow('Contains')">Contains</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>                                    
+                                    <div class="serach_dropdown dropdown" >
+                                        <span class="customSearch" ng-click="opentoolbar('name-dropdown')" ng-class="{'empty-criteria': !userName && showRecords}">{{userName|| 'Name'}}</span>
+                                        <div  id="name-dropdown" class="close_div">
+                                            <span  class="dropdown-arrow"></span>
+                                            <div  class="list_container selectbox1 searchinput">                                                
+                                                <input type="text"  ng-model="txtName"  style="height: 30px;"  placeholder="Search..">
+                                                <md-button ng-click="setName()">OK</md-button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="srch-break"></div>
+                                <div class="form_container button_group_right">
+                                    <md-button ng-click="submitSearch()">GO</md-button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="height_20"></div>
+                        <div class="listdeligated">
+                            <div class="list_container"> 
+                                <div ng-show="showRecords">
+                                    <table  st-table="usersList" st-safe-src="users" class="table table-fixed table-striped">
+                                        <thead>
+                                            <tr> 
+                                                <th style="{{columnWidth}}" ng-repeat='displayKey in notSorted(displayAttributes)' ng-init="displayValue = displayAttributes[displayKey]"><span>{{displayValue}}</span></th>                                                                                             
+                                                <th class="col_10pct" ng-show="displayAttributesLength > 0"><span>Actions</span></th>                                               
+                                            </tr>
+                                        </thead>
+                                        <tbody id="userscrolltable">
+                                            <tr ng-show="!isListLoading"  ng-repeat='userDetails in usersList'   ng-click='selectUser(userDetails)'  > 
+                                                <td style="{{columnWidth}}" ng-repeat='value in notSorted(displayAttributes)' ng-bind-html="userDetails[value]" ></td>                                             
+                                                <td class="col_10pct" style="border-right:0px;">
+                                                    <span id="edit_{{userDetails.uid}}" style="padding-right:20px;" ng-click="selectedRow(userDetails)">
+                                                        <a href="{{config.urlPath}}/users/{{sourceId}}/view"><img src="{{config.domainPath}}/assets/images/on_click_eye.png" alt="View"></a>
+                                                    </span>
+                                                    <!--span id="view_{{userDetails.uid}}"><img src="{{config.domainPath}}/assets/images/edit_list.png" height="22" width="22"></span-->
+                                                </td>                                           
+                                            </tr>
+                                            <tr  ng-show="usersListLength == 0 && !isListLoading && displayAttributes==null">
+                                                <th style="width: 100%;padding-left: 12px;">Search Result</th>
+                                            </tr>  
+                                            <tr  ng-show="usersListLength == 0 && !isListLoading">
+                                                <td style="width: 100%;" class="alert">{{listerror}}</td>
+                                            </tr>                                            
+                                            <tr  ng-show="isListLoading">
+                                                <td  style="width: 100%;" class="text-center loader-area"><div class="loading-indicator"></div></td>
+                                            </tr>    
+                                        </tbody>
+                                        <tfoot class="pagination-container">
+                                            <tr ng-show="usersListLength != 0 && !isListLoading" >
+                                                <td class="paginationarea">                                                
+                                                    <div class="left-pagination" st-pagination="" st-items-by-page="itemsByPage" ></div>
+                                                    <div class="page_change">                                                
+                                                        <select ng-model="itemsByPage"  name="itemsByPage">
+                                                            <option ng-repeat="data in paginationPageSizes" value="{{data}}">{{data}}</option>
+                                                        </select> 
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table> 
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="clear"> </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-include src="config.domainPath+'/shared/footer.html'"></ng-include>

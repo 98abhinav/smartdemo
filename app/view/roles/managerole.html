@@ -1,0 +1,81 @@
+<ng-include src="config.domainPath+'/shared/header.html'"></ng-include>
+  
+<div class="navigationpage_wrapper right_subheader page_wrapper" ng-controller="manageRoleController">
+  <div class="site-canvas">
+    <ng-include src="config.domainPath+'/shared/menu.html'"></ng-include>
+    <div class="container-fluid slide_up">
+        <div class="navright_container">
+            <ul class="page_path">
+                <li><a href="{{config.urlPath}}/home">Home </a></li>
+                    <li><a href="{{config.urlPath}}/home">{{applicationName}} </a></li>
+                    <li><a href="{{config.urlPath}}/{{applicationId}}/roles">Role &amp; Membership </a></li>
+                    <li class="last">{{mode|capitalize}}</li> 
+            </ul>
+            <div class="header_info">
+                <h3 class="page_heading">
+                    <span class="header">Role &amp; Membership</span>
+                </h3>
+                <div class="clearfix"></div>				
+            </div>
+            <div class="pageform_wrapper">
+                <div class="form_container">
+                    <md-content class="md-padding">
+                        <md-tabs md-dynamic-height class="md-accent" md-selected="data.selectedIndex" md-align-tabs="top">
+                            <md-tab id="tab1">
+                                <md-tab-label>General</md-tab-label>
+                                <md-tab-body>
+                                    <!-- <div ng-show="error" class="alert alert-danger">{{error}}</div> -->
+                                    <form name="roleForm" ng-submit="submitData(role, mode, roleForm.$valid)" novalidate>
+                                        <div class="name" ng-class="{true: 'error'}"> 
+                                            <div class="view_details_field_spacer"></div>
+                                            <md-input-container flex>
+                                                <label class="control-group">Name<em>*</em></label>
+                                                <input type="text" ng-model="role.name" name="roleName" ng-minlength="1" value="" required>
+                                                <span class="error" style="color:red" ng-show="roleForm.roleName.$dirty && roleForm.roleName.$invalid || submitted">
+                                                    <span ng-show="roleForm.roleName.$error.required">Name is required.</span> 
+                                                    <!--<span ng-show="roleForm.roleName.$error.minlength">Name must be more than 5 characters.</span>--> 
+                                                </span>
+                                            </md-input-container>
+                                        </div>
+
+                                        <div  ng-class="{true: 'error'}"> 
+                                            <md-input-container flex>
+                                                <label>Description</label>
+                                                <textarea ng-model="role.description" columns="1" md-maxlength="150"></textarea>
+                                            </md-input-container>
+                                        </div> 
+                                        <div class="button_group"> 
+                                            <div  ng-click="submitted = true">
+                                                <span class="ng-scope"> <md-button>{{translation.role.SAVE}}</md-button></span>
+                                            </div>
+                                            <div>
+                                                <span class="ng-scope"> <md-button type='reset' ng-click="redirectList();">{{translation.role.CANCEL}}</md-button></span>
+                                            </div>
+                                        </div> 
+                                    </form>
+                                </md-tab-body>
+                            </md-tab>
+                            <md-tab id="tab2" style="pointer-events: none;">
+                                <!--md-tab-label>Role Hierarchy</md-tab-label>
+                                <md-tab-body>
+
+                                    Pending................
+
+                                </md-tab-body-->
+                            </md-tab>
+                        </md-tabs>
+                    </md-content>
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+
+        </div>
+
+    </div>
+  </div>
+</div>
+
+<ng-include src="config.domainPath+'/shared/footer.html'"></ng-include>

@@ -1,0 +1,64 @@
+<ng-include src="config.domainPath+'/shared/header.html'"></ng-include>
+  
+<div class="navigationpage_wrapper right_subheader page_wrapper" ng-controller="manageActionController">
+  <div class="site-canvas">
+	<ng-include src="config.domainPath+'/shared/menu.html'"></ng-include>
+    <div class="container-fluid slide_up">
+        <div class="navright_container">
+            <ul class="page_path">
+                <li><a href="{{config.urlPath}}/home">Home </a></li>
+                <li><a href="{{config.urlPath}}/home/{{applicationId}}">{{applicationName}} </a></li>
+                 <li><a href="{{config.urlPath}}/{{applicationId}}/actions">Actions </a></li>
+                 <li class="last">{{mode|capitalize}}</li>
+            </ul>           
+            <div class="header_info">
+                <h3 class="page_heading">
+                    <span class="header">Action</span>
+                </h3>
+
+                <div class="clearfix"></div>				
+            </div>
+            <div class="pageform_wrapper">
+                <div class="form_container">
+                    <form name="actionsForm" novalidate ng-submit="submitData(action, mode, actionsForm.$valid)"> 
+                        <div ng-class="{true: 'error'}"> 
+                            <md-input-container flex>
+                                <label class="control-group">Name<em>*</em></label>
+                                <div><h1>{{model.message}}</h1></div>
+                                <input type="text" ng-model="action.name" name="actionName" ng-minlength="1" required>
+                                <span class="error" style="color:red" ng-show="actionsForm.actionName.$dirty && actionsForm.actionName.$invalid || submitted">
+                                    <span ng-show="actionsForm.actionName.$error.required">Name is required.</span>
+                                    <!--<span ng-show="actionsForm.actionName.$error.minlength">Name must be more than 5 characters.</span>--> 
+                                </span>
+                            </md-input-container>
+                        </div>
+                        <div  ng-class="{true: 'error'}"> 
+                            <md-input-container flex>
+                                <label>Description</label>
+                                <textarea ng-model="action.description" columns="1" rows="2" name="actionDescription"></textarea>                                                           
+                            </md-input-container>
+                        </div>
+                        <div class="button_group"> 
+                            <div  ng-click="submitted = true">
+                                <span class="ng-scope"> <md-button ng-disabled="actionsForm.$invalid">{{translation.action.SAVE}}</md-button></span>
+                            </div>
+                            <div>
+                                <span class="ng-scope"> <md-button type='reset' ng-click="redirectList();">{{translation.action.CANCEL}}</md-button></span>
+                            </div>
+                        </div> 
+                    </form>
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="clearfix"></div>
+  </div>  
+</div>
+
+<ng-include src="config.domainPath+'/shared/footer.html'"></ng-include>

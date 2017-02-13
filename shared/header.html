@@ -1,0 +1,274 @@
+<header class="header_wrapper">
+    <div class="container-fluid"> 
+        <!-- <div class="" ng-controller="headerController" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()"> -->
+        <div class="" ng-controller="headerController">
+            <div class="header_content gradient_bg" >
+                <div class="header_left"> <a href="{{config.urlPath}}/home" class="logo_content"> <i class="logo"><img src="{{config.domainPath}}/assets/images/header_logo.png" alt=""/></i>Entitlements Server</a> 
+
+                    <!--<div class="clearfix"></div>--> 
+
+                </div>
+                <div class="tools">
+                    <ul>
+                        <li class="source" ng-class="{sourcemenu_trigger: (sourcemenumodules.indexOf(module) != -1)}" ng-click="toggleSourceMenu()"> 
+                            <a ng-if="sourcemenumodules.indexOf(module)!=-1" class="hvr-overline-center-selected" >
+                                <h2 class="title-selected">System Configuration</h2>
+                                <span><img src="{{config.domainPath}}/assets/images/down_arrow.png" alt=""></span>
+                            </a>
+                            <a ng-if="sourcemenumodules.indexOf(module)==-1" href="{{config.urlPath}}/sources" >
+                                <h2 class="title">System Configuration</h2>
+                                <span></span>
+                            </a>
+                            <div class="clearfix"></div>
+                        </li>
+                        <!-- <div class="source_wrapper cssSlideUp" ng-hide="sourceinfo">
+                                            <a href="{{config.urlPath}}/users" class="user_container">
+                                                    <h2 class="title">User</h2>
+                                                <i href="" class="icon"></i>
+                                                 <div class="clearfix"></div>
+                                            </a>
+                                            <a href="{{config.urlPath}}/groups" class="group_container">
+                                                    <h2 class="title">Group</h2>
+                                                 <i class="icon"></i>
+                                                  <div class="clearfix"></div>
+                                            </a>
+                                            <div class="clearfix"></div>
+                                        </div> -->
+                        <li class="applications" ng-class="{menu_trigger: (noappmenumodules.indexOf(module) == -1)}" ng-click="toggleAppMenu()"> 
+                            <a ng-if="noappmenumodules.indexOf(module)!=-1" href="{{config.urlPath}}/home/{{applicationId}}" >
+                            	<h2 class="title">{{applicationName|| 'Applications'}}</h2>
+                                <span></span>
+                            </a>
+                            <a ng-if="noappmenumodules.indexOf(module)==-1" class="hvr-overline-center-selected" >
+                                <h2 class="title-selected">{{applicationName|| 'Applications'}}</h2>
+                                <span><img src="{{config.domainPath}}/assets/images/down_arrow.png" alt=""></span>
+                            </a>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li class="reports last" ng-if="superaccess.reports && (superaccess.reports) != accessNone" ng-class="{reportmenu_trigger: (reportmenumodules.indexOf(module) != -1)}"> 
+                            <a ng-class="(reportmenumodules.indexOf(module)!=-1) ? 'hvr-overline-center-selected' : 'hvr - overline - center'" href="{{config.urlPath}}/reports">
+                                <h2 ng-class="(reportmenumodules.indexOf(module)!=-1) ? 'title-selected' : 'title'">Reports</h2>
+                                <!--span><img ng-if="reportmenumodules.indexOf(module)!=-1" src="{{config.domainPath}}/assets/images/down_arrow.png" alt=""></span-->
+                            </a>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li>
+
+                        </li>
+                        <div class="clearfix"></div>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="swagger-section">
+                    <abbr title="ES APIs"><a href="#" ng-click="redirect();" > <img src="{{config.domainPath}}/assets/images/es_apis_logo.png" ></a></abbr>
+
+                </div>
+                <div class="user_profile">
+                    <ul id="cbp-tm-menu_login" class="cbp-tm-menu">
+                        <!-- Commented for Demo<li class="user_dropdown"> <a href="javascript:;" id='user_dtl_login'>
+                          <div class="user_name" id='user_name_login'>{{authorization_token.currentUser.username}} <img id="arowdown" src="{{config.domainPath}}/assets/images/down_arrow.png" alt=""> <img id="arowup" style="display:none" src="{{config.domainPath}}/assets/images/up_arrow.png" alt=""> </div>
+                          </a> </li>-->
+
+                        <!--Added for Demo-->
+                        <div style="color:white; margin-top:-40px; padding-left:90px; font-size:14px">
+                            {{authorization_token.currentUser.username}}
+                        </div>
+                        <div class="header_logout">
+                            <abbr title="Logout"><a href="{{config.domainPath}}/" ng-click="logout()"> <img src="{{config.domainPath}}/assets/images/logout.png">
+                                </a></abbr>
+                        </div>
+                        <!-- /Added for Demo-->
+                        <!-- <li class="search last"> <a class="hvr-overline-center" ng-click="toggle()"><img src="{{config.domainPath}}/assets/images/search_icon.png" alt=""/></a> </li> -->
+                    </ul>
+                    <!-- Commented for Demo <ul class="cbp-tm-submenu" id='cbp-tm-submenu_login'>
+                      <div class="menu-triangle"></div>
+                      <li>
+                        <p>System Administrator</p>
+                        <small>Last login on Monday, <br>June 22,2015 at 2:07pm</small> </li>
+                      <li class="icons"> <a href="javascript:void(0);"> <img src="{{config.domainPath}}/assets/images/profile.png"> <br>
+                        <span>Profile</span></a> <a href="#/" ng-click="logout()"> <img src="{{config.domainPath}}/assets/images/logout.png"> <br>
+                        <span>Logout</span></a> </li>
+                    </ul>-->
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <!--<span class="title">MENU</span>
+        <div class="tools mobtools" ng-controller="headerMobController"> <a class="menubar" href="" ng-click="dropdownfunc()"> 
+          <i class="icon"></i> </a>
+          <ul class="toollist" ng-hide="tool">
+            <li class="source" ng-click="sourcefunc()"> <a href="">
+              <h2 class="title"><img src="{{config.domainPath}}/assets/images/source_icon.png" width="28" height="28" alt=""/>Source</h2>
+              </a>
+              <div class="clearfix"></div>
+            </li>
+            <div class="source_wrapper cssSlideUp" ng-hide="sourceinfo"> <a href="{{config.urlPath}}/users" class="user_container">
+              <h2 class="title">User</h2>
+              <i href="" class="icon"></i>
+              <div class="clearfix"></div>
+              </a> <a href="{{config.urlPath}}/groups" class="group_container">
+              <h2 class="title">Group</h2>
+              <i class="icon"></i>
+              <div class="clearfix"></div>
+              </a>
+              <div class="clearfix"></div>
+            </div>
+            <li class="applications"> <a href="{{config.urlPath}}/home">
+              <h2 class="title"><img src="{{config.domainPath}}/assets/images/Application_icon.png" width="28" height="28" alt=""/>Applications</h2>
+              </a>
+              <div class="clearfix"></div>
+            </li>
+            <li class="settings" ng-click="fontfunc()"> <a href="">
+              <h2 class="title"><img src="{{config.domainPath}}/assets/images/setting_icon.png" width="28" height="28" alt=""/>Settings</h2>
+              </a>
+              <div class="clearfix"></div>
+            </li>
+            <div class="fontsize_wrapper cssSlideUp" ng-hide="fontinfo"> <a href="" class="user_container">
+              <h2 class="title">Font Size</h2>
+              <div class="clearfix"></div>
+              </a> </div>
+            <li class="search last">
+              <h2 class="title">
+                <input type="text" value="Search" onfocus="if(this.value=='Search'){this.value=''}"  onblur="if(this.value==''){this.value='Search'}"/>
+                <a ng-click="toggle()"><img src="{{config.domainPath}}/assets/images/search_icon.png" width="28" height="28" alt=""/></a> </h2>
+              <div class="clearfix"></div>
+            </li>
+            <div class="clearfix"></div>
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+        --> 
+        <div class="clearfix"></div>
+    </div>
+    <div class="clearfix"></div>
+</header>
+
+<!--<div class="search_box cssSlideUp" ng-hide="mysearchbox" id="here">
+                          <div class="search_box_container">
+                        <div class="searchline">
+                                <span class="displaybox" ng-bind="rolevalue" ng-click="rolefunc()"></span>
+                                <span class="search_text">
+                                <select class="selectbox dropdown" id="grant_drop">
+                                        <option selected="selected">Grant</option>
+                                        <option>Deny</option>
+                                        <option>None</option>
+                                        <option>None</option>
+                                        <option>None</option>
+                                </select>
+                                                                 
+                                Role which 
+                                <select class="selectbox dropdown">
+                                        <option selected="selected">Starts With</option>
+                                        <option>Ends With</option>
+                                        <option>Dummy 1</option>
+                                        <option>Dummy 2</option>
+                                        <option>Dummy 3</option>
+                                </select>
+                                 
+                            </span>
+                            
+                             
+                            <div class="input_wrapper" ng-hide="role">
+                                        <input type="text" class="inputbox" ng-model="rolevalue" placeholder="Enter">
+                                <input type="submit" value="OK" class="submitbutton" ng-click="rolehidefunc()">
+                                <div class="clearfix"></div>
+                                </div>
+                             <div class="clearfix"></div>
+                           
+                        </div>
+                        
+                        <div class="searchline">
+                                <span class="displaybox" ng-bind="displaynamevalue" ng-click="displaynamefunc()"></span>
+                                <span class="search_text">for Display Name 
+                                <select class="selectbox dropdown">
+                                        <option selected="selected">Starts With</option>
+                                        <option>Ends With</option>
+                                        <option>Dummy 1</option>
+                                        <option>Dummy 2</option>
+                                        <option>Dummy 3</option>
+                                </select>
+                                
+                            </span>
+                            
+                             <div class="clearfix"></div>
+                            <div class="input_wrapper" ng-hide="displayname">
+                                        <input type="text" class="inputbox" ng-model="displaynamevalue" placeholder="Enter">
+                                <input type="submit" value="OK" class="submitbutton" ng-click="displayhidefunc()">
+                                <div class="clearfix"></div>
+                                </div>
+                             <div class="clearfix"></div>
+                        </div>
+                        <div class="searchline">
+                                <span class="displaybox" ng-bind="principalvalue" ng-click="principalfunc()"></span>                        
+                                <span class="search_text">Principal 
+                                <select class="selectbox dropdown">
+                                        <option selected="selected">Starts With</option>
+                                        <option>Ends With</option>
+                                        <option>Dummy 1</option>
+                                        <option>Dummy 2</option>
+                                        <option>Dummy 3</option>
+                                </select>
+                                
+                            </span>
+                            
+                             <div class="clearfix"></div>
+                            <div class="input_wrapper" ng-hide="principal">
+                                        <input type="text" class="inputbox" ng-model="principalvalue" placeholder="Enter">
+                                <input type="submit" value="OK" class="submitbutton" ng-click="principalhidefunc()">
+                                <div class="clearfix"></div>
+                                </div>
+                             <div class="clearfix"></div>
+                        </div>
+                        <div class="searchline"> 
+                                <span class="displaybox" ng-bind="namevalue" ng-click="namefunc()"></span>                       
+                                <span class="search_text">Name  
+                                <select class="selectbox dropdown">
+                                        <option selected="selected">Starts With</option>
+                                        <option>Ends With</option>
+                                        <option>Dummy 1</option>
+                                        <option>Dummy 2</option>
+                                        <option>Dummy 3</option>
+                                </select>
+                                
+                            </span>
+                            
+                             <div class="clearfix"></div>
+                            <div class="input_wrapper" ng-hide="name">
+                                        <input type="text" class="inputbox" ng-model="namevalue" placeholder="Enter">
+                                <input type="submit" value="OK" class="submitbutton" ng-click="namehidefunc()">
+                                <div class="clearfix"></div>
+                                </div>
+                             <div class="clearfix"></div>
+                        </div>
+                        <div class="searchline"> 
+                                <span class="displaybox" ng-bind="targetvalue" ng-click="targetfunc()"></span>                       
+                                <span class="search_text">and Target 
+                                <select class="selectbox dropdown">
+                                        <option selected="selected">Starts With</option>
+                                        <option>Ends With</option>
+                                        <option>Dummy 1</option>
+                                        <option>Dummy 2</option>
+                                        <option>Dummy 3</option>
+                                </select>
+                                
+                            </span>
+                            
+                             <div class="clearfix"></div>
+                            <div class="input_wrapper" ng-hide="target">
+                                        <input type="text" class="inputbox" ng-model="targetvalue" placeholder="Enter">
+                                <input type="submit" value="OK" class="submitbutton" ng-click="targethidefunc()">
+                                <div class="clearfix"></div>
+                                </div>
+                             <div class="clearfix"></div>
+                        </div>
+                        
+                        
+                        <div ng-click="submitted = true">
+                                <span class="ng-scope"> <md-button>{{translation.header.SEARCH}}</md-button></span>
+                         </div>
+                         <div class="clearfix"></div>
+                    </div>
+                    
+                    <div class="clearfix"></div>
+                </div>-->

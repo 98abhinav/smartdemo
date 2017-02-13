@@ -1,0 +1,52 @@
+<div ng-controller="policiesObligationController">
+<div class="view_details_field_spacer"></div>
+	<div class="list_boxshadow ">
+		<div class="pageform_wrapper">
+			<div class="view_container">
+				<div class="obligation_listgridheader listgridheader">
+					<!-- <a href="{{config.urlPath}}/{{applicationId}}/functions/delete/{{selectedFunction.id}}" class="primary" ng-click="confirm()"><img src="{{config.domainPath}}/assets/images/delete_list.png"><span class="action">Delete</span></a> -->
+					<a href="javascript:;" class="primary ico_delete" ng-click="deleteObligations()"><!--<img src="{{config.domainPath}}/assets/images/delete_list.png">--><span class="action">Delete All</span></a> 
+                    <a href="javascript:;" ng-click="addObligation(0)" class="primary ico_add"><!--<img src="{{config.domainPath}}/assets/images/add_list.png">--><span class="action">Add</span></a>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+			<div id="user">
+				<div  ng-if="authzPolicy.obligations==null || authzPolicy.obligations.length==0" >No Records.</div>
+                <div class="role_policy_obl_grid">
+				<table ng-if="authzPolicy.obligations!=null && authzPolicy.obligations.length>0" class="view_details_generic_table">
+					<thead>
+						<tr>
+	                         <th class="search_box full" class="col_50pct">
+	                             <span class="search_header">Name</span>
+                                  
+                                  <div class="obligation_search1">
+	                             <a class="search_button" ng-click="startSearch('obligation')" ng-show="obligationsearchIcon"><img src="{{config.domainPath}}/assets/images/search_list.png" alt=""/></a>
+	                            	</div>
+                                    
+                                 <div class="obligation_search search_window animate_sideways" ng-show="obligationsearchBox" style="display:inline-block">
+                                 <a class="close_button obligation_close" ng-click="endSearch('obligation')">&times;</a>
+                                 <input class="obligation_search" type="text" focus-on="obligationfocusInput" ng-model="q" placeholder="Search">
+                                 </div>
+	                         </th>
+							<th class="col_50pct">Value</th>
+						</tr>
+					
+					</thead>
+	
+					<tbody class="hoverTable">
+						<tr ng-repeat="obligation in authzPolicy.obligations | filter:q">
+							<td><input type="text" ng-model="obligation.name" /></td>
+							<td>
+								<input type="text" ng-model="obligation.value" />
+								<a href="javascript:;" style="float: right" ng-click="deleteObligation($index)"><img
+									src="{{config.domainPath}}/assets/images/delete_list.png"></a>
+							</td>
+						</tr>
+					</tbody>
+					</tfoot>
+				</table> 
+                </div>
+			</div>
+		</div>
+	</div>
+</div>

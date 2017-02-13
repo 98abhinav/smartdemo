@@ -1,0 +1,71 @@
+<ng-include src="config.domainPath+'/shared/header.html'"></ng-include>
+<div class="navigationpage_wrapper right_subheader page_wrapper" ng-controller="manageResourceGroupController">
+    <div class="site-canvas">
+        <ng-include src="config.domainPath+'/shared/menu.html'"></ng-include>
+        <div class="container-fluid slide_up">
+            <div class="navright_container">
+                <ul class="page_path">
+                    <li><a href="{{config.urlPath}}/home">Home </a></li>
+                    <li><a href="{{config.urlPath}}/home/{{applicationId}}">{{applicationName}} </a></li>
+                    <li><a href="{{config.urlPath}}/{{applicationId}}/resourcegroups">Resource Groups</a></li>
+                    <li class="last">{{mode|capitalize}}</li>
+                </ul>           
+                <div class="header_info">
+                    <h3 class="page_heading">
+                        <span class="header">Resource Group</span>
+                    </h3>
+
+                    <div class="clearfix"></div>				
+                </div>
+                <div class="pageform_wrapper dual_map">
+
+                    <div class="form_container slide_tab">
+                        <label class="control-group">Resource Type</label>
+                        <div class="resource-type">{{resourcetypename}}</div>
+                        <form  name="resourceGroupForm" novalidate ng-submit="submitData(resourceGroup, mode, resourceGroupForm.$valid)">
+                            <div ng-class="{true: 'error'}[submitted && resourceGroupForm.ctrlemail.$invalid]"> 
+                                <div class="view_details_field_spacer"></div>
+                                <md-input-container flex>
+                                    <label class="control-group">Name<em>*</em></label>
+                                    <div><h1>{{model.message}}</h1></div>
+                                    <input type="text" ng-model="resourceGroup.name" name="resourceGroupName"  ng-minlength="1"  required>
+                                    <span class="error" style="color:red" ng-show="resourceGroupForm.resourceGroupName.$dirty && resourceGroupForm.resourceGroupName.$invalid || submitted">
+                                        <span ng-show="resourceGroupForm.resourceGroupName.$error.required">Name is required.</span>
+                                        <!--<span ng-show="resourceGroupForm.resourceGroupName.$error.minlength">Name must be more than 5 characters.</span>-->
+                                    </span>
+
+                                </md-input-container>
+                            </div>
+
+                            <div ng-class="{true: 'error'}[submitted && resourceGroupForm.ctrlpassword.$invalid]"> 
+                                <md-input-container flex>
+                                    <label >Description</label>
+                                    <textarea ng-model="resourceGroup.description" name="resourceGroupDescription" columns="1" md-maxlength="150"></textarea>    
+
+                                </md-input-container>
+
+                            </div>
+                            
+                            <br clear="all">
+                            <div class="button_group">                           
+                                <div  ng-click="submitted = true">
+                                    <span class="ng-scope"> <md-button >{{translation.resourcegroup.SAVE}}</md-button></span>
+                                </div>
+                                <div>
+                                    <span class="ng-scope"> <md-button type='reset' ng-click="redirectList();">{{translation.resourcegroup.CANCEL}}</md-button></span>
+                                </div>
+                            </div> 
+                        </form>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+
+    <ng-include src="config.domainPath+'/shared/footer.html'"></ng-include>

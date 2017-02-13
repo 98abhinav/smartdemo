@@ -1,0 +1,333 @@
+<ng-include src="config.domainPath+'/shared/header.html'"></ng-include>  
+
+<div class="navigationpage_wrapper right_subheader page_wrapper" ng-controller="manageSourceController">
+  <div class="site-canvas">
+    <ng-include src="config.domainPath+'/shared/menu.html'"></ng-include>
+    <div class="container-fluid">
+      <div class="navright_container">
+        <ul class="page_path">
+          <li><a href="{{config.urlPath}}/home">Home </a></li>
+          <li><a href="{{config.urlPath}}/sources">Source</a></li>
+          <li class="last">{{mode|capitalize}}</li>
+        </ul>
+        <div class="header_info">
+          <h3 class="page_heading"> <span class="header">Source</span> </h3>
+          <div class="clearfix"></div>
+        </div>
+        <div class="pageform_wrapper">
+          <div class="form_container">
+            <form  name="sourceForm" novalidate ng-submit="submitData(source,mode,sourceForm.$valid)">
+              <div class="">
+                <div class="pageform_wrapper">
+                  <div class="form_wrapper">
+                    <div class="form_container overlayform_container">
+                      <md-content class="md-padding">
+                        <div>
+                          <label class="control-group dropdown_label">Connection Type<em>*</em></label>
+                          <!-- <select ng-if="mode=='add'" class="ac-select" ac-model="selectedtype" ac-options="type.commonName for type in metadata" ac-change='selectType(value)' 
+                                					ac-settings='{placeholderText:"Select Connection Type"}' name="connectionType" required>
+                          </select> -->
+                          <ui-select ng-if="mode=='add'" name="connectionType" style="width:300px;" ng-model="selectedtype" on-select="selectType(selectedtype)" search-enabled="false" append-to-body="true" required>
+						    <ui-select-match placeholder="Select Connection Type">{{$select.selected.commonName}}</ui-select-match>
+						    <ui-select-choices repeat="type in metadata">
+						      <span ng-bind-html="type.commonName"></span>
+						    </ui-select-choices>
+				    	  </ui-select>
+                          
+                          <p class="plain_text" ng-if="mode=='edit'">{{selectedtype.commonName}}</p>
+                          <span class="error" style="color:red" ng-show="sourceForm.connectionType.$dirty && sourceForm.connectionType.$invalid || submitted"> <span ng-show="sourceForm.connectionType.$error.required">Connection Type is required.</span> </span> </div>
+                        <div class="height_14"></div>
+                        
+                          <md-input-container flex>
+                            <label class="control-group">Name<em>*</em></label>
+                            <input type="text" ng-model="source.name" name="sourceName" ng-minlength="3" value="{{sourceName}}" required>
+                            <span class="error" style="color:red" ng-show="sourceForm.sourceName.$dirty && sourceForm.sourceName.$invalid || submitted"> <span ng-show="sourceForm.sourceName.$error.required">Name is required.</span> <span ng-show="sourceForm.sourceName.$error.minlength">Name must be more than 3 characters.</span> </span> </md-input-container>
+                        
+                        <div class="nomd-input-container"> 
+                          <!-- <md-input-container flex> -->
+                          <label class="control-group">Connection Manager<em>*</em></label>
+                          <input type="text" placeholder="{{selectedtype.connectionManager}}" ng-model="source.connectionManager" name="sourceConManager" required>
+                          <span class="error" style="color:red" ng-show="sourceForm.sourceConManager.$dirty && sourceForm.sourceConManager.$invalid || submitted"> <span ng-show="sourceForm.sourceConManager.$error.required">Connection manager is required.</span> </span> 
+                          <!-- </md-input-container> --> 
+                        </div>
+                        <div class="view_details_field_spacer"></div>
+                        
+                        
+                        <!-- add `multiple` attribute to allow multiple sections to open at once -->
+						<v-accordion class="vAccordion--default" multiple>
+						
+						  <!-- add expanded attribute to open the section -->
+						  <v-pane id="conn-attr-accord" expanded="selectedtype" >
+						    <v-pane-header>
+						      	<h3>Connection Attributes </h3>
+						    </v-pane-header>
+						
+						    <v-pane-content>
+						      
+						      	<!-- Connection Attributes START -->
+		                        <div class="attr_block">
+		                          <div class="md-input-small-container-title">
+		                          	<div class="clearfix"></div>
+		                            <div class="view_details_field_spacer"></div>
+		                            <!-- <h3>Connection Attributes </h3> -->
+		                            <span class="source_add_btn md-input-record-add" ng-click="addNewConnectionAttribute();" title="Add"><img src="{{config.domainPath}}/assets/images/addattr.png">Add Attributes</span> 
+		                          </div>
+		                          
+		                          <div class="md-input-attributes-container" ng-repeat="connectionAttribute in source.connectionAttributes">
+		                            <div ng-switch on="connectionAttribute.type">
+		                              <div ng-switch-when="mandatory">
+		                              
+		                                <div class="md-input-small-container">
+		                                  <label>{{connectionAttribute.name}} {{timeBasedConnAttr.indexOf(connectionAttribute.name)!=-1 ? ' (ms)' : ''}}<em>*</em></label>
+		                                </div>
+		                                
+		                                <div class="md-input-small-container-separator">:</div>
+		                                
+		                                <div class="md-input-small-container">
+		                                  <input type="text" ng-model="connectionAttribute.value" name="sourceConAttributesValue{{$index}}" placeholder="{{connectionAttribute.placeholder || 'Connection Attribute Value'}}" required>
+		                                  <span class="error" style="color:red" ng-show="sourceForm.sourceConAttributesValue{{$index}}.$dirty && sourceForm.sourceConAttributesValue{{$index}}.$invalid || submitted"> <span ng-show="sourceForm.sourceConAttributesValue{{$index}}.$error.required">Connection attribute is required.</span> </span> </div>
+		                                  
+		                              </div>
+		                              
+		                              <div ng-switch-when="optional">
+		                                <div class="md-input-small-container">
+		                                  <label>{{connectionAttribute.name}} {{timeBasedConnAttr.indexOf(connectionAttribute.name)!=-1 ? ' (ms)' : ''}}</label>
+		                                </div>
+		                                <div class="md-input-small-container-separator">:</div>
+		                                <div class="md-input-small-container">
+		                                  <input type="text" ng-model="connectionAttribute.value" name="sourceConAttributesValue{{$index}}" placeholder="{{connectionAttribute.placeholder || 'Connection Attribute Value'}}">
+		                                </div>
+		                              </div>
+		                             
+		                              <div ng-switch-default>
+		                                <div class="md-input-small-container">
+		                                  <input type="text" ng-model="connectionAttribute.name" name="sourceConAttributesName{{$index}}" placeholder="Connection Attribute Name" required>
+		                                  <em>*</em> <span class="error" style="color:red" ng-show="sourceForm.sourceConAttributesName{{$index}}.$dirty && sourceForm.sourceConAttributesName{{$index}}.$invalid || submitted"> <span ng-show="sourceForm.sourceConAttributesName{{$index}}.$error.required">Connection attribute name is required.</span> </span> </div>
+		                                  
+		                                <div class="md-input-small-container-separator">:</div>
+		                                
+		                                <div class="md-input-small-container">
+		                                  <input type="text" ng-model="connectionAttribute.value" name="sourceConAttributesValue{{$index}}" placeholder="{{connectionAttribute.placeholder || 'Connection Attribute Value'}}" required>
+		                                  <span class="error" style="color:red" ng-show="sourceForm.sourceConAttributesValue{{$index}}.$dirty && sourceForm.sourceConAttributesValue{{$index}}.$invalid || submitted"> <span ng-show="sourceForm.sourceConAttributesValue{{$index}}.$error.required">Connection attribute is required.</span> </span> </div>
+		                                  
+		                                <div class="md-input-record-remove" ng-click="removeConnectionAttribute($index);" title="Remove"> &times; </div>
+		                                
+		                              </div>
+		                              
+		                            </div>
+		                          </div>
+		                          
+		                        </div>
+		                        <div class="view_details_field_spacer"></div>
+		                        <!-- Connection Attributes END --> 
+						      
+						    </v-pane-content>
+						  </v-pane>
+						  <div class="view_details_field_spacer"></div>
+						
+						  <v-pane id="usr-disp-attr-accord">
+						    <v-pane-header>
+						      	<h3>User Display Attributes</h3>
+						    </v-pane-header>
+						
+						    <v-pane-content>
+						      	
+						      	<!-- User Display Attributes START -->
+		                        <div class="attr_block">
+		                          <div class="md-input-small-container-title"> 
+		                          
+		                            <div class="clearfix"></div>
+		                            <div class="view_details_field_spacer"></div>
+		                            <!-- <h3>User Display Attributes</h3> -->
+		                            <span class="source_add_btn md-input-record-add" ng-click="addNewDisplayAttribute('user');" title="Add"><img src="{{config.domainPath}}/assets/images/addattr.png">Add Attributes</span> 
+		                          </div>
+		                          <div class="md-input-attributes-container" ng-repeat="displayAttribute in source.displayAttributesUser">
+		                            <div ng-if="displayAttribute.type=='mandatory'">
+		                              <div class="md-input-small-container">
+		                                <label>{{displayAttribute.name}}<em>*</em></label>
+		                              </div>
+		                              <div class="md-input-small-container-separator">:</div>
+		                              <div class="md-input-small-container">
+		                                <input type="text" ng-model="displayAttribute.value" name="sourceUserDispAttributesValue{{$index}}" placeholder="{{displayAttribute.placeholder || 'User Display Attribute Value'}}" required>
+		                                <span class="error" style="color:red" ng-show="sourceForm.sourceUserDispAttributesValue{{$index}}.$dirty && sourceForm.sourceUserDispAttributesValue{{$index}}.$invalid || submitted"> <span ng-show="sourceForm.sourceUserDispAttributesValue{{$index}}.$error.required">User Display attribute is required.</span> </span> </div>
+		                            </div>
+		                            <div ng-if="displayAttribute.type=='optional'">
+		                              <div class="md-input-small-container">
+		                                <label>{{displayAttribute.name}}</label>
+		                              </div>
+		                              <div class="md-input-small-container-separator">:</div>
+		                              <div class="md-input-small-container">
+		                                <input type="text" ng-model="displayAttribute.value" name="sourceUserDispAttributesValue{{$index}}" placeholder="{{displayAttribute.placeholder || 'User Display Attribute Value'}}">
+		                              </div>
+                                              <div class="md-input-record-remove" ng-click="removeDisplayAttribute('user',$index);" title="Remove"> &times; </div>
+		                            </div>
+		                            <div ng-if="displayAttribute.type=='custom'">
+		                              <div class="md-input-small-container">
+		                                <input type="text" ng-model="displayAttribute.name" name="sourceUserDispAttributesName{{$index}}" placeholder="User Display Attribute Name">
+		                                <!-- <span class="error" style="color:red" ng-show="sourceForm.sourceUserDispAttributesName{{$index}}.$dirty && sourceForm.sourceUserDispAttributesName{{$index}}.$invalid || submitted">
+			                                                        <span ng-show="sourceForm.sourceUserDispAttributesName{{$index}}.$error.required">Display attribute name is required.</span>
+			                                                    </span> --> 
+		                              </div>
+		                              <div class="md-input-small-container-separator">:</div>
+		                              <div class="md-input-small-container">
+		                                <input type="text" ng-model="displayAttribute.value" name="sourceUserDispAttributesValue{{$index}}" placeholder="{{displayAttribute.placeholder || 'User Display Attribute Value'}}">
+		                                <!-- <span class="error" style="color:red" ng-show="sourceForm.sourceUserDispAttributesValue{{$index}}.$dirty && sourceForm.sourceUserDispAttributesValue{{$index}}.$invalid || submitted">
+			                                                        <span ng-show="sourceForm.sourceUserDispAttributesValue{{$index}}.$error.required">Display attribute is required.</span>
+			                                                    </span> --> 
+		                              </div>
+		                              <div class="md-input-record-remove" ng-click="removeDisplayAttribute('user',$index);" title="Remove"> &times; </div>
+		                            </div>
+		                          </div>
+		                        </div>
+		                        <div class="view_details_field_spacer"></div>
+		                        <!-- User Display Attributes END -->
+						      	
+						    </v-pane-content>
+						  </v-pane>
+						  <div class="view_details_field_spacer"></div>
+						  
+						  <v-pane id="grp-disp-attr-accord">
+						    <v-pane-header>
+						      	<h3>Group Display Attributes</h3> 
+						    </v-pane-header>
+						
+						    <v-pane-content>
+						    
+						      	<!-- Group Display Attributes START -->
+		                        <div class="attr_block">
+		                          <div class="md-input-small-container-title"> 
+		                          
+		                            <div class="clearfix"></div>
+		                            <div class="view_details_field_spacer"></div>
+		                            <!-- <h3>Group Display Attributes</h3>  -->
+		                            <span class="source_add_btn md-input-record-add" ng-click="addNewDisplayAttribute('group');" title="Add"><img src="{{config.domainPath}}/assets/images/addattr.png">Add Attributes</span> 
+		                          </div>
+		                          <div class="md-input-attributes-container" ng-repeat="displayAttribute in source.displayAttributesGroup">
+		                            <div ng-if="displayAttribute.type=='mandatory'">
+		                              <div class="md-input-small-container">
+		                                <label>{{displayAttribute.name}}<em>*</em></label>
+		                              </div>
+		                              <div class="md-input-small-container-separator">:</div>
+		                              <div class="md-input-small-container">
+		                                <input type="text" ng-model="displayAttribute.value" name="sourceGroupDispAttributesValue{{$index}}" placeholder="{{displayAttribute.placeholder || 'Group Display Attribute Value'}}" required>
+		                                <span class="error" style="color:red" ng-show="sourceForm.sourceGroupDispAttributesValue{{$index}}.$dirty && sourceForm.sourceGroupDispAttributesValue{{$index}}.$invalid || submitted"> <span ng-show="sourceForm.sourceGroupDispAttributesValue{{$index}}.$error.required">Group Display attribute is required.</span> </span> </div>
+		                            </div>
+		                            <div ng-if="displayAttribute.type=='optional'">
+		                              <div class="md-input-small-container">
+		                                <label>{{displayAttribute.name}}</label>
+		                              </div>
+		                              <div class="md-input-small-container-separator">:</div>
+		                              <div class="md-input-small-container">
+		                                <input type="text" ng-model="displayAttribute.value" name="sourceGroupDispAttributesValue{{$index}}" placeholder="{{displayAttribute.placeholder || 'Group Display Attribute Value'}}">
+		                              </div>
+                                              <div class="md-input-record-remove" ng-click="removeDisplayAttribute('group',$index);" title="Remove"> &times; </div>
+		                            </div>
+		                            <div ng-if="displayAttribute.type=='custom'">
+		                              <div class="md-input-small-container">
+		                                <input type="text" ng-model="displayAttribute.name" name="sourceGroupDispAttributesName{{$index}}" placeholder="Group Display Attribute Name">
+		                              </div>
+		                              <div class="md-input-small-container-separator">:</div>
+		                              <div class="md-input-small-container">
+		                                <input type="text" ng-model="displayAttribute.value" name="sourceGroupDispAttributesValue{{$index}}" placeholder="{{displayAttribute.placeholder || 'Group Display Attribute Value'}}">
+		                              </div>
+		                              <div class="md-input-record-remove" ng-click="removeDisplayAttribute('group',$index);" title="Remove"> &times; </div>
+		                            </div>
+		                          </div>
+		                        </div>
+		                        <div class="view_details_field_spacer"></div>
+		                        <!-- Group Display Attributes END --> 
+                        
+						    </v-pane-content>
+						  </v-pane>
+						  <div class="view_details_field_spacer"></div>
+						  
+						  <!-- <v-pane id="srch-attr-accord">
+						    <v-pane-header>
+						      	<h3>Search Attributes</h3>
+						    </v-pane-header>
+						    <v-pane-content>
+						    
+						    	<div class="attr_block">
+		                          <div class="md-input-small-container-title">
+		                          	<div class="clearfix"></div>
+		                          </div>
+		                          <div class="md-input-attributes-container" ng-if="source.displayAttributesUser.length">
+		                            <div class="md-input-small-container">
+		                              <label>User Search Default Attribute</label>
+		                            </div>
+		                            <div class="md-input-small-container-separator">:</div>
+		                            <div class="md-input-small-container" style="margin-top: -6px;"> 
+		                              <div ng-show="source.displayAttributesUser[0].name">
+		                                <ui-select name="userSearchDefaultAttr" ng-model="userSearchDefaultAttr" on-select="selectSearchAttr(userSearchDefaultAttr,'user')" search-enabled="false" append-to-body="true">
+										    <ui-select-match placeholder="Select User Search Default Attribute">{{$select.selected.name}}</ui-select-match>
+										    <ui-select-choices repeat="displayAttribute in source.displayAttributesUser track by displayAttribute.name">
+										      <span ng-bind-html="displayAttribute.name"></span>
+										    </ui-select-choices>
+									    </ui-select>
+									    
+		                              </div>
+		                              <input type="text" ng-show="!source.displayAttributesUser[0].name" ng-model="source.userSearchDefaultAttrCustom" name="userSearchDefaultAttr" placeholder="Enter User Search Default Attribute">
+		                              <span class="error" style="color:red" ng-show="sourceForm.userSearchDefaultAttr.$dirty && sourceForm.userSearchDefaultAttr.$invalid || submitted"> <span ng-show="sourceForm.userSearchDefaultAttr.$error.required">User Search attribute is required.</span> </span> </div>
+		                            <div class="clearfix"></div>
+		                          </div>
+		                          
+		                      	  <div class="md-input-attributes-container" ng-if="source.displayAttributesGroup.length">
+		                            <div class="md-input-small-container">
+		                              <label>Group Search Default Attribute</label>
+		                            </div>
+		                            <div class="md-input-small-container-separator">:</div>
+		                            <div class="md-input-small-container" style="margin-top: -2px;"> 
+		                              <div ng-show="source.displayAttributesGroup[0].name">
+		                                <ui-select name="groupSearchDefaultAttr" ng-model="groupSearchDefaultAttr" on-select="selectSearchAttr(groupSearchDefaultAttr,'group')" search-enabled="false" append-to-body="true">
+										    <ui-select-match placeholder="Select Group Search Default Attribute">{{$select.selected.name}}</ui-select-match>
+										    <ui-select-choices repeat="displayAttribute in source.displayAttributesGroup track by displayAttribute.name">
+										      <span ng-bind-html="displayAttribute.name"></span>
+										    </ui-select-choices>
+									    </ui-select>
+									    
+		                              </div>
+		                              <input type="text" ng-show="!source.displayAttributesGroup[0].name" ng-model="source.groupSearchDefaultAttrCustom" name="groupSearchDefaultAttr" placeholder="Enter Group Search Default Attribute">
+		                              <span class="error" style="color:red" ng-show="sourceForm.groupSearchDefaultAttr.$dirty && sourceForm.groupSearchDefaultAttr.$invalid || submitted"> <span ng-show="sourceForm.groupSearchDefaultAttr.$error.required">Group Search attribute is required.</span> </span> </div>
+		                          </div>
+		                      	</div>
+		                      	
+						    </v-pane-content>
+						  </v-pane> -->
+						
+						</v-accordion>
+
+					  </md-content>
+                      
+                      
+                        
+                      <div class="button_group">
+                        <div ng-click="submitted = true"> <span class="ng-scope">
+                          <md-button>{{translation.source.SAVE}}</md-button>
+                          </span><!--  ng-disabled="sourceForm.$invalid" --> 
+                        </div>
+                        <div> <span class="ng-scope">
+                          <md-button type='reset' ng-click="redirectList();">{{translation.source.CANCEL}}</md-button>
+                          </span> </div>
+                      </div>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+              </div>
+            </form>
+            <div class="clearfix"></div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+    <div class="clearfix"></div>
+  </div>  
+</div>
+
+<ng-include src="config.domainPath+'/shared/footer.html'"></ng-include>

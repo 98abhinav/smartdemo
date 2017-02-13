@@ -1,0 +1,20 @@
+<table class="view_details_generic_table" cellspacing="0" cellpadding="0">
+    <thead>
+        <tr>
+            <th>
+                <span class="search_header" >Actions</span>                                                
+                <a class="search_button" ng-click="startSearchRHS()" ng-show="searchIconRHS"><img src="{{config.domainPath}}/assets/images/search_list.png"  alt=""/></a>
+                <div class="search_window animate_sideways" ng-show="searchBoxRHS">                                                    
+                    <input type="text" focus-on="focusInput" ng-model="search" placeholder="Search">
+                    <a class="close_button" ng-click="endSearchRHS()">&times;</a>                                                    
+                </div>
+                <abbr title="Sort"><span class="sort_icon" ng-if="rolePolicy.resourceActions != null"  ></span></abbr>
+            </th>
+    	</tr>
+    </thead>
+    <tbody id="scrolltable" >                                        
+        <tr resources-repeat-directive ng-repeat='action in actions'  ng-click='toggleItemSelectAction(action)' ng-class="{selectedActive: action.isSelected}" > 
+            <td ng-if="!resourceAction.resource.group">{{action.name}}</td>
+        </tr>
+    </tbody>                                    
+</table>

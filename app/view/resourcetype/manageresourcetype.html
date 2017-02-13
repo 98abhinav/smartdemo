@@ -1,0 +1,205 @@
+<ng-include src="config.domainPath+'/shared/header.html'"></ng-include>
+
+<div class="navigationpage_wrapper right_subheader page_wrapper" ng-controller="manageResourceTypeController">
+    <div class="site-canvas">
+        <ng-include src="config.domainPath+'/shared/menu.html'"></ng-include>
+        <div class="container-fluid slide_up">
+            <div class="navright_container">
+                <ul class="page_path">
+                    <li><a href="{{config.urlPath}}/home">Home </a></li>
+                    <li><a href="{{config.urlPath}}/home/{{applicationId}}">{{applicationName}}</a></li>
+                    <li><a href="{{config.urlPath}}/{{applicationId}}/resourcetypes">Resource Types</a></li>
+                    <li class="last">{{mode|capitalize}}</li>
+                </ul>           
+                <div class="header_info">
+                    <h3 class="page_heading">
+                        <span class="header">Resource Type</span>
+                    </h3>
+
+                    <div class="clearfix"></div>				
+                </div>
+                <div class="pageform_wrapper dual_map">
+                    <div class="form_container slide_tab">
+                        <form name="resourceTypeForm" ng-submit="submitData(resourceType, mode, resourceTypeForm.$valid)" novalidate> 
+                            <div class="form_container overlayform_container"> 
+                                <!-- <div ng-show="error" class="alert alert-danger">{{error}}</div> -->
+                                <!--div class="addaction">
+                                    <tags-input name="resourceTypeActions" ng-model="resourceType.actions" 
+                                                display-property="name"
+                                                placeholder="Add Action and Press Enter"
+                                                min-tags="1"
+                                                add-from-autocomplete-only="true">
+                                        <auto-complete source="loadActions($query)"></auto-complete>
+                                    </tags-input>
+                                    <span class="error" style="color:red" ng-show="resourceTypeForm.actions.$dirty && resourceTypeForm.actions.$valid == false || submitted">
+                                        <span ng-show="resourceTypeForm.actions.$error.required">Action is required.</span>
+                                    </span>
+                                    <div class="clearfix"></div>
+                                </div-->
+                                <md-content class="md-padding">
+                                    <div  ng-class="{true: 'error'}[submitted && resourceTypeForm.ctrlemail.$invalid]"> 
+                                        <md-input-container flex>
+                                            <label class="control-group">Name<em>*</em></label>
+                                            <div><h1>{{model.message}}</h1></div>
+                                            <input type="text" ng-model="resourceType.name" name="resourceTypeName" ng-minlength="1" required>
+                                            <span class="error" style="color:red" ng-show="resourceTypeForm.resourceTypeName.$dirty && resourceTypeForm.resourceTypeName.$invalid || submitted">
+                                                <span ng-show="resourceTypeForm.resourceTypeName.$error.required">Name is required.</span>
+                                                <!--<span ng-show="resourceTypeForm.resourceTypeName.$error.minlength">Name must be more than 5 characters.</span>--> 
+                                            </span>
+                                        </md-input-container>
+                                        <br>
+                                        <label class="control-group">Hierarchical</label>
+                                        <div ng-if="mode == 'add'">
+                                            <input id="hierarchical1" name="radios" ng-model="resourceType.hierarchical" ng-value="true" type="radio">
+                                            <label for="hierarchical1"><img class="icon" src="{{config.domainPath}}/assets/images/support_icon.png" width="32" height="25"/> Supports Resource Hierarchy</label>
+                                            <input id="hierarchical2" name="radios" ng-model="resourceType.hierarchical"  ng-value="false" type="radio">
+                                            <label for="hierarchical2"><img class="icon" src="{{config.domainPath}}/assets/images/dont_support_icon.png" width="32" height="25"/> Don't Support Resource Hierarchy</label>
+                                        </div>
+                                        <div ng-if="mode == 'edit'">
+                                            <div ng-if="resourceType.hierarchical == true" class="active_btn_value"><img class="icon" src="{{config.domainPath}}/assets/images/support_icon.png" width="32" height="25"/>&nbsp;&nbsp;&nbsp;Supports Resource Hierarchy</div>
+                                            <div ng-if="resourceType.hierarchical == false" class="active_btn_value"><img class="icon" src="{{config.domainPath}}/assets/images/dont_support_icon.png" width="32" height="25"/>&nbsp;&nbsp;&nbsp;Don't Support Resource Hierarchy</div>
+                                        </div>
+                                    </div>
+                                    <div class="height_40"></div>
+                                    <label class="control-group">Assign Actions</label>
+                                    <div class="list_serach map_deligated">
+                                        <div id="usermainContent" class="slide_tab_content" >
+                                            <div class="dual_list_container listdeligated">
+                                                <div class="list_container" st-pipe="callServer" st-table="sourceActions">
+
+                                                    <div class="search_box full">
+                                                        <span class="search_header">Actions</span>
+                                                        <a class="search_button" ng-click="startSearch('usersource')" ng-if="usersourcesearchIcon"><img src="{{config.domainPath}}/assets/images/search_list.png" alt=""/></a>
+
+                                                        <div class="search_window animate_sideways" ng-show="usersourcesearchBox">                                        
+                                                            <input class="text_white" type="text" focus-on="usersourcefocusInput"  st-search="name"  placeholder="Search">
+                                                            <a class="close_button"  st-refresh='name' ng-click="endSearch('usersource')">&times;</a>
+                                                        </div>
+
+                                                        <div class="search_sort_right">
+<abbr title="Sort">
+                                                            <span  class="sort_icon"  st-sort-default="{{sortType_action}}" st-skip-natural="true" st-sort="name" ></span>
+
+</abbr>
+                                                        </div>
+                                                    </div>
+                                                    <div id='unassignscroll'>
+                                                        <ul ng-show="!isLoading">
+                                                            <li id='{{item.id}}'  ng-repeat='item in sourceActions' ng-click='selectSourceItem(item);
+                                                                                    isSelectedSource(item);'  ng-class="{mapped:item.mark == 1}">
+
+                                                                <span class='right_list_text'>{{item.name}} </span>
+                                                            </li>
+                                                        </ul>
+                                                        <ul ng-if="sourceActions == null" class="loader-area">
+                                                            <li><div class="alert">{{error}}</div></li>
+                                                        </ul>
+                                                        <ul  ng-show="isLoading" class="text-center loader-area">
+                                                            <li><div  class="loading-indicator"></div></li>
+                                                        </ul>
+
+
+                                                        <div class="clearfix"></div>
+                                                    </div>
+
+                                                    <div class="paginationarea" ng-if="sourceActions != null">
+                                                        <div class="left-pagination" st-pagination="" st-items-by-page="itemsByPage_action" ></div>
+                                                        <div class="page_change">                                                
+                                                            <select ng-model="itemsByPage_action"  name="itemsByPage_action">
+                                                                <option ng-repeat="data in paginationPageSizes" value="{{data}}" ng-selected="itemsByPage_action == data">{{data}}</option>
+                                                            </select>               
+                                                        </div>
+                                                    </div>
+                                                    <div class="paginationarea" ng-if="sourceActions == null">
+                                                        <div class="left-pagination"  ></div>
+                                                        <div class="page_change">                                              
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="list_btn_container">
+                                                    <img  src="{{config.domainPath}}/assets/images/right_add.png"  ng-click='addItem(selectedSourceItems)' title="Add" alt="Add" /><br/><br/><br/><br/>
+                                                    <img  src="{{config.domainPath}}/assets/images/left_remove.png"  ng-click='removeItem(selectedTargetItems)' title="Remove" alt="Remove" /><br/><br/><br/><br/>
+                                                    <img  src="{{config.domainPath}}/assets/images/reset_assign.png"  ng-click='resetItem()' title="Reset" alt="Reset" />
+
+                                                </div>
+                                                <div class="right list_container" st-table="resourceGrouptargetList" st-safe-src="targetActions">
+                                                    <div class="search_box full">
+                                                        <span class="search_header">Selected Actions</span>
+                                                        <a class="search_button" ng-click="startSearch('userfulltarget')" ng-show="userfulltargetsearchIcon"><img src="{{config.domainPath}}/assets/images/assign_search.png" width="15" height="15" alt=""/></a>
+
+                                                        <div class="search_window animate_sideways" ng-show="userfulltargetsearchBox">
+
+                                                            <input type="text" focus-on="userfulltargetfocusInput" st-search="name"  placeholder="Search">
+                                                            <a class="close_button" st-refresh='name' ng-click="endSearch('userfulltarget')">&times;</a>
+                                                        </div>
+
+                                                        <div class="search_sort_right">
+<abbr title="Sort">
+                                                            <span  class="sort_icon"  st-sort-default="{{sortType}}" st-skip-natural="true" st-sort="name" ></span>
+
+</abbr>
+                                                        </div>
+                                                    </div>
+
+                                                    <div id='assignscroll'>
+                                                        <ul>
+                                                            <li  ng-repeat='item in resourceGrouptargetList' ng-click='selectTargetItem(item)' ng-class="{selectedActive: isSelectedTarget(item)}">
+                                                                <span class='right_list_text'>{{item.name}}</span>
+                                                            </li>
+                                                        </ul>
+                                                        <ul ng-if="targetActionsLength == 0" class="loader-area">
+                                                            <li><div class="alert">{{dispmsg}}</div></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="paginationarea" ng-if="targetActionsLength > 0">
+                                                        <div class="left-pagination" st-pagination="" st-items-by-page="itemsByPage" ></div>
+                                                        <div class="page_change">                                                
+                                                            <select ng-model="itemsByPage"  name="itemsByPage">
+                                                                <option ng-repeat="data in paginationPageSizes" value="{{data}}">{{data}}</option>
+                                                            </select>               
+                                                        </div>
+                                                    </div>
+                                                    <div class="paginationarea" ng-if="targetActionsLength == 0">
+                                                        <div class="left-pagination"  ></div>
+                                                        <div class="page_change">                                                
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="button_group"> 
+                                        <div class="button_group"> 
+                                            <div  ng-click="submitted = true">
+                                                <span class="ng-scope"> <md-button>{{translation.resourcetype.SAVE}}</md-button></span>
+                                            </div>
+                                            <div>
+                                                <span class="ng-scope"> <md-button type='reset' ng-click="redirectList();">{{translation.resourcetype.CANCEL}}</md-button></span>
+                                            </div>
+                                        </div> 
+                                    </div>                                
+                                </md-content>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </form>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>  
+</div>
+
+<ng-include src="config.domainPath+'/shared/footer.html'"></ng-include>

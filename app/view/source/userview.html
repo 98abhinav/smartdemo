@@ -1,0 +1,38 @@
+<ng-include src="config.domainPath+'/shared/header.html'"></ng-include>
+<div class="navigationpage_wrapper right_subheader page_wrapper" ng-controller="viewUserController">
+    <div class="site-canvas">
+        <ng-include src="config.domainPath+'/shared/menu.html'"></ng-include>
+        <div class="container-fluid">
+            <div class="navright_container">
+                <ul class="page_path">
+                    <li><a href="{{config.urlPath}}/home">Home </a></li>
+                    <li><a href="{{config.urlPath}}/users/{{sourceId}}/search">Users Search</a></li>
+                    <li class="last">View</li>
+                </ul>
+                <div class="header_info">
+                    <h2 class="page_heading">
+                        <span class="header">Users - View</span>                        
+                    </h2>             
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="pageform_wrapper form_container">
+                    <div class="advance_view"> 
+                        <div  class="view_details view_column" ng-repeat='displayKey in notSorted(displayColumns)' ng-init="displayValue = displayColumns[displayKey]" >                            
+                            <label>{{displayValue}}</label>
+                            <p ng-bind-html='userDetails[displayKey]'></p>
+                        </div>                       
+                        <div class="button_group">
+                            <span class="ng-scope">
+                                <md-button type='reset' ng-click="redirectList();">{{translation.source.CANCEL}}</md-button>
+                            </span> 
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<ng-include src="config.domainPath+'/shared/footer.html'"></ng-include>

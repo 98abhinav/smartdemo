@@ -1,0 +1,196 @@
+<ng-include src="config.domainPath+'/shared/header.html'"></ng-include>
+<div class="navigationpage_wrapper" ng-controller="sourceController" >
+    <div class="site-canvas">
+        <ng-include src="config.domainPath+'/shared/menu.html'"></ng-include>
+        <div class="container-fluid" arrow-selector>
+            <div class="navright_container listpage_container" >
+                <ul class="page_path">
+                    <li><a href="{{config.urlPath}}/home">Home </a></li>
+                    <li class="last">Sources</li>
+                </ul>
+                <div class="header_info">                
+                    <h2 class="page_heading">
+                        <span class="header">Sources</span>
+                    </h2>             
+
+                    <div class="clearfix"></div>				
+                </div> 
+                <!--button ng-click="confirm()" type="button" class="am-btn am-btn-warning am-btn-block" >Try it!</button-->
+                <div class="view_details_field_spacer"></div>
+                <div class="list_boxshadow">
+                    <div class="pageform_wrapper">
+
+                        <div class="list_view_container">
+                            <div class="list_container grid_box">                                
+                                <table st-pipe="callServer" st-table="sources"  class="smart-table table table-striped" cellspacing="0" cellpadding="0">
+                                    <thead>
+                                        <tr>
+                                            <th class="search_box full">                                                
+                                                <span class="search_header">Name</span> 
+                                                <a class="search_button" ng-click="startSearch()" ng-show="searchIcon"><img src="{{config.domainPath}}/assets/images/search_list.png"  alt=""/></a>
+                                    <div class="search_window animate_sideways" ng-show="searchBox">                                        
+                                        <input type="text" focus-on="focusInput" st-search="name"  ng-model="search" placeholder="Search">
+                                        <a class="close_button" st-refresh='name' ng-click="endSearch()">&times;</a>
+                                    </div>
+                                    <abbr title="Sort"><span  class="sort_icon" ng-if="sources != null" st-sort-default="{{sortType_source}}" st-skip-natural="true" st-sort="name" ></span>
+                                    </abbr>
+                                    </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="scrolltable">
+                                        <tr ng-show="!isLoading"  ng-repeat='sourceDetails in sources' ng-click='selectSource(sourceDetails, $index)' ng-class="{selectedActive: $index == selectedRow}" > 
+                                            <td>{{sourceDetails.name}}</td>
+                                        </tr>                                       
+                                        <tr ng-if="sources == null"><td class="alert">{{error}}</td></tr>
+                                        <tr ng-show="isLoading">
+                                            <td  class="text-center loader-area"><div ng-show="isLoading" class="loading-indicator"></div> </td>
+                                        </tr>
+                                    </tbody>
+
+                                    <tfoot class="pagination-container" ng-if="sources != null">
+                                        <tr>
+                                            <td class="paginationarea">
+                                                <div class="left-pagination" st-pagination="" st-items-by-page="itemsByPage" ></div>
+                                                <div class="page_change">                                                
+                                                    <select ng-model="itemsByPage" id="itemsByPage" name="itemsByPage" ng-change="setItemsByPage()">
+                                                        <option ng-repeat="data in paginationPageSizes" value="{{data}}" ng-selected="itemsByPage == data">{{data}}</option>
+                                                    </select>               
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+
+                            <div class="view_container">
+                                <div class="listgridheader">
+                                    <!-- <a href="{{config.urlPath}}/{{module}}/delete/{{selectedSource.id}}" class="primary" ng-click="confirm()"><img src="{{config.domainPath}}/assets/images/delete_list.png"><span class="action">Delete</span></a> -->
+                                    <a ng-if="superaccess[module] == accessAdmin && sources != null" href="javascript:;" ng-click="confirmDelete(selectedSource.id)" class="primary ico_delete"><!--<img src="{{config.domainPath}}/assets/images/delete_list.png">--><span class="action">Delete</span></a>
+                                    <a ng-if="superaccess[module] == accessAdmin && sources != null" href="{{config.urlPath}}/{{module}}/edit/{{selectedSource.id}}" class="primary w68 ico_edit"><!--<img src="{{config.domainPath}}/assets/images/edit_list.png">--><span class="action">Edit</span></a>
+                                    <a ng-if="superaccess[module] == accessAdmin" href="{{config.urlPath}}/{{module}}/add"  class="primary w68 ico_add"><!--<img src="{{config.domainPath}}/assets/images/add_list.png">--><span class="action">Add</span></a>
+
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div  class="view_details" >
+                                    <p class="scrollrightdiv" ng-if="sources == null"> {{error}}</p>
+                                    <div id="scrollrightdiv" class="scrollrightdiv" ng-if="sources != null">
+
+                                        <div class="view_dtl_header">
+                                            <img ng-if="selectedSource.connectionType == 'LDAP'" src="{{config.domainPath}}/assets/images/source-ldap.png" title="LDAP">
+                                            <img ng-if="selectedSource.connectionType == 'RDBMS'" src="{{config.domainPath}}/assets/images/source-rdbms.png" title="RDBMS">
+                                            <img ng-if="selectedSource.connectionType == 'CUSTOM'" src="{{config.domainPath}}/assets/images/source-custom.png" title="CUSTOM">
+                                            <h4>{{ selectedSource.name}}</h4>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <md-button ng-click="goToUsers(selectedSource.id);">{{translation.source.USERS}}</md-button> 
+                                            <span class="btn_devider">|</span>
+                                            <md-button ng-click="goToGroups(selectedSource.id);">{{translation.source.GROUPS}}</md-button>
+
+                                        </div>
+
+                                        <label>Connection Type</label>
+                                        <p>{{ selectedSource.connectionType}}</p><div class="view_details_field_spacer"></div>
+
+                                        <label>Connection Manager</label>
+                                        <p>{{ selectedSource.connectionManager}}</p><div class="view_details_field_spacer"></div>
+
+                                        <label>Connection Attributes</label>
+                                        <div  st-table="sourceAttributes" st-safe-src="connectionAttributes" ng-class="(selectedSourceCACount> 5) ? 'view-sub-list-wrapper' : 'view-sub-list-wrapper-less'">                                                                                
+                                            <div class="view-sub-list view-sub-list-header-right" >
+                                                <div  ng-if="selectedSourceCACount > rightPageinationPerPage" class="search_box"> 
+                                                    <span class="search_header">Attributes</span> 
+                                                    <!--a class="search_button w5per" ng-click="startViewSearch('attribute')" ng-if="attributesearchIcon"><img src="{{config.domainPath}}/assets/images/assign_search.png" alt=""/></a>
+
+                                                    <div class="search_window animate_sideways" ng-show="attributesearchBox">
+                                                    <input type="text" focus-on="attributefocusInput"  ng-model="search_user" st-search=""  placeholder="Search">
+                                                    <a class="close_button" st-refresh='name' ng-click="endViewSearch('attribute')">&times;</a> 
+                                                    </div-->
+
+                                                    <div  class="right-pagination" st-pagination="" st-items-by-page="rightPageinationPerPage" st-template="shared/right-pagination.html" ></div>
+                                                    <!--div class="search_sort_right"> 
+                                                        <abbr title="Sort"><span  class="sort_icon"  st-sort-default="{{sortType}}" st-skip-natural="true" st-sort="" ></span> 
+</abbr>
+                                                    </div-->
+                                                </div>  
+                                                <div ng-if="selectedSourceCACount <= rightPageinationPerPage" class="full search_box"> 
+
+                                                    <span class="search_header">Attributes</span> 
+                                                    <!--a class="search_button w5per" ng-click="startViewSearch('attribute')" ng-if="attributesearchIcon"><img src="{{config.domainPath}}/assets/images/assign_search.png" alt=""/></a>
+
+                                                    <div class="search_window animate_sideways" ng-show="attributesearchBox">
+                                                    <input type="text" focus-on="resourceactionfocusInput"  ng-model="search_user" st-search=""  placeholder="Search">
+                                                    <a class="close_button" st-refresh='name' ng-click="endViewSearch('attribute')">&times;</a> 
+                                                    </div>
+                                                    <div class="search_sort_right"> 
+                                                        <span  class="sort_icon"  st-sort-default="{{sortType}}" st-skip-natural="true" st-sort="" ></span>
+                                                    </div-->
+                                                </div>
+
+                                            </div>
+                                            <ul ng-if="sourceAttributes.length != 0" ng-class="{remove_last_border:selectedSourceCACount > rightPageinationPerPage}">                                                        
+                                                <li ng-repeat="attributevalue in sourceAttributes" title="{{attributevalue}}">{{attributevalue}}</li>
+                                            </ul>
+                                            <ul ng-if="sourceAttributes.length == 0">
+                                                <li><i>No Records</i></li>
+                                            </ul>
+
+                                        </div>
+
+                                        <div class="view_details_field_spacer"></div>
+
+                                        <label>User Display Attributes</label>
+                                        <div ng-class="(selectedSourceUserDACount > 8) ? 'view-sub-list-wrapper' : 'view-sub-list-wrapper-less'">
+                                            <div class="view-sub-list">
+                                                <span>Attributes</span>
+                                            </div>
+                                            <ul ng-if="selectedSourceUserDACount != 0">
+                                                <li ng-repeat="(attributename,attributevalue) in selectedSource.userDisplayAttributes">{{attributename}} : {{attributevalue}}</li>
+                                            </ul>
+                                            <ul ng-if="selectedSourceUserDACount == 0">
+                                                <li><i>No Attributes Found</i></li>
+                                            </ul>
+                                            <div class="clearfix"></div>
+                                            <br>
+                                            <label>Group Display Attributes</label>
+                                            <div ng-class="(selectedSourceGroupDACount > 8) ? 'view-sub-list-wrapper' : 'view-sub-list-wrapper-less'">
+                                                <div class="view-sub-list">
+                                                    <span>Attributes</span>
+                                                </div>
+                                                <ul ng-if="selectedSourceGroupDACount != 0">
+                                                    <li ng-repeat="(attributename,attributevalue) in selectedSource.groupDisplayAttributes">{{attributename}} : {{attributevalue}}</li>
+                                                </ul>
+                                                <ul ng-if="selectedSourceGroupDACount == 0">
+                                                    <li><i>No Attributes Found</i></li>
+                                                </ul>
+                                                <div class="clearfix"></div>
+                                                <div class="clearfix"></div>
+                                            </div><div class="view_details_field_spacer"></div>
+
+                                            <!-- <label>User Search Default Attribute</label>
+                                            <p>{{ selectedSource.searchAttributes.userSearchDefaultAttr !=null ? selectedSource.searchAttributes.userSearchDefaultAttr : "---"}}</p><div class="view_details_field_spacer"></div>
+                                            
+                                            <label>Group Search Default Attribute</label>
+                                            <p>{{ selectedSource.searchAttributes.groupSearchDefaultAttr !=null ? selectedSource.searchAttributes.groupSearchDefaultAttr : "---"}}</p><div class="view_details_field_spacer"></div>
+                                            -->
+                                            <!--<div class="form_container button_group_right">
+                                                <span class="button_first_holder"><md-button ng-click="goToUsers(selectedSource.id);">{{translation.source.USERS}}</md-button></span>
+                                                <span class="button_holder"><md-button ng-click="goToGroups(selectedSource.id);">{{translation.source.GROUPS}}</md-button></span>
+                                            </div>-->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="clearfix"></div>
+            </div>    
+        </div>
+    </div>
+</div>
+<ng-include src="config.domainPath+'/shared/footer.html'"></ng-include>

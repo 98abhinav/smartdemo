@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Entitlements Server</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon" />
+        <base href="/ESAdmin/">
+
+        <!--link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/angular_material/0.7.1/angular-material.min.css"-->
+        <link href="assets/plugins/angular-material.min.css" type="text/css" rel="stylesheet">
+
+        <!-- Google Fonts -->
+        <link href="assets/css/font.css" type="text/css" rel="stylesheet">
+        <!--link href='http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'-->
+        <link href="assets/css/reset.css" type="text/css" rel="stylesheet">
+        <link href="assets/css/bootstrap.css" type="text/css" rel="stylesheet">
+        <!--link rel="stylesheet" href="assets/plugins/css/ng-tags-input.min.css" type="text/css"/-->
+        <link href="assets/plugins/ngProgress.css" type="text/css" rel="stylesheet">
+        <!-- <link rel="stylesheet" type="text/css" href="assets/plugins/angular-toastr.css"> -->
+        <link rel="stylesheet" type="text/css" href="assets/plugins/angular-toastr/angular-toastr.css">
+        <!--link rel="stylesheet" type="text/css" href="assets/plugins/overlay.css" />
+        <link rel="stylesheet" type="text/css" href="assets/plugins/sweet-alert.css" /-->
+        <link rel="stylesheet" type="text/css" href="assets/plugins/acute.select/acute.select.css" />
+        <link rel="stylesheet" type="text/css" href="assets/plugins/v-accordion/v-accordion.css" />
+        <link rel="stylesheet" type="text/css" href="assets/plugins/select.css" />
+
+        <!-- Custom Styles # These should always be loaded in the end -->
+        <link href="assets/css/style.css" type="text/css" rel="stylesheet">
+        <link href="assets/css/responsive.css" type="text/css" rel="stylesheet">
+
+    </head>
+
+    <body>
+        <div id="toastrOverlay"></div>
+        <div class="main_wrapper">
+            <ng-view>
+                <div id="progress_content" class="fullwidth">
+                    <span class="expand"></span>
+                </div>
+            </ng-view>
+        </div>
+        <script type="text/javascript"  data-main="app/main" src="assets/js/require.js" ></script>
+    </body>
+</html>

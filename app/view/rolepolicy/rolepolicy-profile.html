@@ -1,0 +1,111 @@
+<style>
+
+    .avc {
+	  font-family: roboto;
+	  font-weight: 300;
+	  overflow: hidden;
+	  border-bottom: 0;
+	  border-right: 1px solid #E5E5E5;
+	  height: 506px;
+	}	
+	.effect_selected {
+	  background-color: #3293ff;
+	  display: inline-block;
+	  margin: 10px 0px 0px 0px;
+	  padding: 4px 12px;
+	  border-color: black;
+	  width: 200px;
+	  border-width: 1px;
+	  border-style: solid;	  
+	}
+	.effect_not_selected {
+	  display: inline-block;
+	  margin: 10px 0px 0px 0px;
+	  padding: 4px 12px;
+	  border-color: black;
+	  width: 200px;
+	  border-width: 1px;
+	  border-style: solid;	 
+	}  
+.right_justified {
+	float: right;
+}
+
+.checkbox_resource {
+    padding: 0px 0px 0px 0px!important;
+}
+
+</style>
+
+<ng-include src="config.domainPath+'/shared/header.html'"></ng-include>
+  
+<div class="navigationpage_wrapper right_subheader page_wrapper" ng-controller="manageRolePoliciesController">
+  <div class="site-canvas">
+  	<ng-include src="config.domainPath+'/shared/menu.html'"></ng-include>
+    <div class="container-fluid slide_up">
+        <div class="navright_container">
+            <ul class="page_path">
+                <li><a href="{{config.urlPath}}/home">Home </a></li>
+                <li><a href="{{config.urlPath}}/home/{{applicationId}}">{{applicationName}}</a></li>
+                <li><a href="{{config.urlPath}}/{{applicationId}}/policies/{{policyType}}">{{policyType| limitTo:policyType.length-1|capitalize}} Policies</a></li>
+                <li class="last">{{mode| capitalize}}</li>
+            </ul>           
+            <div class="header_info">
+                <h3 class="page_heading">
+                    <span class="header">{{policyType| limitTo:policyType.length-1|capitalize}} Policy</span>
+                </h3>
+
+                <div class="clearfix"></div>				
+            </div>
+            <div class="pageform_wrapper">
+                <div class="form_container slide_tab">
+					<table class="status_tab">
+					  <tr>
+					    <br/>
+					    <td ng-repeat="s in stage">
+			    			<div ng-show="activeStage==($index+1)" class="active_tab"><img src="assets/images/current_wizard.png">{{$index+1}}. {{s.name}}</div>
+			    			<div ng-show="(activeStage!=($index+1) && s.status =='complete')" class="complete_tab" ng-click="goToStage($index+1);"><img src="assets/images/completed_wizard.png">{{$index+1}}. {{s.name}}</div>
+			    			<div ng-show="activeStage!=($index+1) && !s.status" class="pending_tab"><img src="assets/images/default_wizard.png">{{$index+1}}. {{s.name}}</div>
+				    	</td>
+					  </tr>
+					</table>     
+	                <form name="authzPolicyForm" novalidate>
+	                	<md-content class="md-padding"> 
+						  <div ng-show="activeStage==1">
+						  	<ng-include src="config.domainPath+'/app/view/rolepolicy/rolepolicy-prof.html'"></ng-include>
+						  </div>
+						  <div ng-show="activeStage==2">
+						  	<ng-include src="config.domainPath+'/app/view/rolepolicy/rolepolicy-roles.html'"></ng-include>
+	                      </div>
+						  <div ng-show="activeStage==3">
+						  	<ng-include src="config.domainPath+'/app/view/rolepolicy/rolepolicy-targets.html'"></ng-include>
+						  </div>
+						  <div ng-show="activeStage==4">
+						  	<ng-include src="config.domainPath+'/app/view/rolepolicy/rolepolicy-function.html'" ></ng-include>
+						  </div>
+						  <div ng-show="activeStage==5">
+						  	<ng-include src="config.domainPath+'/app/view/rolepolicy/rolepolicy-obligations.html'"></ng-include>
+	   					  </div>
+
+					      <div class="button_group"> 
+					        <div class="button_group"> 
+					            <div  ng-click="submitted = true">
+					                <span ng-show="activeStage<5" class="ng-scope"> <md-button ng-disabled="!isStageComplete()" ng-click="nextStage()">{{translation.rolePolicy.NEXT}}</md-button></span>
+					            </div>
+					            <div    ng-show="mode=='edit' || activeStage==5" ng-click="submitted = true">
+					                <span class="ng-scope"> <md-button ng-click="submitData(authzPolicy, mode)">{{translation.rolePolicy.SAVE_AND_COMPLETE}}</md-button></span>
+					            </div>
+					            <div>
+					                <span ng-show="activeStage>1"class="ng-scope"> <md-button ng-click="goToStage(activeStage-1)">{{translation.rolePolicy.PREVIOUS}}</md-button></span>
+					            </div>					            
+					            <div>
+					                <span class="ng-scope"> <md-button type='reset' ng-click="redirectList();">{{translation.rolePolicy.CANCEL}}</md-button></span>
+					            </div>
+					        </div> 
+					      </div>
+					 </md-content>
+					<div class="clearfix"></div>	
+				</form>
+		 		</div>
+		 	</div>
+<ng-include src="config.domainPath+'/shared/footer.html'"></ng-include>

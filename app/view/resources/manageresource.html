@@ -1,0 +1,81 @@
+<ng-include src="config.domainPath+'/shared/header.html'"></ng-include>
+
+<div class="navigationpage_wrapper right_subheader page_wrapper" ng-controller="manageResourcesController">
+    <div class="site-canvas">
+        <ng-include src="config.domainPath+'/shared/menu.html'"></ng-include>
+        <div class="container-fluid slide_up">
+            <div class="navright_container">
+                <ul class="page_path">
+                    <li><a href="{{config.urlPath}}/home">Home </a></li>
+                    <li><a href="{{config.urlPath}}/home/{{applicationId}}">{{applicationName}} </a></li>
+                    <li><a href="javascript:;" ng-click="redirectList();">Resources</a></li>
+                    <li class="last">{{mode|capitalize}}</li>
+                </ul>           
+                <div class="header_info">
+                    <h3 class="page_heading">
+                        <span class="header">Resource</span>
+                    </h3>
+
+                <div class="clearfix"></div>				
+            </div>
+            <div class="pageform_wrapper">
+                <div class="form_container">
+                    <form  name="resourcesForm" novalidate ng-submit="submitData(resource, mode, resourcesForm.$valid)"> 
+                    	<div>
+                            <label class="control-group plain_text_label">Resource Type</label>
+                            <p class="plain_text">{{typeName}}</p>
+                        </div>
+                        <div class="view_details_field_spacer"></div>
+                        <div ng-if="treeNav.length">
+                        	<span ng-repeat="nav in treeNav">{{nav.name}} <span ng-if="!$last"> / </span> </span>
+                        </div>
+                        <div ng-class="{true: 'error'}">
+                            <md-input-container flex>
+                                <label class="control-group">Name<em>*</em></label>
+                                <div><h1>{{model.message}}</h1></div>
+                                <input type="text" ng-model="resource.name" name="resourceName" required>
+                                <span class="error" style="color:red" ng-show="resourcesForm.resourceName.$dirty && resourcesForm.resourceName.$invalid || submitted">
+                                    <span ng-show="resourcesForm.resourceName.$error.required">Name is required.</span>
+                                </span>
+                            </md-input-container>
+                        </div>
+                        <div  ng-class="{true: 'error'}"> 
+                            <md-input-container flex>
+                                <label>Description</label>
+                                <textarea ng-model="resource.description" columns="1" rows="2" name="resourceDescription"></textarea>                                                           
+                            </md-input-container>
+                        </div>
+                        <div class="button_group">
+                        	<input type="hidden" ng-model="typeID" name="resourceTypeID">
+                            <input type="hidden" ng-model="parentID" name="resourceParentID">
+                            <div ng-if="resourcetypehierarchical && mode=='add'" ng-click="saveAndAddChild();">
+                                <span class="ng-scope"> <md-button>{{translation.resource.SAVE_ADD_CHILD}}</md-button></span>
+                            </div>
+                            <div ng-if="resourcetypehierarchical && mode=='add'" ng-click="saveAndAddSibling();">
+                                <span class="ng-scope"> <md-button>{{translation.resource.SAVE_ADD_SIBLING}}</md-button></span>
+                            </div>
+                            <div ng-if="!resourcetypehierarchical && mode=='add'" ng-click="saveAndAddSibling();">
+                                <span class="ng-scope"> <md-button>{{translation.resource.SAVE_ADD_NEW}}</md-button></span>
+                            </div>
+                            <div ng-click="submitted = true">
+                                <span class="ng-scope"> <md-button>{{translation.resource.SAVE}}</md-button></span>
+                            </div>
+                            <div>
+                                <span class="ng-scope"> <md-button type='reset' ng-click="redirectList();">{{translation.resource.CANCEL}}</md-button></span>
+                            </div>
+                        </form>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>  
+</div>
+
+<ng-include src="config.domainPath+'/shared/footer.html'"></ng-include>

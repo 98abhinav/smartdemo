@@ -1,0 +1,15 @@
+<!--nav ng-if="pages.length >= 2">
+    <ul class="pagination"> 
+    <li ng-repeat="page in pages" ng-class="{active: page==currentPage}"><a ng-click="selectPage(page)">{{page}}</a></li>
+    </ul>
+</nav-->
+
+<nav>
+  <ul class="pagination">
+    <li><a  ng-click="currentPage!=1?selectPage(1):''"><img src="assets/images/first.png"  alt=""/></a>
+    </li><li><a ng-click="selectPage(currentPage - 1)"><img src="assets/images/previous.png"  alt=""/></a>
+    </li><li><a><page-select></page-select>&nbsp;&nbsp;of&nbsp;&nbsp;{{numPages}}</a>
+    </li><li><a ng-click="selectPage(currentPage + 1)"><img src="assets/images/next.png"  alt=""/></a>
+    </li><li><a  ng-click="currentPage!=numPages?selectPage(numPages):''"><img src="assets/images/last.png"  alt=""/></a></li>
+  </ul>
+</nav>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html ng-app="app">
+    <head >
+        <title>Entitlements Server - Login</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon" />
+        <!--base href="/ESAdmin/loadcontent.html/"-->
+
+        <!--link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/angular_material/0.7.1/angular-material.min.css"-->
+        <link href="assets/plugins/angular-material.min.css" type="text/css" rel="stylesheet">
+
+        <!-- Google Fonts -->
+        <link href="assets/css/font.css" type="text/css" rel="stylesheet">
+        <!--link href='http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'-->
+        <link href="assets/css/reset.css" type="text/css" rel="stylesheet">
+        <link href="assets/css/bootstrap.css" type="text/css" rel="stylesheet"> 
+        <!-- Custom Styles # These should always be loaded in the end -->
+        <link href="assets/css/style.css" type="text/css" rel="stylesheet">
+        <link href="assets/css/responsive.css" type="text/css" rel="stylesheet">
+        <style>
+            .main_wrapper { background:#f7f7f7!important;}
+        </style>
+    </head>
+    <body class="main_wrapper">
+        <div class="login_wrapper" ng-controller="loginController" ng-cloak>
+            <div class="container">
+                <div class="dual_border loginbox">
+                    <h1 class="login_content"><a href="#" class="logo"><img src="{{config.domainPath}}/assets/images/login_logo.png" width="34" height="34" alt=""/></a>Entitlements Server</h1>
+                    <div class="form_wrapper">
+                        <div class="form_container"> 
+                            <md-content class="md-padding">
+                                <!--form ng-app name="loginForm" novalidate-->
+
+                                <div ng-show="error" class="alert alert-danger alert-dismissable" role="alert" ng-bind="error">
+                                    <!--button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button-->
+
+                                </div>
+
+                                <form name="loginForm" ng-submit="login(username, password)" role="loginForm" novalidate>
+                                    <!-- ng-app name="loginForm" novalidate  ng-submit="login(username,password)" role="loginForm"-->
+
+                                    <div class="email" ng-class="{true: 'error'}[submitted && loginForm.username.$invalid]"> 
+
+
+
+                                        <md-input-container flex>
+                                            <label class="control-group">User ID</label>
+                                            <input class="email_input" type="text" id="username" ng-model="username" name="username" required>
+                                            <span class="error" style="color:red" ng-show="loginForm.username.$dirty && loginForm.username.$invalid || submitted">
+                                                <span ng-show="loginForm.username.$error.required">User ID is required.</span>
+                                                <!--span ng-show="loginForm.username.$error.email">Invalid email address.</span-->
+                                            </span>
+
+                                        </md-input-container>
+                                    </div>
+                                    <div class="password" ng-class="{true: 'error'}[submitted && loginForm.password.$invalid]"> 
+                                        <md-input-container flex>
+                                            <label>Password</label>
+                                            <input class="form-control email_input" type="password" name="password" id="password" ng-model="password" required />
+                                            <!--input type="password" id="password" ng-model="password" name="password" minlength="8" required-->
+                                            <span class="error" style="color:red" ng-show="loginForm.password.$dirty && loginForm.password.$invalid || submitted">
+                                                <span ng-show="loginForm.password.$error.required">Password is required.</span>
+                                                <!--span ng-show="loginForm.password.$error.minlength">Enter at least 8 characters.</span-->
+
+                                            </span>
+                                        </md-input-container>
+                                    </div> 
+                                    <!--<button type="submit" class="md-primary md-button md-default-theme" ng-click="submitted = true"><span class="ng-scope"> <md-button>{{translation.login.LOGIN}}</md-button></span><div class="md-ripple-container"></div></button>-->
+                                    <div class="login_button" ng-click="submitted = true">
+                                        <span class="ng-scope"> <md-button ng-bind="translation.login.LOGIN"></md-button></span>
+                                    </div>
+
+
+                                </form>
+                            </md-content>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <script src="assets/js/angular-1.3.14/angular.min.js"></script>
+        <script src="assets/js/angular-1.3.14/angular-animate.js"></script>
+        <script src="assets/js/angular-1.3.14/angular-aria.js"></script>
+        <script src="assets/js/angular-material.min.js"></script>
+        <script src="config/conf.js"></script>        
+        <script src="assets/js/angular-1.3.14/angular-cookies.min.js"></script>
+        <script>
+                                            var app = angular.module('app', ['ngMaterial', 'ngCookies']);
+                                            app.controller('loginController', ['$scope', '$cookies', '$cookieStore', '$location', '$http', 'AuthenticationServiceLogin', 'appConfig', 'languageService', 'userFactory',
+                                                function ($scope, $cookies, $cookieStore, $location, $http, AuthenticationServiceLogin, appConfig, languageService, userFactory) {
+
+                                                    $scope.config = appConfig.getEnvConfig();
+                                                    if (!angular.isUndefined(sessionStorage['logout'])) {
+                                                        delete sessionStorage['logout'];
+                                                        AuthenticationServiceLogin.ClearCredentials($scope);
+
+                                                    } else {
+                                                        userFactory.getCurrentUser($scope)
+                                                                .then(function (response) {
+                                                                    $scope.currentUser = response.data;
+                                                                    try {
+                                                                        if (angular.isUndefined($cookieStore.get('authorization_token')) && $scope.currentUser != 'anonymous' || $cookieStore.get('authorization_token').currentUser != $scope.currentUser && $scope.currentUser != 'anonymous') {
+                                                                            AuthenticationServiceLogin.SetCredentials($scope.currentUser);
+                                                                            window.location = $scope.config.urlPath + "/home";
+                                                                        }
+                                                                    } catch (e) {
+                                                                        //console.log("Exception : ", e)
+                                                                    }
+
+                                                                },
+                                                                        function (error) {
+                                                                            //window.location = $scope.config.urlPath + "/login.html";
+                                                                        }
+                                                                );
+            
+                                                    }
+
+
+
+                                                    $scope.login = function (username, password) {
+                                                        AuthenticationServiceLogin.Login(username, password, function (response) {
+                                                            if (response.success) {
+                                                                AuthenticationServiceLogin.SetCredentials(username, password);
+                                                                $cookieStore.put('lang', 'en');
+                                                                $cookies['lang'] = 'en';
+
+                                                                window.location = $scope.config.urlPath + "/home";
+                                                                //window.location = "http://localhost:9999/ESAdmin/#/home";
+                                                            } else {
+                                                                $scope.error = response.message;
+                                                            }
+                                                        });
+                                                    };
+
+                                                    $cookieStore.put('lang', 'en');
+                                                    $cookies['lang'] = 'en';
+                                                    languageService.getLanguage($cookies.lang)
+                                                            .then(function (response) {
+                                                                $scope.translation = response.data;
+                                                            },
+                                                                    function (error) {
+                                                                        $scope.error = error;
+                                                                    }
+                                                            );
+
+
+
+                                                    /*
+                                                     if ($cookieStore.get('authorization_token')) {                        
+                                                     window.location = $scope.config.urlPath + localStorage.getItem("previousUrl");
+                                                     //window.location = $scope.config.urlPath + "/home";
+                                                     }
+                                                     */
+
+
+
+
+                                                }]);
+        </script>
+        <script src="public/login/authenticationServiceLogin.js"></script>
+    </body>
+</html>

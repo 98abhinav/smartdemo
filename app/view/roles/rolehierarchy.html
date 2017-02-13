@@ -1,0 +1,155 @@
+<ng-include src="config.domainPath+'/shared/header.html'"></ng-include>  
+<div class="navigationpage_wrapper right_subheader page_wrapper sidebarpage_wrapper" ng-controller="rolehierarchyController">
+    <ng-include src="config.domainPath+'/shared/subheader.html'"></ng-include>
+    <ng-include src="config.domainPath+'/shared/navigation.html'"></ng-include>
+    <div class="container-fluid">
+
+
+        <div class="navright_container sidebarpagetree_container">
+
+            <div class="header_info">
+                <h3 class="page_heading">Role | Role Hierarchy</h3>
+                <div class="clearfix"></div>				
+            </div>
+            <div class="pageform_wrapper">
+                
+                <div> 
+               		<md-content class="tab-list">
+                    	<md-tabs md-dynamic-height class="md-accent" md-selected="data.selectedIndex" md-align-tabs="top">
+                    		<div><md-tab id="tab1">
+                         		<md-tab-label>Inherits</md-tab-label>
+                            	<md-tab-body>
+                            		<p>Inherits permission from the following roles</p>
+                             		<div class="tree_view_container">
+							            <div class="tree_container">
+							            	<div class="gridheader">
+							            		<a href="#{{module}}" class="primary" ng-click="expandAll()">
+				                                    <span class="action">Expand All</span>
+				                                </a>
+				                                <a href="#{{module}}" class="primary" ng-click="collapseAll()">
+				                                    <span class="action">Collapse All</span>
+				                                </a>
+				                                <a href="#{{module}}" class="primary"><img src="{{config.domainPath}}/assets/images/new.png">
+				                                    <span class="action">New</span>
+				                                </a>
+				                                <div class="clearfix"></div>
+				                            </div>
+				                            
+							                <div class="scrollme" ng-scrollbar scrollbar-x="false" scrollbar-y="true" scrollbar-config="{show: false}">
+							                    <div ui-tree id="tree-root" data-drag-enabled="false">
+								                  <ol ui-tree-nodes ng-model="treedata">
+								        			<li ng-repeat="node in treedata" ui-tree-node ng-include="'nodes_renderer.html'"></li>
+								      			  </ol>
+												</div>
+							                    <div class="clearfix"></div>
+							                </div>
+							                
+							                <div class="clearfix"></div>
+							            </div>
+							
+							            <div class="view_container">
+							                <div class="view_details" ng-show="showInfo">
+												<label>Name</label>
+								        		<p>{{ selectedNode.name || defaultRole.name }}</p><div class="view_details_field_spacer"></div>
+								        		
+								        		<label>Category</label>
+								        		<p>{{ selectedNode.category || defaultRole.category }}</p><div class="view_details_field_spacer"></div>
+								        		
+								        		<label>Description</label>
+								        		<p>{{ selectedNode.desc || defaultRole.desc }}</p><div class="view_details_field_spacer"></div>
+								        		
+								        		<div class="clearfix"></div>
+							                </div>
+							                <div class="clearfix"></div>
+							            </div>
+						                <div class="clearfix"></div>
+						            </div>
+                		
+                  			
+                            	</md-tab-body>
+                        	</md-tab></div>
+                           
+                           	<div><md-tab id="tab2">
+                               	<md-tab-label>Is Inherited By</md-tab-label>
+                               	<md-tab-body>
+                                   <p>Permissions are inherited by the following roles.</p>
+                             		<div class="tree_view_container">
+							            <div class="tree_container">
+							            	<div class="gridheader">
+							            		<a href="#{{module}}" class="primary" ng-click="expandAll()">
+				                                    <span class="action">Expand All</span>
+				                                </a>
+				                                <a href="#{{module}}" class="primary" ng-click="collapseAll()">
+				                                    <span class="action">Collapse All</span>
+				                                </a>
+				                               	<div class="clearfix"></div>
+				                            </div>
+				                            
+							            	<div class="scrollme" ng-scrollbar scrollbar-x="false" scrollbar-y="true" scrollbar-config="{show: false}">
+							                    <div ui-tree data-drag-enabled="false">
+								                  <ol ui-tree-nodes ng-model="treedata">
+								        			<li ng-repeat="node in treedata" ui-tree-node ng-include="'nodes_renderer.html'"></li>
+								      			  </ol>
+												</div>
+							                    <div class="clearfix"></div>
+							                </div>
+							                
+							                <div class="clearfix"></div>
+							            </div>
+							
+							            <div class="view_container">
+							                <div class="view_details" ng-show="showInfo">
+												<label>Name</label>
+								        		<p>{{ selectedNode.name || defaultRole.name }}</p><div class="view_details_field_spacer"></div>
+								        		
+								        		<label>Category</label>
+								        		<p>{{ selectedNode.category || defaultRole.category }}</p><div class="view_details_field_spacer"></div>
+								        		
+								        		<label>Description</label>
+								        		<p>{{ selectedNode.desc || defaultRole.desc }}</p><div class="view_details_field_spacer"></div>
+								        		
+								        		<div class="clearfix"></div>
+							                </div>
+							                <div class="clearfix"></div>
+							            </div>
+						                <div class="clearfix"></div>
+						            </div>
+                                   
+                               	</md-tab-body>
+                           	</md-tab></div>
+                       </md-tabs>
+                   </md-content>
+                </div>
+                        
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+
+        </div>
+
+        <div class="sidebar_content col-md-4 deligated_sidebar">
+            <a href="{{config.urlPath}}/role/add" class="category_title content">General</a>
+            <a href="{{config.urlPath}}/role/hierarchy" class="category content">Role Hierarchy </a>
+            <div class="clearfix"></div>
+        </div>       
+    </div>
+</div>  
+<ng-include src="config.domainPath+'/shared/footer.html'"></ng-include>
+
+<!-- Nested node template -->
+<script type="text/ng-template" id="nodes_renderer.html">
+  <div ui-tree-handle class="tree-node tree-node-content" ng-click="showSelected(node)" ng-class="{selectedActive: node == selectedNode}">
+    <a class="" nodrag ng-click="toggle(this)"><span
+        ng-class="{
+          'tree_branch_collapsed': collapsed,
+          'tree_branch_expanded': !collapsed
+        }">&nbsp;</span></a>
+    {{node.name}}
+    <a class="cancel_icon" nodrag ng-click="remove(this)">
+		<img src="{{config.domainPath}}/assets/images/cancel_icon.png"></a>
+  </div>
+  <ol ui-tree-nodes="" ng-model="node.children" ng-class="{hidden: collapsed}">
+    <li ng-repeat="node in node.children" ui-tree-node ng-include="'nodes_renderer.html'">
+    </li>
+  </ol>
+</script>

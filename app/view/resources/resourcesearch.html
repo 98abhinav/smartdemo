@@ -1,0 +1,155 @@
+<ng-include src="config.domainPath+'/shared/header.html'"></ng-include>
+<div class="navigationpage_wrapper right_subheader page_wrapper" ng-controller="searchResourcesController">
+    <div class="site-canvas">
+        <ng-include src="config.domainPath+'/shared/menu.html'"></ng-include>
+        <div class="container-fluid">
+            <div class="navright_container">
+                <ul class="page_path">
+                    <li><a href="{{config.urlPath}}/home">Home </a></li>
+                    <li><a href="{{config.urlPath}}/home/{{applicationId}}">{{applicationName}} </a></li>
+                    <li><a href="{{config.urlPath}}/{{applicationId}}/resources">Resources</a></li>
+                    <li class="last">Search</li>
+                </ul>
+                <div class="header_info">
+                    <h2 class="page_heading">
+                        <span class="header">Resources - Search</span>                        
+                    </h2>             
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="pageform_wrapper">
+                    <div class="form_container advance_search">
+                        <form name="searchForm" novalidate >
+                            <div class="serach_type">
+                                <div class="search_by">
+                                    <span>Give Resource &nbsp;</span>
+                                    <div class="serach_dropdown dropdown" >
+                                        <span class="customSearch" ng-click="opentoolbar('name-dropdown')" >{{searchstr||'Name'}}</span>
+                                        <div id="name-dropdown" class="close_div">
+                                            <span class="dropdown-arrow"></span>
+                                            <div class="list_container selectbox1 searchinput">                                                
+                                                <input type="text" ng-model="txtName" style="height: 30px;" placeholder="Search..">
+                                                <md-button ng-click="setName()">OK</md-button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <span>&nbsp; from Application <b>{{applicationName}}</b> of Resource Type &nbsp;</span>
+                                    <div class="serach_dropdown">
+                                        <span class="customSearch" ng-click="opentoolbar('resourcetype-dropdown')" ng-class="{'empty-criteria': !resourcetypeName && showRecords}">{{resourcetypeName||'Name'}}&nbsp;<img src="{{config.domainPath}}/assets/images/br_down.png"></span>
+                                        <div id="resourcetype-dropdown" class="close_div">
+                                            <span class="dropdown-arrow"></span>
+                                            <div class="list_container selectbox1" st-pipe="callServerResourceType" st-table="resourcetypes">                                              
+                                                <div ng-class="{'border_wrapper': resourceTypeLength >= 5}">
+                                                    <div class="searchArea"><input type="text" focus-on="focusInput" st-search="name" ng-model="searchResourceType" placeholder="Search.." ></div>
+                                                    <div id='rolescrolltable'>
+                                                        <ul ng-show="!isLoadingResourceType">
+                                                            <li class="disabled_list_row" ng-show="!isLoadingResourceType" ng-repeat='resourcetypedetails in resourcetypes' ng-click='selectResourcetype(resourcetypedetails)'>
+                                                                <span class='right_list_text'>{{resourcetypedetails.name}}</span>
+                                                            </li>
+                                                        </ul>
+                                                        <ul ng-show="!isLoadingResourceType && errorResourceType" class="loader-area">
+                                                            <li class="alert no_result_row">{{errorResourceType}}</li>
+                                                        </ul>
+                                                        <ul ng-show="isLoadingResourceType" class="text-center loader-area">
+                                                            <li class="disabled_list_row"><div class="loading-indicator"></div></li>
+                                                        </ul>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <span ng-show="hierarchical">&nbsp; having Parent &nbsp;</span>
+                                        
+
+                                    <div ng-show="hierarchical" class="serach_dropdown">
+                                        <!--ng-class="{'empty-criteria': !resourceName && showRecords}"-->
+                                        <span class="customSearch" ng-click="opentoolbar('resource-dropdown')" >{{resourceName||'ALL'}}&nbsp;<img src="{{config.domainPath}}/assets/images/br_down.png"></span>
+                                        <div id="resource-dropdown" class="close_div">
+                                            <span class="dropdown-arrow"></span>
+                                            <div class="list_container selectbox1" st-pipe="callServerResource" st-table="resources">                                              
+                                                <div ng-class="{'border_wrapper': resourcesLength >= 5}">  
+                                                    <div class="searchArea"><input type="text" focus-on="focusInput" st-search="name" ng-model="search" placeholder="Search.." ></div>
+                                                    <div id='resourcescrolltable'>
+                                                        <ul ng-show="!isLoadingResource">
+                                                            <li ng-click='selectResource({"name": "ALL"})'><span class='right_list_text'>ALL</span></li>
+                                                            <li class="disabled_list_row" ng-show="!isLoadingResource" ng-repeat='resourcedetails in resources' ng-click='selectResource(resourcedetails)'>
+                                                                <span class='right_list_text'>{{resourcedetails.name}}</span>
+                                                            </li>
+                                                        </ul>
+                                                        <ul ng-show="!isLoadingResource && errorResource" class="loader-area">
+                                                            <li class="alert no_result_row">{{errorResource}}</li>
+                                                        </ul>
+                                                        <ul ng-show="isLoadingResource" class="text-center loader-area">
+                                                            <li class="disabled_list_row"><div class="loading-indicator"></div></li>
+                                                        </ul>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="srch-break"></div>
+
+                                <div class="form_container button_group_right">
+                                    <md-button ng-click="submitSearch()">GO</md-button>
+                                </div>
+
+                            </div>
+                        </form>
+                        <div class="height_20"></div>
+                        <div class="listdeligated">
+                            <div class="list_container">
+                                <div ng-show="showRecords">
+                                    <table st-table="searchResultList" st-safe-src="searchResult" class="table table-fixed table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="col-40pct"><span>Resource</span></th>
+                                                <th class="col-50pct"><span>Description</span></th>
+                                                <th class="col-10pct" style="border-right:0px;"><span>Action</span></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="resultsscrolltable" >
+                                            <tr ng-show="!isLoading" ng-repeat='resourceType in searchResultList'> 
+                                                <td class="col-40pct" ng-bind-html="resourceType.name"></td>   
+                                                <td class="col-50pct">{{resourceType.description|| '---'}}</td>                                                
+                                                <td class="col-10pct result-icons" style="border-right:0px;">
+                                                    <a ng-if="superaccess['applications']!=accessViewer" href="{{config.urlPath}}/{{applicationId}}/resources/edit/{{resourceType.id}}"><img src="{{config.domainPath}}/assets/images/search_edit.png" title="Edit"></a>
+                                                </td>                                           
+                                            </tr>
+                                            <tr ng-show="!isLoading && errorResult"><td style="width:100%;border-right:0px;" class="alert">{{errorResult}}</td></tr>                                            
+                                            <tr ng-show="isLoading">
+                                                <td style="width:100%;border-right:0px;" class="text-center loader-area"><div ng-show="isLoading" class="loading-indicator"></div> </td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot class="pagination-container">
+                                            <tr ng-show="!isLoading" >
+                                                <td class="paginationarea">                                                
+                                                    <div class="left-pagination" st-pagination="" st-items-by-page="itemsByPage" ></div>
+                                                    <div class="page_change">                                                
+                                                        <select ng-model="itemsByPage" id="itemsByPage" name="itemsByPage" ng-change="setItemsByPage()">
+                                                            <option ng-repeat="data in paginationPageSizes" value="{{data}}" ng-selected="itemsByPage == data">{{data}}</option>
+                                                        </select> 
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>                        
+                            </div>
+                            <div class="clear"> </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-include src="config.domainPath+'/shared/footer.html'"></ng-include>

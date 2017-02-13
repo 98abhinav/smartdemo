@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+  <display-name>ESAdminBackend</display-name>
+  <filter>
+  	<filter-name>CORS</filter-name>
+  	<filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
+  	<init-param>
+      <param-name>cors.allowed.methods</param-name>
+      <param-value>GET,POST,PUT,DELETE,HEAD,OPTIONS</param-value>
+    </init-param>
+    <init-param>
+      <param-name>cors.exposed.headers</param-name>
+      <param-value>Access-Control-Allow-Origin,Access-Control-Allow-Credentials,Set-Cookie,ES_ID,Location</param-value>
+    </init-param>
+    <init-param>
+      <param-name>cors.allowed.origins</param-name>
+      <param-value>*</param-value>
+    </init-param>
+    <init-param>
+      <param-name>cors.allowed.headers</param-name>
+      <param-value>Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization,ES_ID,Location</param-value>
+    </init-param>
+    <init-param>
+      <param-name>cors.support.credentials</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>cors.preflight.maxage</param-name>
+      <param-value>1800</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+  	<filter-name>CORS</filter-name>
+  	<url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <servlet>
+    <servlet-name>MyApplication</servlet-name>
+    <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+    <init-param>
+      <param-name>jersey.config.server.provider.packages</param-name>
+      <param-value>com.aurionpro.es.admin;com.wordnik.swagger.jersey.listing;com.fasterxml.jackson.jaxrs.json</param-value>
+    </init-param>
+    <init-param>
+      <param-name>jersey.config.server.provider.classnames</param-name>
+      <param-value>org.glassfish.jersey.filter.LoggingFilter;org.glassfish.jersey.media.multipart.MultiPartFeature</param-value> <!--  -->
+    </init-param>
+    <init-param>
+      <param-name>jersey.config.beanValidation.enableOutputValidationErrorEntity.server</param-name>
+      <param-value>true</param-value>
+    </init-param>
+	<init-param>
+      <param-name>jersey.config.server.disableMoxyJson</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <!-- Only for JAX-RS Jersey config - not mapped anywhere -->
+  <servlet>
+    <servlet-name>JerseyJaxrsConfig</servlet-name>
+    <servlet-class>com.wordnik.swagger.jersey.config.JerseyJaxrsConfig</servlet-class>
+    <init-param>
+      <param-name>api.version</param-name>
+      <param-value>1.6.3</param-value>
+    </init-param>
+    <init-param>
+      <param-name>swagger.api.basepath</param-name>
+      <!-- <param-value>http://172.22.3.132:8090/ESAdmin/v1</param-value>-->
+	  <param-value>http://118.200.230.65:8090/ESAdmin/v1</param-value>
+    </init-param>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>MyApplication</servlet-name>
+    <url-pattern>/v1/*</url-pattern>
+  </servlet-mapping>
+<!--comment-->
+  <!--security-constraint>
+	<web-resource-collection>
+		<web-resource-name>Wildcard means whole app requires authentication</web-resource-name>
+		<url-pattern>/v1/*</url-pattern> 
+		<url-pattern>/doc/*</url-pattern> 
+		<url-pattern>/app/*</url-pattern> 
+	</web-resource-collection>
+
+	<auth-constraint>
+		<role-name>tomcat</role-name>
+	</auth-constraint>
+
+	<user-data-constraint>
+		<transport-guarantee>NONE</transport-guarantee>
+	</user-data-constraint>
+  </security-constraint>
+
+  <login-config>
+	<auth-method>BASIC</auth-method>
+	<realm-name>INTRANET.BARCAPINT.COM</realm-name>
+  </login-config>
+  
+  <security-role>
+	<description>Tomcat security role</description>
+	<role-name>tomcat</role-name>
+  </security-role-->
+ <!--comment-->
+  <listener>
+    <listener-class>com.aurionpro.es.admin.utils.ESInitializer</listener-class>
+  </listener>
+  
+  <context-param>
+    <param-name>USER_MANAGER</param-name>
+    <param-value>com.aurionpro.es.admin.utils.DefaultUserManager</param-value>
+  </context-param>
+  <context-param>
+    <param-name>USER_MANAGER_PROPERTIES</param-name>
+    <param-value>/log4j.properties</param-value>
+  </context-param>
+  <context-param>
+    <param-name>DATABASE_PROPERTIES</param-name>
+    <param-value>/sql.properties</param-value>
+  </context-param>
+    <context-param>
+    <param-name>AUDIT_PROPERTIES</param-name>
+    <param-value>/audit.properties</param-value>
+  </context-param>
+    <context-param>
+    <param-name>DATABASE_JNDI</param-name>
+    <param-value>java:/comp/env/jdbc/OracleXEES</param-value>
+  </context-param>
+
+  <welcome-file-list>
+	<welcome-file>login.html</welcome-file>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+ <!--comment-->
+  <!--filter>
+    <display-name>AngularHTML5Mode</display-name>
+    <filter-name>AngularHTML5Mode</filter-name>
+    <filter-class>com.aurionpro.es.admin.utils.AngularHTML5Mode</filter-class>
+    <init-param>
+      <description>This param is used to reflect whether HTML 5 mode is enabled on the AngularJS based GUI</description>
+      <param-name>ENABLED</param-name>
+      <param-value>TRUE</param-value>
+    </init-param>
+    <init-param>
+      <param-name>ANGULAR_APP_PATH</param-name>
+      <param-value>/index.html</param-value>
+    </init-param>
+    <init-param>
+      <param-name>API_PATH</param-name>
+      <param-value>/v1/</param-value>
+    </init-param>
+    <init-param>
+      <param-name>DOC_PATH</param-name>
+      <param-value>/doc/</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>AngularHTML5Mode</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping-->
+  <!--comment-->
+</web-app>

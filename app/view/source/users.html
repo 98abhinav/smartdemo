@@ -1,0 +1,169 @@
+<ng-include src="config.domainPath+'/shared/header.html'"></ng-include>
+<div class="navigationpage_wrapper" ng-controller="usersController" >
+    <div class="site-canvas">
+        <ng-include src="config.domainPath+'/shared/menu.html'"></ng-include>
+        <div class="container-fluid slide_up" arrow-selector>
+            <div class="navright_container listpage_container" >
+                <ul class="page_path">
+                    <li><a href="{{config.urlPath}}/home">Home </a></li>
+                    <li><a href="{{config.urlPath}}/sources">{{source.name}} </a></li>
+                    <li class="last">{{translation.source.USERS}}</li>                   
+                </ul>
+                <div class="header_info">                
+                    <h2 class="page_heading">
+                        <span class="header">{{translation.source.USERS}}</span>
+                        <span style="float:right"> 
+                            <a  href="{{config.urlPath}}/users/{{sourceId}}/search"><img src="{{config.domainPath}}/assets/images/search_icon_blue.png"></a> 
+                        </span>    
+                    </h2>             
+
+                    <div class="clearfix"></div>				
+                </div>                 
+
+                <div class="view_details_field_spacer"></div>
+                <div class="list_serach advance_search" style="min-height: 0;">
+                    <form name="searchForm" novalidate >
+                        <div class="serach_type_mt0 serach_type">
+                            <!--div ng-show="activeLetter != ''"--> 
+                            <div class="search_by">Select Your Criteria:
+                                <div class=" serach_dropdown">
+                                    <span  class="customSearch" ng-click="opentoolbar('field-dropdown')" ng-class="{
+                                                'empty-criteria'
+                                                : !searchField && showRecords}">{{searchField|| 'Name'}}&nbsp;<img src="{{config.domainPath}}/assets/images/br_down.png"></span>
+                                    <div  id="field-dropdown" class="close_div">
+                                        <span  class="dropdown-arrow"></span>
+                                        <div  class="list_container selectbox1 selectbox2">
+                                            <ul>
+                                                <li class="disabled_list_row" ng-repeat="displayKey in notSorted(displayAttributes)"  value ="{{displayKey}}*{{displayValue}}" ng-init="displayValue = displayAttributes[displayKey]" ng-click="setSearchField(displayKey + '*' + displayValue)">
+                                                    <span class='right_list_text'>{{displayValue}}</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input ng-keypress="removeClass()" type="text" placeholder="{{placeholder}}"  id="userSerach" ng-model="search" autocorrect="off"  autocomplete="off"  spellcheck="false"  dir="auto" >
+                                <a class="close_button"  ng-click="endSearch()">&times;</a>
+                                <div class="srch-break"></div>
+                                <div class="form_container button_group_right">
+                                    <md-button ng-click="submitSearch()">SEARCH</md-button>
+                                </div>
+                            </div>
+
+                            <!--/div-->
+                        </div>
+                    </form>
+                </div>
+                <div class="role_policy_field_spacer"></div>
+                <div class="list_serach source_search">
+                    <div class="search_character">
+                        <button type="button" class="btn_alphabet" ng-repeat="letter in alphabet" ng-click="setActiveLetter(letter)" ng-class="{
+                                'btn-primary'
+                                : letter == activeLetter}">{{letter}}</button>
+                    </div>
+                    <div class="list_boxshadow">
+                        <div class="pageform_wrapper">
+                            <div class="list_view_container">
+                                <div  class="list_container grid_box lazy_list_container" >
+                                    <!--table  st-table="users" st-safe-src="result" class="smart-table table table-striped" cellspacing="0" cellpadding="0"-->
+                                    <table  st-table="restResponse" st-safe-src="result" class="smart-table table table-striped" cellspacing="0" cellpadding="0">
+                                        <thead>
+                                            <tr>
+                                                <th class="search_box full">
+                                                    <span class="search_header">Name{{users.length}}</span>
+                                                    <!--Comments for the Client Side Pagination --->
+                                                    <a class="search_button" ng-click="startSearch()" ng-show="searchIcon"><!--img src="{{config.domainPath}}/assets/images/search_list.png"  alt=""/--></a>
+
+                                                    <!--div class="search_window animate_sideways" ng-show="searchBox">                                        
+                                                        <input type="text" focus-on="focusInput"  st-search="" ng-model="search" placeholder="Search">
+                                                        <a class="close_button" st-refresh='name' ng-click="endSearch()">&times;</a>
+                                                    </div-->
+                                                    <!--abbr title="Sort"><span  id="stsort" class="sort_icon"  st-sort-default="{{sortType}}" st-skip-natural="true" st-sort="uid" ng-click="setSortOrder()"></span>
+                                                    </abbr-->
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="scrolltable" >                                       
+                                            <tr ng-show="!isLoading"  ng-repeat='userDetails in restResponse'  ng-click='selectUser(userDetails, $index)' ng-class="{selectedActive: $index == selectedRow}">                                                    
+                                                <td>{{userDetails.uid}}</td>                                               
+                                            </tr>
+                                            <tr ng-show="!result.length && !isLoading"><td class="alert">{{error}}</td></tr>                                            
+                                            <tr ng-show="isLoading">
+                                                <td  class="text-center loader-area"><div ng-show="isLoading" class="loading-indicator"></div> </td>
+                                            </tr>                                            
+                                        </tbody>
+                                        <!--Comments for the Client Side Pagination ---> 
+                                        <!--tfoot class="pagination-container" ng-if="restResponse.length">
+                                             <tr>
+                                                 <td class="paginationarea">
+                                                     <div class="left-pagination" st-pagination="" st-items-by-page="itemsByPage" ></div>
+                                                     <div class="page_change">                                                
+                                                         <select ng-model="itemsByPage" id="itemsByPage" name="itemsByPage" ng-change="setItemsByPage()">
+                                                             <option ng-repeat="data in paginationPageSizes" value="{{data}}">{{data}}</option>
+                                                         </select>               
+                                                     </div>
+                                                 </td>
+                                             </tr>
+                                         </tfoot-->
+                                    </table>                               
+                                </div>
+
+                                <div class="view_container">
+                                    <div class="listgridheader">
+                                        <img ng-if="sourceConnType == 'LDAP'" src="{{config.domainPath}}/assets/images/source-ldap.png" title="LDAP">
+                                        <img ng-if="sourceConnType == 'RDBMS'" src="{{config.domainPath}}/assets/images/source-rdbms.png" title="RDBMS">
+                                        <img ng-if="sourceConnType == 'CUSTOM'" src="{{config.domainPath}}/assets/images/source-custom.png" title="CUSTOM">
+                                        <span class="source_heading"><a href="{{config.urlPath}}/sources">{{sourceName}}</a></span>
+                                        <div class="clearfix"></div>
+                                    </div>                                   
+                                    <div  class="view_details" >
+                                        <div ng-show="!result.length && !isLoading" class="scrollrightdiv alert_container">{{error}}</div>
+
+                                        <div id="scrollrightdiv" class="scrollrightdiv" ng-show="result.length">
+
+                                            <div  ng-repeat='displayKey in notSorted(displayAttributes)' ng-init="displayValue = displayAttributes[displayKey]" >                            
+                                                <label>{{displayValue}}</label>
+                                                <p ng-bind-html='displayFields[displayKey]'></p>
+                                                <div class="view_details_field_spacer"></div>
+                                            </div>  
+                                            <!--label>Name</label>
+                                            <p>{{ selectedUser.uid}}</p><br/>
+
+                                            <label>Username</label>
+                                            <p ng-repeat="selectedUid in selectedUser.attributes.uid">{{ selectedUid}}</p>
+                                            <div class="view_details_field_spacer"></div>
+
+                                            <label>Email</label>
+                                            <p ng-repeat="selectedMail in selectedUser.attributes.mail">{{selectedMail}}{{$last ? '' : ', '}}</p>
+                                            <div class="view_details_field_spacer"></div>
+
+                                            <label>Phone Number</label>
+                                            <p ng-repeat="selectedPhoneNumber in selectedUser.attributes.telephoneNumber">{{ selectedPhoneNumber}}</p-->                                   
+                                            <div class="clearfix"></div>
+
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div> 
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<ng-include src="config.domainPath+'/shared/footer.html'"></ng-include>
+
+
+
+
+

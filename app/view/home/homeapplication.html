@@ -1,0 +1,73 @@
+<ng-include src="config.domainPath+'/shared/header.html'"></ng-include>
+<div class="landing_wrapper" ng-controller="homeApplicationController">
+    <div class="site-canvas">
+        <ng-include src="config.domainPath+'/shared/menu.html'"></ng-include>
+        <div class="container-fluid">
+            <section class="landing_startover animated2s fadeIn">
+                <h2>{{applicationName}}</h2>
+                <div ng-if="angular.isDefined(applicationDesc) || applicationDesc != 'null'" class="view_description">
+                    {{applicationDesc}}
+                </div>
+                <div class="form_container pageform_wrapper">
+                    <md-content class="md-padding">
+                        <div class="landing_button"> <span class="ng-scope">
+                                <md-button type='reset' ng-click="startOver()">{{translation.home.STARTOVER}}</md-button>
+                                <md-button ng-click="doMore()">{{translation.home.BEGIN}}</md-button>
+                            </span> </div>
+                    </md-content>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </section>
+            <!--section class="landing_explore animated fadeInUp">
+                <h2>Explore {{applicationName}}</h2>
+                <div class="explore_container">
+                    <div class="dual_border landingbox2">
+                        <div class="explore_icon"> <img src="{{config.domainPath}}/assets/images/recource_types.png" > </div>
+                        <div class="explore_content">Resource Types</div>
+                        <div class="explore_action pull-right"> <a href="{{config.urlPath}}/{{applicationId}}/resourcetypes"><img src="{{config.domainPath}}/assets/images/search_application_blue.png" ></a> <a href="{{config.urlPath}}/{{applicationId}}/resourcetypes/add"><img src="{{config.domainPath}}/assets/images/add_application_blue.png" ></a> </div>
+                    </div>
+                    <div class="dual_border landingbox2">
+                        <div class="explore_icon"> <img src="{{config.domainPath}}/assets/images/role_mapping_policies.png" > </div>
+                        <div class="explore_content">Role Memberships</div>
+                        <div class="explore_action pull-right"> <a href="{{config.urlPath}}/{{applicationId}}/roles"><img src="{{config.domainPath}}/assets/images/search_application_blue.png" ></a> <a href="{{config.urlPath}}/{{applicationId}}/rolemembers/add"><img src="{{config.domainPath}}/assets/images/add_application_blue.png" ></a> </div>
+                    </div>
+                    <div class="dual_border landingbox2 last">
+                        <div class="explore_icon"> <img src="{{config.domainPath}}/assets/images/application_roles.png" > </div>
+                        <div class="explore_content">Application Roles</div>
+                        <div class="explore_action pull-right"> <a href="{{config.urlPath}}/{{applicationId}}/roles"><img src="{{config.domainPath}}/assets/images/search_application_blue.png" ></a> <a href="{{config.urlPath}}/{{applicationId}}/roles/add"><img src="{{config.domainPath}}/assets/images/add_application_blue.png" ></a> </div>
+                    </div>
+                    <br clear="all">
+                    <div class="dual_border landingbox2 second">
+                        <div class="explore_icon"> <img src="{{config.domainPath}}/assets/images/resource_groups.png" > </div>
+                        <div class="explore_content">Resource Groups</div>
+                        <div class="explore_action pull-right"> <a href="{{config.urlPath}}/{{applicationId}}/resourcegroups"><img src="{{config.domainPath}}/assets/images/search_application_blue.png" ></a> <a href="{{config.urlPath}}/{{applicationId}}/resourcegroups/add"><img src="{{config.domainPath}}/assets/images/add_application_blue.png" ></a> </div>
+                    </div>
+                    <div class="dual_border landingbox2 second">
+                        <div class="explore_icon"> <img src="{{config.domainPath}}/assets/images/resources.png" > </div>
+                        <div class="explore_content">Resources</div>
+                        <div class="explore_action pull-right"> <a href="{{config.urlPath}}/{{applicationId}}/resources"><img src="{{config.domainPath}}/assets/images/search_application_blue.png" ></a> <a href="{{config.urlPath}}/{{applicationId}}/resources"><img src="{{config.domainPath}}/assets/images/add_application_blue.png" ></a> </div>
+                    </div>
+                    <div class="dual_border landingbox2 second last">
+                        <div class="explore_icon"> <img src="{{config.domainPath}}/assets/images/authorization_policies.png" > </div>
+                        <div class="explore_content">Functions</div>
+                        <div class="explore_action pull-right"> <a href="{{config.urlPath}}/{{applicationId}}/functions"><img src="{{config.domainPath}}/assets/images/search_application_blue.png" ></a> <a href="{{config.urlPath}}/{{applicationId}}/functions/add"><img src="{{config.domainPath}}/assets/images/add_application_blue.png" ></a> </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form_container">
+                    <md-content class="md-padding">
+                        <div class="landing_button"> <span class="ng-scope">
+                                <md-button ng-click="doMore()">{{translation.home.DOMORE}}</md-button>
+                            </span> </div>
+                    </md-content>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </section-->
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<ng-include src="config.domainPath+'/shared/footer.html'"></ng-include>

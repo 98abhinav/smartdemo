@@ -1,0 +1,247 @@
+<div ng-controller="policiesPrincipalController">
+    <div class="view_details_field_spacer"></div>
+    <div class="pageform_wrapper">
+        <div class="form_container slide_tab">
+            <form  name="myForm" novalidate ng-submit="saveRoleMembership($event)">                  
+                <div class="form_container"> 
+                    <div class="list_container selectbox1"> 
+                        <label class="control-group dropdown_label">Source<em>*</em></label>
+                        <div class="selectbox1-opener" ng-click="openDropdown = !openDropdown">{{sourceName|| 'Select Source'}} 
+                            <span ng-class="getDropdownIconClass()" class="dropdown-icon"></span>
+                        </div>
+                        <table ng-show="openDropdown && sources.length > 1" st-pipe="callServer"  st-table="sources" class="smart-table table table-striped" cellspacing="0" cellpadding="0">
+                            <thead>
+                                <tr>
+                                    <th class="search_box"> <input class="selectbox1_bg" type="text" focus-on="focusInput" st-search="name"  placeholder="Search">
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="scrolltable"  >
+                                <tr ng-show="!isLoading_source" actions-repeat-directive ng-repeat='sourcedetails in sources'  ng-click='selectSource(sourcedetails)' >
+                                    <td>{{sourcedetails.name}}</td>
+                                </tr>
+                                <tr ng-show="isLoading_source">
+                                    <td  class="text-center loader-area"><div ng-show="isLoading_source" class="loading-indicator"></div></td>
+                                </tr>
+                                <tr ng-if="sources == null">
+                                    <td class="alert">{{error}}</td>
+                                </tr>
+
+                            </tbody>
+                            <tfoot class="pagination-container" ng-if="sources != null">
+                                <tr>
+                                    <td class="paginationarea">
+                                        <div class="left-pagination" st-pagination="" st-items-by-page="itemsByPage_source" ></div>
+                                        <div class="page_change">
+                                            <select ng-model="itemsByPage_source"  name="itemsByPage_source">
+                                                <option ng-repeat="data in paginationPageSizes" value="{{data}}" ng-selected="itemsByPage_source == data">{{data}}</option>
+                                            </select>
+                                        </div>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="view_details_field_spacer"></div>
+                    <div class="list_serach advance_search" style="min-height: 0;">
+                        <form name="searchForm" novalidate >
+                            <div class="serach_type_mt0 serach_type">
+                                <!--div ng-show="activeLetter != ''"--> 
+                                <div class="search_by">Select Your Criteria:
+                                    <div class=" serach_dropdown">
+                                        <span  class="customSearch" ng-click="opentoolbar('field-dropdown')" ng-class="{
+                                                'empty-criteria'
+                                                : !searchField && showRecords}">{{searchField|| 'Name'}}&nbsp;<img src="{{config.domainPath}}/assets/images/br_down.png"></span>
+                                        <div id="field-dropdown" class="close_div">
+                                            <span  class="dropdown-arrow"></span>
+                                            <div  class="list_container selectbox1 selectbox2">
+                                                <ul>
+                                                    <li class="disabled_list_row" ng-repeat="displayKey in notSorted(displayAttributes)"  value ="{{displayKey}}*{{displayValue}}" ng-init="displayValue = displayAttributes[displayKey]" ng-click="setSearchField(displayKey + '*' + displayValue)">
+                                                        <span class='right_list_text'>{{displayValue}}</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input ng-keypress="removeClass()" type="text" placeholder="{{placeholder}}" id="serach" ng-model="search" autocorrect="off"  autocomplete="off"  spellcheck="false"  dir="auto">
+                                    <a class="close_button"  ng-click="endSearch()">&times;</a>
+                                    <div class="srch-break"></div>
+                                    <div class="form_container button_group_right">
+                                        <md-button ng-click="submitSearch()">SEARCH</md-button>
+                                    </div>
+                                </div>
+                                <!--/div-->
+                            </div>
+                        </form>
+                    </div>
+                    <div class="role_policy_field_spacer"></div>
+                    <div id="content_area" class="list_serach map_deligated">                  
+                        <!-- <div class="search_character">
+                            <button type="button" class="btn_alphabet" ng-repeat="letter in alphabet" ng-click="setActiveLetter(letter, sourceId, 'users')" ng-class="{'btn-primary': letter == activeLetter}">{{letter}}</button>
+                        </div> -->
+                        <div id="usermainContent" class="slide_tab_content">
+                            <div class="dual_list_container listdeligated">
+                                <div class="list_container" st-table="usersourceList" st-safe-src="sourcelist.users">
+                                    <div class="search_box full">
+                                        <span class="search_header">Name</span>
+                                        <a class="search_button" ng-click="startSearch('usersource')" ng-if="usersourcesearchIcon"><img src="{{config.domainPath}}/assets/images/landing_search_icon.png" width="15" height="15" alt=""/></a>
+
+                                        <div class="search_window animate_sideways" ng-show="usersourcesearchBox">                                        
+                                            <input class="text_white" type="text" focus-on="usersourcefocusInput"  st-search=""  placeholder="Search">
+                                            <a class="close_button"  st-refresh='uid' ng-click="endSearch('usersource')">&times;</a>
+                                        </div>
+
+                                        <div class="search_sort_right">
+                                            <abbr title="Sort"><span id="stsort_user" class="sort_icon" st-sort-default="{{sortTypeUser}}" st-skip-natural="true" st-sort="uid" ng-click="setSortOrder('user')"></span></abbr>
+                                        </div>
+                                    </div>
+                                    <div id='unassignscroll'>
+                                        <ul ng-show="!isLoading">
+                                            <li ng-repeat='item in usersourceList' ng-click='selectSourceItem(item)' ng-class="{selectedActive: isSelectedSource(item)}">
+
+                                                <span class='right_list_text'>{{item.uid}}</span>
+                                            </li>
+                                        </ul>
+                                        <ul  ng-show="isLoading" class="text-center loader-area">
+                                            <li><div  class="loading-indicator"></div></li>
+                                        </ul>
+                                        <ul  ng-show="!isLoading" class="loader-area">
+                                            <li  class="alert required"> 
+                                                <div ng-if="sourcelist.users == null" >{{error}}</div>
+                                                <div ng-if="info != null && sourcelist.users == null" >{{info}}</div>
+                                            </li> 
+
+                                        </ul>
+
+
+
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="paginationarea" ng-if="usersourceListLength > 0">
+                                        <div class="left-pagination" st-pagination="" st-items-by-page="itemsByPage_user" ></div>
+                                        <div class="page_change">                                                
+                                            <select ng-model="itemsByPage_user" id="itemsByPage_user" name="itemsByPage_user" ng-change="setItemsByPage('user')">
+                                                <option ng-repeat="data in paginationPageSizes" value="{{data}}" ng-selected="itemsByPage_user == data">{{data}}</option>
+                                            </select>               
+                                        </div>
+                                    </div>
+
+                                    <div class="paginationarea" ng-if="usersourceListLength == 0">
+                                        <div class="left-pagination"  ></div>
+                                        <div class="page_change"> 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="list_btn_container">
+                                    <img src="{{config.domainPath}}/assets/images/right_add.png"  ng-click="addItem(selectedSourceItems, 'users')" title="Add" alt="Add" /><br/><br/><br/><br/>
+                                    <img src="{{config.domainPath}}/assets/images/left_remove.png"  ng-click="removeItem(selectedTargetItems, 'users')" title="Remove" alt="Remove" /><br/><br/><br/><br/>
+                                    <img src="{{config.domainPath}}/assets/images/reset_assign.png"  ng-click="resetItem('users')" title="Reset" alt="Reset" />
+
+                                </div>
+                                <div class="right list_container" st-table="userfulltargetList" st-safe-src="targetlistFull.users">
+                                    <div class="search_box full">
+                                        <span class="search_header">Selected Users</span>
+                                        <a class="search_button" ng-click="startSearch('userfulltarget')" ng-show="userfulltargetsearchIcon"><img src="{{config.domainPath}}/assets/images/assign_search.png" width="15" height="15" alt=""/></a>
+
+                                        <div class="search_window animate_sideways" ng-show="userfulltargetsearchBox">
+
+                                            <input type="text" focus-on="userfulltargetfocusInput" st-search=""  placeholder="Search">
+                                            <a class="close_button" st-refresh='uid' ng-click="endSearch('userfulltarget')">&times;</a>
+                                        </div>
+
+                                        <div class="search_sort_right">
+                                            <abbr title="Sort"> <span  class="sort_icon"  st-sort-default="{{sortType}}" st-skip-natural="true" st-sort="uid" ></span></abbr>
+                                        </div>
+                                    </div>
+
+                                    <div id='assignscroll'>
+                                        <ul>
+                                            <li ng-repeat='item in userfulltargetList' ng-click='selectTargetItem(item)' ng-class="{selectedActive: isSelectedTarget(item)}">
+                                                <span class='right_list_text'>{{item.uid}}</span>
+                                            </li>
+                                        </ul>
+                                        <ul  ng-show="!isLoading" class="loader-area">
+                                            <li  class="alert required">
+                                                <div ng-if="sourcelist.users == null && activeLetter == '' && userfulltargetList.length == 0" >{{info}}</div>
+                                                <div ng-if="userfulltargetList.length == 0" >{{dispmsg}}</div>
+                                            </li>                                                   
+                                        </ul> 
+                                    </div>
+                                    <div class="paginationarea" ng-if="userfulltargetList.length > 0">
+                                        <div class="left-pagination" st-pagination="" st-items-by-page="itemsByPage" ></div>
+                                        <div class="page_change">                                                
+                                            <select ng-model="itemsByPage"  name="itemsByPage">
+                                                <option ng-repeat="data in paginationPageSizes" value="{{data}}">{{data}}</option>
+                                            </select>               
+                                        </div>
+                                    </div>
+                                    <div class="paginationarea" ng-if="userfulltargetList.length == 0">
+                                        <div class="left-pagination"  ></div>
+                                        <div class="page_change"> 
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="list_container right allselected"  st-table="usertargetList" st-safe-src="targetlist.users">
+                                    <div class="search_box full">
+                                        <span class="search_header">All Selected Users&nbsp;&nbsp;&nbsp;&nbsp;(Source)</span>
+                                        <a class="search_button" ng-click="startSearch('usertarget')" ng-show="usertargetsearchIcon"><img src="{{config.domainPath}}/assets/images/assign_search.png" width="15" height="15" alt=""/></a>
+
+                                        <div class="search_window animate_sideways" ng-show="usertargetsearchBox">
+
+                                            <input type="text" focus-on="usertargetfocusInput" st-search="" placeholder="Search">
+                                            <a class="close_button" st-refresh='uid' ng-click="endSearch('usertarget')">&times;</a>
+                                        </div>
+
+                                        <div class="search_sort_right">
+                                            <abbr title="Sort"><span  class="sort_icon"  st-sort-default="{{sortType}}" st-skip-natural="true" st-sort="uid" ></span></abbr>
+                                        </div>
+                                    </div>
+
+                                    <div id='fullassignscroll'>
+                                        <ul>
+                                            <li ng-repeat='item in usertargetList'>
+
+                                                <span class='right_list_text'>{{item.uid}}&nbsp;&nbsp;&nbsp;&nbsp;<span class="source_view">({{getSource(item.sid)}})</span></span>
+                                            </li>
+                                        </ul> 
+                                        <ul  ng-show="!isLoading" class="loader-area">
+                                            <li  class="alert required">                                                 
+                                                <div ng-if="info != null && usertargetList.length == 0" >{{info}}</div>
+                                                <div ng-if="usertargetList.length == 0" >{{dispmsg}}</div>
+                                            </li>                                                   
+                                        </ul>
+                                    </div>
+                                    <div class="paginationarea" ng-if="targetlist.users != null && usertargetList.length > 0">
+                                        <div class="left-pagination" st-pagination="" st-items-by-page="itemsByPage" ></div>
+                                        <div class="page_change">                                                
+                                            <select ng-model="itemsByPage"  name="itemsByPage">
+                                                <option ng-repeat="data in paginationPageSizes" value="{{data}}">{{data}}</option>
+                                            </select>               
+                                        </div>
+                                    </div>
+                                    <div class="paginationarea" ng-if="usertargetList.length == 0">
+                                        <div class="left-pagination"  ></div>
+                                        <div class="page_change"> 
+                                        </div>
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <!--div class="alert" ng-if="info != null">
+                            {{info}}
+                        </div-->
+                    </div>
+
+            </form>
+
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>

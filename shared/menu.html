@@ -1,0 +1,102 @@
+<div ng-controller="menuController">
+	<div class="menu-dropdown" id="sourcemenu-dropdown" ng-show="showsourcemenu">
+		<ul>
+	       	<li class="hvr-bounce-to-bottom" ng-class="{'selected': (module=='sources' || module=='users' || module=='groups')}">
+	            <a is-active-nav href="{{config.urlPath}}/sources" class="main_content">
+	                <i class="icon_area icon_source"></i>
+	                <span class="nav_title">Sources</span> 
+	            </a>               
+	        </li>                
+                
+	        <li class="hvr-bounce-to-bottom" ng-class="{'selected': (module=='systemadministrators')}" ng-if="superaccess['systemadministrators']!=accessNone">
+	            <a is-active-nav href="{{config.urlPath}}/systemadministrators" class="main_content">
+	                <i class="icon_area icon_sysadmin"></i>
+	                <span class="nav_title">System Administrators</span> 
+	            </a> 
+	        </li>
+	        
+	    </ul>
+	</div>
+	
+	<div class="menu-dropdown" id="appmenu-dropdown" ng-show="showappmenu">
+		<!-- <div class="expand_menu" onclick="hideVerticalCanvas();">&times;</div> -->
+		<ul>
+	       	<li class="hvr-bounce-to-bottom" ng-class="{'selected': (module=='addapplication' || module=='applications')}">
+	            <a is-active-nav href="{{config.urlPath}}/application/edit/{{applicationId}}" class="main_content">
+	                <i class="icon_area icon_application"></i>
+	                <span class="nav_title">Application</span> 
+	            </a>               
+	        </li>
+			<li class="hvr-bounce-to-bottom" ng-class="{'selected': (module=='actions')}">
+	            <a is-active-nav href="{{config.urlPath}}/{{applicationId}}/actions" class="main_content">
+	                <i class="icon_area icon_action"></i>
+	                <span class="nav_title">Actions</span> 
+	            </a> 
+	        </li>
+	       	<li class="hvr-bounce-to-bottom" ng-class="{'selected': (module=='resources')}">
+	            <a is-active-nav href="{{config.urlPath}}/{{applicationId}}/resources" class="main_content">
+	                <i class="icon_area icon_resource"></i>
+	                <span class="nav_title">Resources</span> 
+	            </a> 
+	        </li>
+	        
+	        <li class="hvr-bounce-to-bottom" ng-class="{'selected': (module=='functions')}">
+	            <a is-active-nav href="{{config.urlPath}}/{{applicationId}}/functions" class="main_content">
+	                <i class="icon_area icon_function"></i>
+	                <span class="nav_title">Functions</span> 
+	            </a> 
+	        </li>
+	       	<li class="hvr-bounce-to-bottom" ng-class="{'selected': (module=='rolepolicies')}">
+	            <a is-active-nav href="{{config.urlPath}}/{{applicationId}}/policies/roles" class="main_content">
+	                <i class="icon_area icon_rolepolicy"></i>
+	                <span class="nav_title">Role Policies</span> 
+	            </a> 
+	        </li>
+	       	<li class="hvr-bounce-to-bottom" ng-class="{'selected': (module=='roles' || module=='rolemembers')}">               
+	            <a is-active-nav href="{{config.urlPath}}/{{applicationId}}/roles" class="main_content">
+	                <i class="icon_area icon_role"></i>
+	                <span class="nav_title">Role & Memberships</span> 
+	            </a>
+	        </li>
+			<li class="hvr-bounce-to-bottom" ng-class="{'selected': (module=='resourcetypes')}">
+	            <a is-active-nav href="{{config.urlPath}}/{{applicationId}}/resourcetypes" class="main_content">
+	                <i class="icon_area icon_resourcetype"></i>
+	                <span class="nav_title">Resource Types</span> 
+	            </a> 
+	        </li>
+	       	<li class="hvr-bounce-to-bottom" ng-class="{'selected': (module=='resourcegroups')}">
+	            <a is-active-nav href="{{config.urlPath}}/{{applicationId}}/resourcegroups" class="main_content">
+	                <i class="icon_area icon_resourcegroup"></i>
+	                <span class="nav_title">Resource Groups</span> 
+	            </a> 
+	        </li>
+	       	<li class="hvr-bounce-to-bottom" ng-class="{'selected': (module=='userpolicies')}">
+	            <a is-active-nav href="{{config.urlPath}}/{{applicationId}}/policies/users" class="main_content">
+	                <i class="icon_area icon_userpolicy"></i>
+	                <span class="nav_title">User Policies</span> 
+	            </a> 
+	        </li>
+	        
+	        <li class="hvr-bounce-to-bottom" ng-class="{'selected': (module=='grouppolicies')}">
+	            <a is-active-nav href="{{config.urlPath}}/{{applicationId}}/policies/groups" class="main_content">
+	                <i class="icon_area icon_grouppolicy"></i>
+	                <span class="nav_title">Group Policies</span> 
+	            </a> 
+	        </li>
+	        
+	    </ul>
+	</div>
+        <!--div class="menu-dropdown" id="reportmenu-dropdown" ng-show="showreportmenu">
+		<ul>
+	       	<li class="hvr-bounce-to-bottom">
+	            <a is-active-nav href="{{config.urlPath}}/reports" class="main_content">
+	                <i class="icon_area icon_source"></i>
+	                <span class="nav_title">Reports</span> 
+	            </a>               
+	        </li>
+	        
+	    </ul>
+	</div-->
+	
+	<!-- <div ng-if="module=='homeapplication'" class="expand_menu" onclick="hideVerticalCanvas();"></div> -->
+</div>

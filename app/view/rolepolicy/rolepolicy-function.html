@@ -1,0 +1,60 @@
+<div ng-controller="policiesFunctionController">
+	<div class="list_container selectbox1"> 
+	<div class="view_details_field_spacer"></div>
+	  	<label class="control-group dropdown_label">Function  <a ng-if="authzPolicy.function!=null && authzPolicy.function.id>0" h-ref="" ng-click="authzPolicy.function=null; authzPolicy.args=null;">&nbsp;&nbsp; Remove</a>
+	  	</label>
+	      <div class="selectbox1-opener" ng-click="openDropdown=!openDropdown">{{authzPolicy.function.name || 'Select Function'}} <span ng-class="getDropdownIconClass()" class="dropdown-icon"></span></div>
+	
+	<table ng-show="openDropdown" st-pipe="callFunctionDropdown" st-table="functions" class="smart-table table table-striped" cellspacing="0" cellpadding="0">
+	  <thead>
+	    <tr>
+	      <th class="search_box"> <input class="selectbox1_bg" type="text" focus-on="focusInput" st-search="name" ng-model="search_dd" placeholder="Search">
+	      </th>
+	    </tr>
+	  </thead>
+	  <tbody id="scrolldropdownFunc" style="min-width:334px;" >
+	      <tr ng-show="!isLoading_dd" ng-repeat='functionDetail in functions'  ng-click='selectFunctionDetail(functionDetail)' >
+	        <td>{{functionDetail.name}}</td>
+	      </tr>
+	      <tr ng-if="functions == null">
+	        <td class="alert">{{error_dd}}</td>
+	      </tr>
+	      <tr ng-show="isLoading_dd">
+	        <td  class="text-center loader-area"><div ng-show="isLoading_dd" class="loading-indicator"></div></td>
+	      </tr>
+	    </tbody>
+	    <tfoot class="pagination-container" ng-if="functions != null">
+	      <tr>
+	        <td class="paginationarea"><div class="left-pagination" st-pagination="" st-items-by-page="itemsByPage" ></div>
+	          <div class="page_change">
+	            <select ng-model="itemsByPage"  name="itemsByPage">
+	              <option ng-repeat="data in paginationPageSizes" value="{{data}}">{{data}}</option>
+	            </select>
+	          </div></td>
+	      </tr>
+	    </tfoot>
+	  </table>
+	  
+	<div class="error" style="color:red" ng-show="error_dd">Please select a Function.</div>
+	</div> 
+	   <div class="view_details_field_spacer"></div>
+	<div class="list_container selectbox1"> 
+	     	<label class="control-group dropdown_label">Description</label>
+	     	<label class="control-group dropdown_label">{{authzPolicy.function.description}}</label>
+	       	</div>
+	        <div class="view_details_field_spacer"></div>
+	<label class="control-group">Arguements</label>
+	<div class="role_arguments">
+		<tags-input ng-model="authzPolicy.args" placeholder="Type and press Tab"></tags-input>
+	</div>
+	
+	<br>
+	
+	<!-- <tags-input name="resourceTypeActions" ng-model="rolePolicy.args" 
+	                                          display-property="name" placeholder="Add Arguement and Press Enter"
+	                                          min-tags="0"
+	                                          add-from-autocomplete-only="true">
+	</tags-input>
+	 -->
+	 
+</div>

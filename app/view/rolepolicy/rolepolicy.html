@@ -1,0 +1,398 @@
+<style>
+.policies_details_header {
+	margin-bottom: 10px;
+	padding: 0;
+}
+.right_justified {
+	float: right;
+}
+</style>
+<ng-include src="config.domainPath+'/shared/header.html'"></ng-include>
+<div class="navigationpage_wrapper" ng-controller="rolePoliciesController" >
+<div class="site-canvas">
+  <ng-include src="config.domainPath+'/shared/menu.html'"></ng-include>
+  <div class="container-fluid slide_up" >
+    <div class="navright_container listpage_container" >
+      <ul class="page_path">
+        <li><a href="{{config.urlPath}}/home">Home </a></li>
+        <li><a href="{{config.urlPath}}/home/{{applicationId}}">{{applicationName}} </a></li>
+        <li class="last">{{policyType| limitTo:policyType.length-1 |capitalize}} Policies</li>
+      </ul>
+      <div class="header_info">
+        <h2 class="page_heading">
+        	<span class="header">{{policyType| limitTo:policyType.length-1 |capitalize}} Policies</span>
+        	<span style="float:right"> 
+                <a href="{{config.urlPath}}/{{applicationId}}/search/policies/{{policyType}}"><img src="{{config.domainPath}}/assets/images/search_icon_blue.png"></a> 
+            </span>	
+        </h2>
+        <div class="clearfix"></div>
+      </div>
+      <!--button ng-click="confirm()" type="button" class="am-btn am-btn-warning am-btn-block" >Try it!</button-->
+      <div class="view_details_field_spacer"></div>
+      <div class="list_boxshadow">
+        <div class="pageform_wrapper">
+          <div class="list_view_container">
+            <div class="list_container grid_box">
+              <table st-pipe="callServer" st-table="rolePolicies"  class="smart-table table table-striped" cellspacing="0" cellpadding="0">
+                <thead>
+                  <tr>
+                    <th class="search_box full"> <span class="search_header" >Name</span> <a class="search_button" ng-click="startSearch()" ng-show="searchIcon"><img src="{{config.domainPath}}/assets/images/search_list.png"  alt=""/></a>
+                      <div class="search_window animate_sideways" ng-show="searchBox">
+                        <input type="text" focus-on="focusInput" st-search="name"  ng-model="search" placeholder="Search">
+                        <a class="close_button" st-refresh='name' ng-click="endSearch()">&times;</a> </div>
+                      <abbr title="Sort"><span class="sort_icon" ng-if="rolePolicies != null" st-sort-default="{{sortType}}" st-skip-natural="true" st-sort="name" ></span></abbr> </th>
+                  </tr>
+                </thead>
+                <tbody id="scrolltable">
+                  <tr ng-show="!isLoading" roles-repeat-directive ng-repeat="authzPolicyDetails in authzPolicies" ng-click='selectAuthzPolicy(authzPolicyDetails)' ng-class="{selectedActive: authzPolicyDetails.id == selectedAuthzPolicy.id}"  >
+                    <td>{{authzPolicyDetails.name}}</td>
+                  </tr>
+                  <tr ng-if="authzPolicies == null">
+                    <td class="alert">{{error}}</td>
+                  </tr>
+                  <tr ng-show="isLoading">
+                    <td  class="text-center loader-area"><div ng-show="isLoading" class="loading-indicator"></div></td>
+                  </tr>
+                </tbody>
+                <tfoot class="pagination-container" ng-if="rolePolicies != null">
+                  <tr>
+                    <td class="paginationarea"><div class="left-pagination" st-pagination="" st-items-by-page="itemsByPage" ></div>
+                      <div class="page_change">
+                        <select ng-model="itemsByPage"  name="itemsByPage">
+                          <option ng-repeat="data in paginationPageSizes" value="{{data}}">{{data}}</option>
+                        </select>
+                      </div></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            <div class="view_container">
+              <div class="listgridheader"> 
+                <!-- <a href="{{config.urlPath}}/{{applicationId}}/roles/delete/{{selectedRole.id}}" class="primary" ng-click="confirm()"><img src="{{config.domainPath}}/assets/images/delete_list.png"><span class="action">Delete</span></a> --> 
+                <a href="javascript:;" ng-click="confirmDelete(selectedAuthzPolicy.id)" class="primary ico_delete"><!--<img src="{{config.domainPath}}/assets/images/delete_list.png">--><span class="action">Delete</span></a> 
+                <a href="{{config.urlPath}}/{{applicationId}}/policies/{{policyType}}/edit/{{selectedAuthzPolicy.id}}" class="primary ico_edit"><!--<img src="{{config.domainPath}}/assets/images/edit_list.png">--><span class="action">Edit</span></a> 
+                <a href="{{config.domainPath}}/{{applicationId}}/policies/{{policyType}}/add" class="primary ico_add"><!--<img src="{{config.domainPath}}/assets/images/add_list.png">--><span class="action">Add</span></a>
+                <div class="clearfix"></div>
+              </div>
+              <div  class="view_details" >
+                <div ng-if="rolePolicies == null" class="scrollrightdiv alert_container" > <img src="{{config.domainPath}}/assets/images/alert.png"><br>{{error}}</div>
+                
+                <div id="scrollrightdiv" class="scrollrightdiv" ng-if="rolePolicies != null">
+				  <div class="row">
+				  	<div class="col-lg-11">
+	                    <label>Name</label>
+						<p>{{ selectedAuthzPolicy.name}}</p>
+	                </div>
+				  	<div class="col-lg-1 role_permit_deny">
+	                  <div ng-if="selectedAuthzPolicy.effect" > <img src="{{config.domainPath}}/assets/images/permit.png" alt="">
+                        <p>Permit</p>
+                      </div>
+                      <div ng-if="!selectedAuthzPolicy.effect"> <img src="{{config.domainPath}}/assets/images/deny_new.png" alt="">
+                        <p>Deny</p>
+                      </div>
+				  	</div>
+				  </div>        
+                  <div class="view_details_field_spacer"></div>
+               
+	                  <label>Description</label>
+    			  
+                  <p>{{ selectedAuthzPolicy.description}}</p>
+                  <div class="view_details_field_spacer"></div>
+                  
+                    <label>{{policyType|capitalize}}</label>
+                 
+
+					<div  st-table="selectedPolicyPrincipals" st-safe-src="selectedAuthzPolicyPrincipals" ng-class="(selectedAuthzPolicyPrincipalCount > 8) ? 'view-sub-list-wrapper' : 'view-sub-list-wrapper-less'" >
+                       <div class="view-sub-list view-sub-list-header-right"> 
+                           <div ng-if="selectedAuthzPolicyPrincipalCount > rightPageinationPerPage" class="search_box">
+                              <span class="search_header">Name</span>
+                              <a class="search_icon_right_space search_button" ng-click="startViewSearch('principals')" ng-if="principalsearchIcon"><img src="{{config.domainPath}}/assets/images/assign_search.png" width="15" height="15" alt=""/></a>
+                              <div class="search_window animate_sideways" ng-show="principalsearchBox">                                        
+                                  <input class="search_reset" type="text" focus-on="principalfocusInput" ng-model="search_principal"  st-search=""  placeholder="Search">
+                                  <a class="close_button" st-refresh='name' ng-click="endViewSearch('principals')">&times;</a>
+                              </div>                                                                        
+                              <div class="right-pagination" st-pagination="" st-items-by-page="rightPageinationPerPage" st-template="shared/right-pagination.html" ></div>
+                              <div class="search_sort_right">
+                                  <abbr title="Sort"><span class="sort_icon"  st-sort-default="{{sortType}}" st-skip-natural="true" st-sort="name" ></span></abbr>
+                              </div>
+                          </div>
+
+                          <div ng-if="selectedAuthzPolicyPrincipalCount <= rightPageinationPerPage" class="full search_box">
+                              <span class="search_header">Name</span>                              
+                              <div class="search_window animate_sideways" ng-show="principalsearchBox">                                        
+                                  <input type="text" focus-on="principalfocusInput"  ng-model="search_principal" st-search=""  placeholder="Search">
+                                  <a class="close_button" st-refresh='name' ng-click="endViewSearch('principals')">&times;</a>
+                              </div> 
+                          </div>
+                        </div>
+                       
+                       <div id="scrollrightinnerdiv">
+                           <ul ng-if="selectedPolicyPrincipals.length != 0">
+                               <li ng-repeat="selectedPrincipal in selectedPolicyPrincipals">{{selectedPrincipal.name}}{{selectedPrincipal.uid}}<span ng-if="selectedPrincipal.sid!=null">&nbsp; ({{selectedPrincipal.sid}})</span></li>                                                    
+                           </ul>
+                           <ul ng-if="selectedPolicyPrincipals.length == 0">
+                               <li><i>No Records</i></li>
+                           </ul>
+                           <div class="clearfix"></div>
+                       </div>
+                       <div class="clearfix"></div>
+                   </div>    
+                                        
+                                        
+                  <div class="view_details_field_spacer"></div>
+                  
+                    <label>Targets</label>
+                  
+                  
+				  <md-content class="tab-list">
+                     <md-tabs md-dynamic-height class="md-accent" md-selected="data.selectedIndex" md-align-tabs="top">
+                         <md-tab id="tab1">
+                             <md-tab-label>Resource</md-tab-label>
+                             <md-tab-body>
+
+								<div  st-table="selectedPolicyResources" st-safe-src="selectedAuthzPolicyResources" ng-class="(selectedAuthzPolicyResourceCount > 8) ? 'view-sub-list-wrapper' : 'view-sub-list-wrapper-less'" >
+			                       <div class="view-sub-list view-sub-list-header-right"> 
+			                           <div ng-if="selectedAuthzPolicyResourceCount > rightPageinationPerPage" class="search_box">
+			                              <span class="search_header">Name</span>
+			                              <a class="search_icon_right_space search_button" ng-click="startViewSearch('resources')" ng-if="resourcesearchIcon"><img src="{{config.domainPath}}/assets/images/assign_search.png" width="15" height="15" alt=""/></a>
+			                              <div class="search_window animate_sideways" ng-show="resourcesearchBox">                                        
+			                                  <input class="search_reset" type="text" focus-on="resourcefocusInput" ng-model="search_resource"  st-search=""  placeholder="Search">
+			                                  <a class="close_button" st-refresh='name' ng-click="endViewSearch('resources')">&times;</a>
+			                              </div>                                                                        
+			                              <div  class="right-pagination" st-pagination="" st-items-by-page="rightPageinationPerPage" st-template="shared/right-pagination.html" ></div>
+			                              <div class="search_sort_right">
+			                                  <abbr title="Sort"><span class="sort_icon"  st-sort-default="{{sortType}}" st-skip-natural="true" st-sort="name" ></span></abbr>
+			                              </div>
+			                          </div>
+			
+			                          <div ng-if="selectedAuthzPolicyResourceCount <= rightPageinationPerPage" class="full search_box">
+			                              <span class="search_header">Fully Qualified Name (Actions)</span>
+			                              <a class="search_button" ng-click="startViewSearch('resources')" ng-if="resourcesearchIcon"><img src="{{config.domainPath}}/assets/images/assign_search.png" width="15" height="15" alt=""/></a>
+			                              <div class="search_window animate_sideways" ng-show="resourcesearchBox">                                        
+			                                  <input type="text" focus-on="resourcefocusInput"  ng-model="search_resource" st-search=""  placeholder="Search">
+			                                  <a class="close_button" st-refresh='name' ng-click="endViewSearch('resources')">&times;</a>
+			                              </div>                                                                        
+			                              <div class="search_sort_right">
+			                                  <abbr title="Sort"><span class="sort_icon"  st-sort-default="{{sortType}}" st-skip-natural="true" st-sort="name" ></span></abbr>
+			                              </div>
+			                          </div>
+			                        </div>
+			                       
+			                       <div id="scrollrightinnerdivres">
+			                           <ul ng-if="selectedAuthzPolicyResourceCount != 0">
+			                               <li ng-click="toggleExpand(resourceAction)" ng-repeat="resourceAction in selectedPolicyResources" style="{text-overflow:ellipsis}">{{resourceAction.resource.fqdn}} &nbsp; &nbsp; (<span ng-repeat="act in resourceAction.actions">{{act.name}}<span ng-if="$index<resourceAction.actions.length-1">,</span></span>)
+
+						  				   		<div ng-show="resourceAction.isExpanded">
+							  				   		<p>
+													Actions
+													<br/>
+													<ul>
+														<li ng-repeat="action in resourceAction.actions">{{action.name}}</li>
+													</ul>
+												</div>
+			                               </li>     
+			                           </ul>
+			                           <ul ng-if="selectedAuthzPolicyResourceCount == 0">
+			                               <li><i>No Records</i></li>
+			                           </ul>
+			                           <div class="clearfix"></div>
+			                       </div>
+			                       <div class="clearfix"></div>
+			                   </div>
+                             </md-tab-body>
+                           </md-tab>
+
+
+						   <md-tab id="tab2">
+                             <md-tab-label>Resource Group</md-tab-label>
+                             <md-tab-body>
+
+								<div  st-table="selectedPolicyResourceGroups" st-safe-src="selectedAuthzPolicyResourceGroups" ng-class="(selectedAuthzPolicyResourceGroupCount > 8) ? 'view-sub-list-wrapper' : 'view-sub-list-wrapper-less'" >
+			                       <div class="view-sub-list view-sub-list-header-right"> 
+			                           <div ng-if="selectedAuthzPolicyResourceGroupCount > rightPageinationPerPage" class="search_box">
+			                              <span class="search_header">Name</span>
+			                              <a class="search_icon_right_space search_button" ng-click="startViewSearch('resourcegroups')" ng-if="resourcegroupsearchIcon"><img src="{{config.domainPath}}/assets/images/assign_search.png" width="15" height="15" alt=""/></a>
+			                              <div class="search_window animate_sideways" ng-show="resourcegroupsearchBox">                                        
+			                                  <input class="search_reset" type="text" focus-on="resourcegroupfocusInput" ng-model="search_resourcegroup"  st-search=""  placeholder="Search">
+			                                  <a class="close_button" st-refresh='name' ng-click="endViewSearch('resourcegroups')">&times;</a>
+			                              </div>                                                                        
+			                              <div  class="right-pagination" st-pagination="" st-items-by-page="rightPageinationPerPage" st-template="shared/right-pagination.html" ></div>
+			                              <div class="search_sort_right">
+			                                  <abbr title="Sort"><span class="sort_icon"  st-sort-default="{{sortType}}" st-skip-natural="true" st-sort="name" ></span></abbr>
+			                              </div>
+			                          </div>
+			
+			                          <div ng-if="selectedAuthzPolicyResourceGroupCount <= rightPageinationPerPage" class="full search_box">
+			                              <span class="search_header">Name (Actions)</span>
+			                              <a class="search_button" ng-click="startViewSearch('resourcegroups')" ng-if="resourcegroupsearchIcon"><img src="{{config.domainPath}}/assets/images/assign_search.png" width="15" height="15" alt=""/></a>
+			                              <div class="search_window animate_sideways" ng-show="resourcegroupsearchBox">                                        
+			                                  <input class="search_reset_no_pagination" type="text" focus-on="resourcegroupfocusInput"  ng-model="search_resourcegroup" st-search=""  placeholder="Search">
+			                                  <a class="close_button" st-refresh='name' ng-click="endViewSearch('resourcegroups')">&times;</a>
+			                              </div>                                                                        
+			                              <div class="search_sort_right">
+			                                  <abbr title="Sort"><span class="sort_icon"  st-sort-default="{{sortType}}" st-skip-natural="true" st-sort="name" ></span></abbr>
+			                              </div>
+			                          </div>
+			                        </div>
+			                       
+			                       <div id="scrollrightinnerdivres">
+			                           <ul ng-if="selectedAuthzPolicyResourceGroupCount != 0">
+			                               <li ng-click="toggleExpand(resourceAction)" ng-repeat="resourceAction in selectedPolicyResourceGroups" style="{text-overflow:ellipsis}">{{resourceAction.resource.fqdn}} &nbsp; &nbsp; (<span ng-repeat="act in resourceAction.actions">{{act.name}}<span ng-if="$index<resourceAction.actions.length-1">,</span></span>)
+
+						  				   		<div ng-show="resourceAction.isExpanded">
+							  				   		<p>
+													Actions
+													<br/>
+													<ul>
+														<li ng-repeat="action in resourceAction.actions">{{action.name}}</li>
+													</ul>
+												</div>
+			                               </li>     
+			                           </ul>
+			                           <ul ng-if="selectedAuthzPolicyResourceGroupCount == 0">
+			                               <li><i>No Records</i></li>
+			                           </ul>
+			                           <div class="clearfix"></div>
+			                       </div>
+			                       <div class="clearfix"></div>
+			                   </div>
+                             </md-tab-body>
+                           </md-tab>                           
+                         </md-tabs>
+                    </md-content>
+                  
+                <!--   
+				  <md-content class="tab-list">
+                     <md-tabs class="md-accent" md-selected="data.selectedIndex" md-align-tabs="top">
+                         <md-tab id="tab1">
+                             <md-tab-label>Resource</md-tab-label>
+                             <md-tab-body>
+				  				   <table class="view_details_generic_table">
+										<thead>
+											<tr>
+												<th>Name 
+													<div ng-if="numResourcePages > 1">
+													    <span><a ng-click="previousResourcePage()" class="lImg-pagination"></a></span>
+													    <span>{{currentResourcePage}} / {{numResourcePages}}</span>
+													    <span><a ng-click="nextResourcePage()" class="rImg-pagination"></a></span>
+													</div>
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="resourceAction in selectedAuthzPolicyResources track by $index" ng-click="toggleExpand(resourceAction)">
+												<td ng-show="($index >= (currentResourcePage -1)* numResourcesPerPage ) && ($index < (currentResourcePage)* numResourcesPerPage )">
+													  {{resourceAction.resource.fqdn}} &nbsp; &nbsp; ( <span ng-repeat="act in resourceAction.actions">{{act.name}}<span ng-if="$index<resourceAction.actions.length-1">,</span></span> )
+													<p/>
+													
+
+									  				   <table ng-show="resourceAction.isExpanded" class="view_details_generic_table">
+															<thead>
+																<tr>
+																	<th>Action Name</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr ng-repeat="action in resourceAction.actions">
+																	<td>{{action.name}}</td>
+																</tr>
+															</tbody>
+															
+														</table>        
+												</td>
+											</tr>
+										</tbody>
+									</table>                             
+                             </md-tab-body>
+                         </md-tab>
+                         <md-tab id="tab2">
+                             <md-tab-label>Resource Group</md-tab-label>
+                             <md-tab-body>
+				  				   <table class="view_details_generic_table">
+										<thead>
+											<tr>
+												<th>Name 
+													<div ng-if="numResourcePages > 1">
+													    <span><a ng-click="previousResourcePage()" class="lImg-pagination"></a></span>
+													    <span>{{currentResourcePage}} / {{numResourcePages}}</span>
+													    <span><a ng-click="nextResourcePage()" class="rImg-pagination"></a></span>
+													</div>
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="resourceAction in selectedAuthzPolicyResources track by $index" ng-click="toggleExpand(resourceAction)">
+												<td ng-show="($index >= (currentResourcePage -1)* numResourcesPerPage ) && ($index < (currentResourcePage)* numResourcesPerPage )">
+													  {{resourceAction.resource.fqdn}} &nbsp; &nbsp; ( <span ng-repeat="act in resourceAction.actions">{{act.name}}<span ng-if="$index<resourceAction.actions.length-1">,</span></span> )
+													<p/>
+													
+
+									  				   <table ng-show="resourceAction.isExpanded" class="view_details_generic_table">
+															<thead>
+																<tr>
+																	<th>Action Name</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr ng-repeat="action in resourceAction.actions">
+																	<td>{{action.name}}</td>
+																</tr>
+															</tbody>
+															
+														</table>        
+												</td>
+											</tr>
+										</tbody>
+									</table> 
+								</md-tab-body>
+                         </md-tab>
+                     </md-tabs>
+                  </md-content>
+
+				 -->
+                  
+                  <div class="view_details_field_spacer"></div>
+                  
+                    <label>Function</label>
+                  
+					<p ng-if="selectedAuthzPolicy.function!=null && selectedAuthzPolicy.function.id > 0">{{ selectedAuthzPolicy.function.name}} (<span ng-repeat="arg in selectedAuthzPolicy.args">{{arg}} <span ng-if="$index<selectedAuthzPolicy.args.length-1">,</span></span>)=true</p>
+					<p ng-if="selectedAuthzPolicy.function==null || selectedAuthzPolicy.function.id == 0">No Records</p>
+                 
+                 
+                  <div class="view_details_field_spacer"></div>
+                  
+                    <label>Obligations</label>
+                  
+                  	<p ng-if="selectedAuthzPolicy.obligations==null || selectedAuthzPolicy.obligations.length == 0">No Records</p>
+					<table ng-if="selectedAuthzPolicy.obligations!=null && selectedAuthzPolicy.obligations.length > 0"class="view_details_generic_table">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Value</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="obligation in selectedAuthzPolicy.obligations">
+								<td>{{obligation.name}}</td>
+								<td>{{obligation.value}}</td>
+							</tr>
+						</tbody>
+						
+					</table>
+                  <div class="view_details_field_spacer"></div>
+                </div>
+                <div class="clearfix"></div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <!--div class="view_details">{{error}}</div-->
+            <div class="clearfix"></div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-include src="config.domainPath+'/shared/footer.html'"></ng-include>
